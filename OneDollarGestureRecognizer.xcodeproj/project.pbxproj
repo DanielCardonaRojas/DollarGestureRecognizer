@@ -14,6 +14,7 @@
 		C42CD24E1FE5683D00A6B828 /* CompatExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42CD24D1FE5683D00A6B828 /* CompatExtensions.swift */; };
 		C42CD24F1FE597A100A6B828 /* OneDollar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C405F40D1FE55895009BC846 /* OneDollar.swift */; };
 		C42CD2501FE597A600A6B828 /* CompatExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42CD24D1FE5683D00A6B828 /* CompatExtensions.swift */; };
+		C4886A731FE6B33F00D961F9 /* OneDollarGestureRecognizer.framework in Resources */ = {isa = PBXBuildFile; fileRef = C405F3F31FE55827009BC846 /* OneDollarGestureRecognizer.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -195,6 +196,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C4886A731FE6B33F00D961F9 /* OneDollarGestureRecognizer.framework in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

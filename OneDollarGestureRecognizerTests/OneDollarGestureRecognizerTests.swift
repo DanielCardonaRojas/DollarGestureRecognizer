@@ -79,7 +79,7 @@ class OneDollarGestureRecognizerTests: XCTestCase {
         }
     }
     
-    func testCanEvaluateLineBezier() {
+    func testPathLengthOfSampledLineIsEqualToLengthOfUnsampledLine() {
         let bezier = UIBezierPath()
         let lineLength = 4.0
         bezier.move(to: CGPoint.zero)
@@ -91,19 +91,36 @@ class OneDollarGestureRecognizerTests: XCTestCase {
         XCTAssert(points.pathLength() == lineLength)
     }
     
-    func testBezier() {
-        let bz = Bezier(controlPoints: [CGPoint(x: 0, y: 0), CGPoint(x: 4.0, y: 0.0)])
-        let p0 = bz.evaluateSingle(at: 0.0)
-        let p1 = bz.evaluateSingle(at: 1.0)
-        print("Initial point: \(String(describing: p0)) end point: \(String(describing: p1))")
+    func testBezierThereIsACoeficientForEachControlPoint() {
+        let p0 = CGPoint(x: 0, y: 0)
+        let p1 = CGPoint(x: 4.0, y: 0.0)
+        let bz = Bezier(controlPoints: p0, p1)
+        XCTAssert(bz.controlPoints.count == bz.polynomials.count)
+        
+    }
+    func testBezierExtremePointAreCorrectlyEvaluated() {
+        let p0 = CGPoint(x: 0, y: 0)
+        let p1 = CGPoint(x: 4.0, y: 0.0)
+        let bz = Bezier(controlPoints: p0, p1)
+        let _p0 = bz.evaluateSingle(at: 0.0)
+        let _p1 = bz.evaluateSingle(at: 1.0)
+        XCTAssert(_p0 == p0)
+        XCTAssert(_p1 == p1)
+    }
+    
+    func testBezierEvaluatesLineCorrectly() {
+        let p0 = CGPoint(x: 0, y: 0)
+        let p1 = CGPoint(x: 4.0, y: 0.0)
+        let bz = Bezier(controlPoints: p0, p1)
+        let p_mid = bz.evaluateSingle(at: 0.5)
+        print("Line middle point is: \(p_mid)")
+        let firstSegment: [Point] = [p0, p_mid].toPoints()
+        let secondSegment: [Point] = [p0, p_mid].toPoints()
+        XCTAssert(firstSegment.pathLength() == secondSegment.pathLength())
     }
     
     func testBernsteinPolynomials() {
-        let polynomials = Bernstein.polynomials(order: 3)
-        let firstPoly = polynomials.first!
-        let t = 0.5
-        let result = firstPoly(t)
-        print("\nFirst polynomail evaluated at: \(t) result: \(result)\n")
+        XCTAssert(Bernstein.evaluatePolynomial(0, order: 3, at: 0.5) == 0.125)
     }
     
     func testCombinationsFunction() {

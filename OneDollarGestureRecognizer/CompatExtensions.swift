@@ -11,9 +11,15 @@ import UIKit
 
 typealias Polynomial = (Double) -> Double
 enum Bernstein {
-    static func polynomial(_ i: Int, order n: Int) -> Polynomial {
+    static func evaluatePolynomial(_ i: Int, order n: Int, at t: Double) -> Double {
         let binomialCoefficient = combinations(from: n, taking: i)
-        return { t in t.power(i) * (1.0 - t).power(n - 1) * Double(binomialCoefficient) }
+        let ti = pow(t, Double(i))
+        let tn = pow((1.0 - t), Double(n - i))
+        return ti * tn * Double(binomialCoefficient)
+    }
+    static func polynomial(_ k: Int, order n: Int) -> Polynomial {
+        let binomialCoefficient = combinations(from: n, taking: k)
+        return { t in pow(t, Double(k)) * pow(1.0 - t, Double(n - k)) * Double(binomialCoefficient) }
     }
     
     static func polynomials(order n: Int) -> [Polynomial] {
@@ -32,20 +38,20 @@ enum Bernstein {
 class Bezier {
     var controlPoints: [CGPoint]
     var order: Int {
-        return controlPoints.count
+        return controlPoints.count - 1
     }
     var polynomials:[Polynomial] {
         return Bernstein.polynomials(order: order)
     }
     
-    init(controlPoints: [CGPoint]) {
+    init(controlPoints: CGPoint...){
+        //Using variadic parameter with required labels enforces at leas one control point
         self.controlPoints = controlPoints
+        
     }
     
     // Create a bezier curve from control points
-    func evaluateSingle(at t: Double) -> CGPoint? {
-        let order = controlPoints.count
-        if order < 2 { return nil }
+    func evaluateSingle(at t: Double) -> CGPoint {
         let evaluatedPolynomials = Bernstein.evaluatedPolynomials(polynomials: polynomials, at: t)
         let evaluated = zip(controlPoints, evaluatedPolynomials).map { (arg) -> CGPoint in
             let (p, coef) = arg
@@ -55,14 +61,7 @@ class Bezier {
     }
     
     public func evaluate(at ts: [Double]) -> [CGPoint] {
-        var result: [CGPoint] = []
-        for t in ts {
-            guard let point = evaluateSingle(at: t) else{
-                continue
-            }
-            result.append(point)
-        }
-        return result
+        return ts.map { t in evaluateSingle(at: t)}
     }
 }
 
@@ -102,17 +101,18 @@ public enum PathElement {
             if k == 0 {
                //First iteration
             }
+            let p0: CGPoint = currentPoint
             switch element {
             case .moveToPoint(let p):
                 currentPoint = p
             case .addLineToPoint(let p):
-                iterationPoints = Bezier(controlPoints: [currentPoint, p]).evaluate(at: ts)
+                iterationPoints = Bezier(controlPoints: currentPoint, p).evaluate(at: ts)
                 currentPoint = p
-            case .addQuadCurveToPoint(let p0, let p1):
-                iterationPoints = Bezier(controlPoints: [p0, p1]).evaluate(at: ts)
+            case .addQuadCurveToPoint(let p1, let p2):
+                iterationPoints = Bezier(controlPoints: p0, p1, p2).evaluate(at: ts)
                 currentPoint = p1
-            case .addCurveToPoint(let p0, let p1, let p2):
-                iterationPoints = Bezier(controlPoints: [p0, p1, p2]).evaluate(at: ts)
+            case .addCurveToPoint(let p1, let p2, let p3):
+                iterationPoints = Bezier(controlPoints: p0, p1, p2, p3).evaluate(at: ts)
                 currentPoint = p2
             case .closeSubpath:
                 break
@@ -140,20 +140,20 @@ public enum PathElement {
                 let controlPoints = [p0, p1]
                 let controlPointsDistance = controlPoints.toPoints().pathLength()
                 let ts = Array(stride(from: 0, to: 1, by: delta/controlPointsDistance))
-                let bz = Bezier(controlPoints: controlPoints)
+                let bz = Bezier(controlPoints: p0, p1)
                 iterationPoints = bz.evaluate(at: ts)
                 currentPoint = p1
             case .addQuadCurveToPoint(let p1, let p2):
                 let controlPoints = [p0, p1, p2]
                 let controlPointsDistance = controlPoints.toPoints().pathLength()
                 let ts = Array(stride(from: 0, to: 1, by: delta/controlPointsDistance))
-                iterationPoints = Bezier(controlPoints: controlPoints).evaluate(at: ts)
+                iterationPoints = Bezier(controlPoints: p0, p1, p2).evaluate(at: ts)
                 currentPoint = p2
             case .addCurveToPoint(let p1, let p2, let p3):
                 let controlPoints = [p0, p1, p2, p3]
                 let controlPointsDistance = controlPoints.toPoints().pathLength()
                 let ts = Array(stride(from: 0, to: 1, by: delta/controlPointsDistance))
-                iterationPoints = Bezier(controlPoints: controlPoints).evaluate(at: ts)
+                iterationPoints = Bezier(controlPoints: p0, p1, p2, p3).evaluate(at: ts)
                 currentPoint = p3
             case .closeSubpath:
                 break
@@ -167,7 +167,7 @@ public enum PathElement {
 
 }
 
-private extension Int {
+extension Int {
     func factorial() -> Int{
         var fact = 1
         if self == 0 { return 1 }
@@ -176,18 +176,6 @@ private extension Int {
             fact *= i
         }
         return fact
-    }
-}
-
-private extension Double {
-    func power(_ x: Int) -> Double {
-        var power: Double = 1
-        var count = x
-        while count > 1 {
-           power *= self
-           count -= 1
-        }
-        return power
     }
 }
 
