@@ -10,6 +10,10 @@
 		C405F3FD1FE55827009BC846 /* OneDollarGestureRecognizer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C405F3F31FE55827009BC846 /* OneDollarGestureRecognizer.framework */; };
 		C405F4021FE55827009BC846 /* OneDollarGestureRecognizerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C405F4011FE55827009BC846 /* OneDollarGestureRecognizerTests.swift */; };
 		C405F4041FE55827009BC846 /* OneDollarGestureRecognizer.h in Headers */ = {isa = PBXBuildFile; fileRef = C405F3F61FE55827009BC846 /* OneDollarGestureRecognizer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C405F40E1FE55895009BC846 /* OneDollar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C405F40D1FE55895009BC846 /* OneDollar.swift */; };
+		C42CD24E1FE5683D00A6B828 /* CompatExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42CD24D1FE5683D00A6B828 /* CompatExtensions.swift */; };
+		C42CD24F1FE597A100A6B828 /* OneDollar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C405F40D1FE55895009BC846 /* OneDollar.swift */; };
+		C42CD2501FE597A600A6B828 /* CompatExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42CD24D1FE5683D00A6B828 /* CompatExtensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +33,8 @@
 		C405F3FC1FE55827009BC846 /* OneDollarGestureRecognizerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OneDollarGestureRecognizerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C405F4011FE55827009BC846 /* OneDollarGestureRecognizerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneDollarGestureRecognizerTests.swift; sourceTree = "<group>"; };
 		C405F4031FE55827009BC846 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C405F40D1FE55895009BC846 /* OneDollar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneDollar.swift; sourceTree = "<group>"; };
+		C42CD24D1FE5683D00A6B828 /* CompatExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompatExtensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +79,8 @@
 			children = (
 				C405F3F61FE55827009BC846 /* OneDollarGestureRecognizer.h */,
 				C405F3F71FE55827009BC846 /* Info.plist */,
+				C405F40D1FE55895009BC846 /* OneDollar.swift */,
+				C42CD24D1FE5683D00A6B828 /* CompatExtensions.swift */,
 			);
 			path = OneDollarGestureRecognizer;
 			sourceTree = "<group>";
@@ -148,6 +156,7 @@
 				TargetAttributes = {
 					C405F3F21FE55827009BC846 = {
 						CreatedOnToolsVersion = 9.0.1;
+						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
 					};
 					C405F3FB1FE55827009BC846 = {
@@ -196,6 +205,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C405F40E1FE55895009BC846 /* OneDollar.swift in Sources */,
+				C42CD24E1FE5683D00A6B828 /* CompatExtensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -203,7 +214,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C42CD24F1FE597A100A6B828 /* OneDollar.swift in Sources */,
 				C405F4021FE55827009BC846 /* OneDollarGestureRecognizerTests.swift in Sources */,
+				C42CD2501FE597A600A6B828 /* CompatExtensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -334,6 +347,7 @@
 		C405F4081FE55827009BC846 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
@@ -347,6 +361,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.decaroj.OneDollarGestureRecognizer;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -355,6 +370,7 @@
 		C405F4091FE55827009BC846 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
@@ -376,6 +392,7 @@
 		C405F40B1FE55827009BC846 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = L6BZS62EE3;
 				INFOPLIST_FILE = OneDollarGestureRecognizerTests/Info.plist;
@@ -390,6 +407,7 @@
 		C405F40C1FE55827009BC846 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = L6BZS62EE3;
 				INFOPLIST_FILE = OneDollarGestureRecognizerTests/Info.plist;
