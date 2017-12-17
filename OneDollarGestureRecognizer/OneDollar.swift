@@ -31,7 +31,8 @@ public struct OneDollarPath {
     }
     
     static func from(path: CGPath) -> OneDollarPath {
-        let points: [CGPoint] = PathElement.evaluate(path: path.elements(), every: [0.0, 0.5, 1.0])
+        let range = stride(from: 0, to: 1, by: 0.015)
+        let points: [CGPoint] = PathElement.evaluate(path: path.elements(), every: Array(range))
         return OneDollarPath(path: points.map {p in Point(point: p)})
     }
 }
@@ -165,6 +166,7 @@ public class OneDollar {
     //Step 4: Match points against a set of templates
     public func recognize(minThreshold: Double = 0.8) throws -> (template: OneDollarPath, score: Double)? {
         if templates.count == 0 || candidate.count == 0 { throw OneDollarError.EmptyTemplates }
+        if !templates.filter({ t in t.count == 0 }).isEmpty { throw OneDollarError.EmptyTemplates }
         if candidate.count < 10 { throw OneDollarError.TooFewPoints }
         
         var bestDistance = Double.infinity
@@ -282,8 +284,6 @@ extension OneDollar {
         }
         return min(f1,f2)
     }
-    
-
 }
 
 //MARK: Point extensions
@@ -310,13 +310,22 @@ extension Point {
         return Point(x: function(point.x), y: function(point.y))
     }
     
+    func apply(_ function: (Double) -> Double) -> Point {
+       return Point.modify(self, function)
+    }
+    
+    static func  + (_ lhs: Point, _ rhs: Point) -> Point {
+        return Point(x: lhs.x + rhs.x, y: lhs.y + rhs.y)
+    }
+    
+
 }
 
 //MARK: PointPath extensions
 extension Array where Element == Point {
     func centroid() -> Point {
         var centroidPoint = self.reduce(Point(x: 0, y: 0)) { (acc, p) -> Point in
-            Point(x: acc.x + p.x, y: acc.y + p.y)
+            acc + p
         }
         let totalPoints = Double(self.count)
         centroidPoint.x = (centroidPoint.x / totalPoints)

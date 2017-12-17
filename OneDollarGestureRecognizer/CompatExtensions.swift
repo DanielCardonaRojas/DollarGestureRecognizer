@@ -9,62 +9,6 @@
 import Foundation
 import UIKit
 
-typealias Polynomial = (Double) -> Double
-enum Bernstein {
-    static func evaluatePolynomial(_ i: Int, order n: Int, at t: Double) -> Double {
-        let binomialCoefficient = combinations(from: n, taking: i)
-        let ti = pow(t, Double(i))
-        let tn = pow((1.0 - t), Double(n - i))
-        return ti * tn * Double(binomialCoefficient)
-    }
-    static func polynomial(_ k: Int, order n: Int) -> Polynomial {
-        let binomialCoefficient = combinations(from: n, taking: k)
-        return { t in pow(t, Double(k)) * pow(1.0 - t, Double(n - k)) * Double(binomialCoefficient) }
-    }
-    
-    static func polynomials(order n: Int) -> [Polynomial] {
-        return Array(0...n).map { i in Bernstein.polynomial(i, order: n)}
-    }
-    
-    static func evaluatedPolynomials(polynomials: [Polynomial], at t: Double) -> [Double] {
-        return polynomials.map { poly in poly(t) }
-    }
-
-    static func combinations(from n: Int, taking k: Int) -> Int{
-        return n.factorial() / (k.factorial() * (n - k).factorial())
-    }
-}
-
-class Bezier {
-    var controlPoints: [CGPoint]
-    var order: Int {
-        return controlPoints.count - 1
-    }
-    var polynomials:[Polynomial] {
-        return Bernstein.polynomials(order: order)
-    }
-    
-    init(controlPoints: CGPoint...){
-        //Using variadic parameter with required labels enforces at leas one control point
-        self.controlPoints = controlPoints
-        
-    }
-    
-    // Create a bezier curve from control points
-    func evaluateSingle(at t: Double) -> CGPoint {
-        let evaluatedPolynomials = Bernstein.evaluatedPolynomials(polynomials: polynomials, at: t)
-        let evaluated = zip(controlPoints, evaluatedPolynomials).map { (arg) -> CGPoint in
-            let (p, coef) = arg
-            return CGPoint(x: p.x * CGFloat(coef), y: p.y * CGFloat(coef))
-        }
-        return evaluated.reduce(CGPoint(x: 0, y: 0)) { (acc, p) -> CGPoint in CGPoint(x: acc.x + p.x, y: acc.y + p.y)}
-    }
-    
-    public func evaluate(at ts: [Double]) -> [CGPoint] {
-        return ts.map { t in evaluateSingle(at: t)}
-    }
-}
-
 /// A Swiftified representation of a `CGPathElement` https://oleb.net/blog/2015/06/c-callbacks-in-swift/
 public enum PathElement {
     case moveToPoint(CGPoint)
@@ -183,6 +127,18 @@ extension Double {
     public static var random: Double {
         return Double(arc4random()) / 0xFFFFFFFF
     }
+}
+
+extension CGPoint {
+    func multiplyBy(_ value: Double) -> CGPoint {
+        let val = CGFloat(value)
+        return CGPoint(x: self.x * val, y: self.y * val)
+    }
+    
+    static func + (_ lhs: CGPoint, _ rhs: CGPoint ) -> CGPoint{
+        return CGPoint(x: lhs.x + rhs.x, y: lhs.y + rhs.y)
+    }
+    
 }
 
 //MARK: - CGPath extensions
