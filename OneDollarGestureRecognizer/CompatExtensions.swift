@@ -179,6 +179,12 @@ extension Int {
     }
 }
 
+extension Double {
+    public static var random: Double {
+        return Double(arc4random()) / 0xFFFFFFFF
+    }
+}
+
 //MARK: - CGPath extensions
 extension CGPath {
     func elements() -> [PathElement] {

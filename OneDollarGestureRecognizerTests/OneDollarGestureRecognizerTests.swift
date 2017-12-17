@@ -91,6 +91,72 @@ class OneDollarGestureRecognizerTests: XCTestCase {
         XCTAssert(points.pathLength() == lineLength)
     }
     
+    func testEvaluatedPointsOnQuadCurveAreActuallyOnTheCurve() {
+        let bezier = UIBezierPath()
+        bezier.move(to: CGPoint.zero)
+        bezier.addQuadCurve(to: CGPoint(x: 10, y: 0), controlPoint: CGPoint(x: 5, y: 5))
+        let elems: [PathElement] = bezier.cgPath.elements()
+        var onCurve: Int = 0
+        let iterations: Int = 100
+        for _ in 1...iterations {
+            let t = Double.random
+            let points: [CGPoint] = PathElement.evaluate(path: elems, every: [t])
+            if bezier.contains(points.first!){
+                onCurve +=  1
+            }
+        }
+        //At least more then the majority of points are on the line ... who know what the core algorithm is.
+        print("\nScore for points on quad curve: \(onCurve) from \(iterations) iterations \n ")
+        XCTAssert(onCurve > Int(Double(iterations) * 0.4))
+    }
+    
+    func testEvaluatedPointsOnCubicCurveAreActuallyOnTheCurve() {
+        let bezier = UIBezierPath()
+        bezier.move(to: CGPoint.zero)
+        let cp1: CGPoint = CGPoint(x: 5, y: 5)
+        let cp2: CGPoint = CGPoint(x: 8, y: 8)
+        bezier.addCurve(to: CGPoint(x: 10, y: 0), controlPoint1: cp1, controlPoint2: cp2)
+        let elems: [PathElement] = bezier.cgPath.elements()
+        var onCurve: Int = 0
+        let iterations: Int = 100
+        for _ in 1...iterations {
+            let t = Double.random
+            let points: [CGPoint] = PathElement.evaluate(path: elems, every: [t])
+            if bezier.contains(points.first!){
+                onCurve +=  1
+            }
+        }
+        //At lear X % of points are on the line ... who know what the core algorithm is, rounding errors, etc.
+        print("\nScore for points on cubic curve: \(onCurve) from \(iterations) iterations \n ")
+        XCTAssert(onCurve > Int(Double(iterations) * 0.4))
+    }
+    
+    func testEvaluatedPointsOnQuadCurveAreSanelyWithinItsRectBounds() {//If this doesn't pass we are @#$?!
+        let bezier = UIBezierPath()
+        bezier.move(to: CGPoint.zero)
+        let iterations = 30
+        bezier.addQuadCurve(to: CGPoint(x: 10, y: 0), controlPoint: CGPoint(x: 5, y: 5))
+        let elems: [PathElement] = bezier.cgPath.elements()
+        let ts = Array(repeating: (), count: iterations).map{_ in Double.random}
+        let points: [CGPoint] = PathElement.evaluate(path: elems, every: ts)
+        let pointsWithinRectBound = points.filter { p in bezier.bounds.contains(p)}
+        XCTAssert(pointsWithinRectBound.count == points.count)
+    }
+    
+    func testEvaluatedPointsOnCubicCurveAreSanelyWithinItsRectBounds() {//If this doesn't pass we are @#$?!
+        let bezier = UIBezierPath()
+        bezier.move(to: CGPoint.zero)
+        let cp1: CGPoint = CGPoint(x: 5, y: 5)
+        let cp2: CGPoint = CGPoint(x: 8, y: 8)
+        let iterations = 30
+        bezier.addCurve(to: CGPoint(x: 10, y: 0), controlPoint1: cp1, controlPoint2: cp2)
+        let elems: [PathElement] = bezier.cgPath.elements()
+        let ts = Array(repeating: (), count: iterations).map{_ in Double.random}
+        let points: [CGPoint] = PathElement.evaluate(path: elems, every: ts)
+        let pointsWithinRectBound = points.filter { p in bezier.bounds.contains(p)}
+        XCTAssert(pointsWithinRectBound.count == points.count)
+    }
+    
     func testBezierThereIsACoeficientForEachControlPoint() {
         let p0 = CGPoint(x: 0, y: 0)
         let p1 = CGPoint(x: 4.0, y: 0.0)
