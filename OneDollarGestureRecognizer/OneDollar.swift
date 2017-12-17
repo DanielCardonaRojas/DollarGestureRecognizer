@@ -302,7 +302,7 @@ extension Point {
         return Point.distance(from: self, to: point)
     }
     
-    func toPoint() -> CGPoint {
+    func cgPoint() -> CGPoint {
         return CGPoint(x: CGFloat(self.x), y: CGFloat(self.y))
     }
     
@@ -313,7 +313,7 @@ extension Point {
 }
 
 //MARK: PointPath extensions
-private extension Array where Element == Point {
+extension Array where Element == Point {
     func centroid() -> Point {
         var centroidPoint = self.reduce(Point(x: 0, y: 0)) { (acc, p) -> Point in
             Point(x: acc.x + p.x, y: acc.y + p.y)
@@ -338,6 +338,12 @@ private extension Array where Element == Point {
         return atan2(centroid.y - self.first!.y, centroid.x - self.first!.x)
     }
     
+}
+
+extension Array where Element == CGPoint {
+    func toPoints() -> [Point] {
+        return self.map {p in Point(point: p)}
+    }
 }
 
 private extension Double {

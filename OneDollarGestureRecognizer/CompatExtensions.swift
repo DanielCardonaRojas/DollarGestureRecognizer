@@ -11,13 +11,13 @@ import UIKit
 
 typealias Polynomial = (Double) -> Double
 enum Bernstein {
+    static func polynomial(_ i: Int, order n: Int) -> Polynomial {
+        let binomialCoefficient = combinations(from: n, taking: i)
+        return { t in t.power(i) * (1.0 - t).power(n - 1) * Double(binomialCoefficient) }
+    }
+    
     static func polynomials(order n: Int) -> [Polynomial] {
-        var polynomials: [Polynomial] = []
-        for i in 0...n {
-            let binomialCoefficient = combinations(from: n, taking: i)
-            polynomials.append({ t in t.power(i) * (1-t).power(n - 1) * Double(binomialCoefficient) })
-        }
-        return polynomials
+        return Array(0...n).map { i in Bernstein.polynomial(i, order: n)}
     }
     
     static func evaluatedPolynomials(polynomials: [Polynomial], at t: Double) -> [Double] {
@@ -30,20 +30,20 @@ enum Bernstein {
 }
 
 class Bezier {
-    private var controlPoints: [CGPoint]
+    var controlPoints: [CGPoint]
     var order: Int {
         return controlPoints.count
     }
-    lazy var polynomials:[Polynomial] = {
+    var polynomials:[Polynomial] {
         return Bernstein.polynomials(order: order)
-    }()
+    }
     
     init(controlPoints: [CGPoint]) {
         self.controlPoints = controlPoints
     }
     
     // Create a bezier curve from control points
-    private func evaluateSingle(at t: Double) -> CGPoint? {
+    func evaluateSingle(at t: Double) -> CGPoint? {
         let order = controlPoints.count
         if order < 2 { return nil }
         let evaluatedPolynomials = Bernstein.evaluatedPolynomials(polynomials: polynomials, at: t)
@@ -123,6 +123,47 @@ public enum PathElement {
         return points
     }
     
+    static func evaluate(path: [PathElement], delta: Double) -> [CGPoint] {
+        //Ensure the first element for path is a moveToPoint otherwise prepend
+        let pathElements = path
+        var points: [CGPoint] = []
+        var iterationPoints: [CGPoint] = []
+        var currentPoint: CGPoint = CGPoint.zero
+        var k = 0
+        for element in pathElements {
+            let p0 = currentPoint
+            switch element {
+            case .moveToPoint(let p1):
+                currentPoint = p1
+                iterationPoints = [p1]
+            case .addLineToPoint(let p1):
+                let controlPoints = [p0, p1]
+                let controlPointsDistance = controlPoints.toPoints().pathLength()
+                let ts = Array(stride(from: 0, to: 1, by: delta/controlPointsDistance))
+                let bz = Bezier(controlPoints: controlPoints)
+                iterationPoints = bz.evaluate(at: ts)
+                currentPoint = p1
+            case .addQuadCurveToPoint(let p1, let p2):
+                let controlPoints = [p0, p1, p2]
+                let controlPointsDistance = controlPoints.toPoints().pathLength()
+                let ts = Array(stride(from: 0, to: 1, by: delta/controlPointsDistance))
+                iterationPoints = Bezier(controlPoints: controlPoints).evaluate(at: ts)
+                currentPoint = p2
+            case .addCurveToPoint(let p1, let p2, let p3):
+                let controlPoints = [p0, p1, p2, p3]
+                let controlPointsDistance = controlPoints.toPoints().pathLength()
+                let ts = Array(stride(from: 0, to: 1, by: delta/controlPointsDistance))
+                iterationPoints = Bezier(controlPoints: controlPoints).evaluate(at: ts)
+                currentPoint = p3
+            case .closeSubpath:
+                break
+            }
+            points += iterationPoints
+            k += 1
+        }
+        return points
+    }
+    
 
 }
 
@@ -130,6 +171,7 @@ private extension Int {
     func factorial() -> Int{
         var fact = 1
         if self == 0 { return 1 }
+        if self == 1 { return 1 }
         for i in 2...self {
             fact *= i
         }
@@ -140,8 +182,10 @@ private extension Int {
 private extension Double {
     func power(_ x: Int) -> Double {
         var power: Double = 1
-        for _ in 1...x{
+        var count = x
+        while count > 1 {
            power *= self
+           count -= 1
         }
         return power
     }
@@ -157,3 +201,21 @@ extension CGPath {
         return points
     }
 }
+
+extension PathElement: CustomDebugStringConvertible {
+    public var debugDescription: String {
+        switch self {
+        case let .moveToPoint(point):
+            return "moveto \(point)"
+        case let .addLineToPoint(point):
+            return "lineto \(point)"
+        case let .addQuadCurveToPoint(point1, point2):
+            return "quadcurveto \(point1), \(point2)"
+        case let .addCurveToPoint(point1, point2, point3):
+            return "curveto \(point1), \(point2), \(point3)"
+        case .closeSubpath:
+            return "closepath"
+        }
+    }
+}
+

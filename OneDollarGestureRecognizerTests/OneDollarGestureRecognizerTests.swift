@@ -69,6 +69,59 @@ class OneDollarGestureRecognizerTests: XCTestCase {
     }
     
     func testCanRetrieveElementsFromCGPath(){
+        let bezierRect = UIBezierPath(rect: CGRect(origin: CGPoint.zero, size: CGSize(width: 4, height: 4)))
+        let elems: [PathElement] = bezierRect.cgPath.elements()
+        print("Number of elements: \(elems.count)")
+        XCTAssert(elems.count > 0)
+        for e in elems {
+            debugPrint(e)
+            
+        }
+    }
+    
+    func testCanEvaluateLineBezier() {
+        let bezier = UIBezierPath()
+        let lineLength = 4.0
+        bezier.move(to: CGPoint.zero)
+        bezier.addLine(to: CGPoint(x: lineLength, y: 0.0))
+        let elems: [PathElement] = bezier.cgPath.elements()
+        let points: [Point] = PathElement.evaluate(path: elems, every: [0.0, 1.0]).toPoints()
+        print("Control points: \(elems)")
+        print("Bezier control points count: \(elems.count), points at [0, 1]: \(points)")
+        XCTAssert(points.pathLength() == lineLength)
+    }
+    
+    func testBezier() {
+        let bz = Bezier(controlPoints: [CGPoint(x: 0, y: 0), CGPoint(x: 4.0, y: 0.0)])
+        let p0 = bz.evaluateSingle(at: 0.0)
+        let p1 = bz.evaluateSingle(at: 1.0)
+        print("Initial point: \(String(describing: p0)) end point: \(String(describing: p1))")
+    }
+    
+    func testBernsteinPolynomials() {
+        let polynomials = Bernstein.polynomials(order: 3)
+        let firstPoly = polynomials.first!
+        let t = 0.5
+        let result = firstPoly(t)
+        print("\nFirst polynomail evaluated at: \(t) result: \(result)\n")
+    }
+    
+    func testCombinationsFunction() {
+       let r1 = Bernstein.combinations(from: 5, taking: 2)
+        XCTAssert(r1 == 10)
+       let r2 = Bernstein.combinations(from: 13, taking: 3)
+        XCTAssert(r2 == 286)
+    }
+    
+
+    func testCanSampleBezierPath() {
+        let bezierRect = UIBezierPath(rect: CGRect(origin: CGPoint.zero, size: CGSize(width: 4, height: 4)))
+        let elems: [PathElement] = bezierRect.cgPath.elements()
+        let points = PathElement.evaluate(path: elems, delta: 0.5)
+        XCTAssert(points.count > elems.count)
+        for p in points {
+            print(p)
+        }
         
     }
     
