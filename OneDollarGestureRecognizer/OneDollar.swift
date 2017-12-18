@@ -26,18 +26,18 @@ typealias Radians = Double
 public struct OneDollarPath {
     var path: PointPath
     
-    static func from(path: UIBezierPath) -> OneDollarPath {
+    public static func from(path: UIBezierPath) -> OneDollarPath {
         return OneDollarPath.from(path: path.cgPath)
     }
     
-    static func from(path: CGPath) -> OneDollarPath {
-        let points: [CGPoint] = PathElement.evaluate(path: path.elements(), every: [0.0, 0.5, 1.0])
+    public static func from(path: CGPath) -> OneDollarPath {
+        let range = stride(from: 0, to: 1, by: 0.015)
+        let points: [CGPoint] = PathElement.evaluate(path: path.elements(), every: Array(range))
         return OneDollarPath(path: points.map {p in Point(point: p)})
     }
 }
 
 public enum OneDollarError: Error {
-    case MatchNotFound // thrown when recognize doesn't match score expectations.
     case EmptyTemplates
     case TooFewPoints
 }
@@ -82,6 +82,10 @@ struct BoundingRect { //A rectangle that resizes to fit a shape
         return abs(self.bottomLeft.x - self.upperRight.x)
     }
     
+    var diagonal: Double {
+       return sqrt(pow(height, 2) + pow(width, 2))
+    }
+    
     static func initialRect() -> BoundingRect {
         let plusInfinity = +Double.infinity
         let minusInfinity = -Double.infinity
@@ -119,16 +123,33 @@ public class OneDollar {
     private var templates: [Template]
     private var dollarTemplates: [OneDollarTemplate]
     private var configuration: OneDollarConfig
+    var candidatePath: PointPath {
+        get {
+            return self.candidate
+        }
+        set(newValue) {
+           self.candidate = newValue
+        }
+    }
+    var templatePaths: [PointPath] {
+        return self.templates
+    }
     
-    init(candidate: OneDollarPath, templates: [OneDollarTemplate], configuration: OneDollarConfig = OneDollarConfig.defaultConfig()) {
-        self.candidate = candidate.path
+    init(templates: OneDollarTemplate..., configuration: OneDollarConfig = OneDollarConfig.defaultConfig()){
+        self.candidate = []
         self.configuration = configuration
         self.dollarTemplates = templates
         self.templates = templates.map { dt in dt.path }
     }
     
-    public func reconfigure(candidate: OneDollarPath, templates: [OneDollarPath], configuration: OneDollarConfig? = nil) {
-        self.candidate = candidate.path
+    init(templates: [OneDollarTemplate], configuration: OneDollarConfig = OneDollarConfig.defaultConfig()){
+        self.candidate = []
+        self.configuration = configuration
+        self.dollarTemplates = templates
+        self.templates = templates.map { dt in dt.path }
+    }
+    
+    public func reconfigure(templates: [OneDollarPath], configuration: OneDollarConfig? = nil) {
         self.dollarTemplates = templates
         self.templates = templates.map { dt in dt.path }
         if let newConf = configuration {
@@ -138,10 +159,14 @@ public class OneDollar {
     
     //MARK:  ---- Algorithm steps -----
     //Step 1: Resample a points path into n evenly spaced points.
-    private func resample() { // 32 <= N <= 256
+    func resample () throws { // 32 <= N <= 256
         let length = configuration.numPoints
         candidate = OneDollar.resample(points: candidate, totalPoints: length)
         templates = templates.map{ t in OneDollar.resample(points: t, totalPoints: length)}
+        
+        if candidate.count < length {
+            throw OneDollarError.TooFewPoints
+        }
     }
     
     //Step 2: Rotate Once Based on the “Indicative Angle” so its zero.
@@ -163,15 +188,16 @@ public class OneDollar {
     }
     
     //Step 4: Match points against a set of templates
-    public func recognize(minThreshold: Double = 0.8) throws -> (template: OneDollarPath, score: Double)? {
+    public func recognize(candidate c: OneDollarPath, minThreshold: Double = 0.8) throws -> (template: OneDollarPath, score: Double, fullfilled: Bool)? {
+        self.candidate = c.path
         if templates.count == 0 || candidate.count == 0 { throw OneDollarError.EmptyTemplates }
-        if candidate.count < 10 { throw OneDollarError.TooFewPoints }
-        
+        if !templates.filter({ t in t.count == 0 }).isEmpty { throw OneDollarError.EmptyTemplates }
+
         var bestDistance = Double.infinity
         var bestTemplate: OneDollarTemplate?
         var templateIdx: Int = 0
         
-        resample()
+        try resample()
         rotate()
         scaleAndTranslate()
 
@@ -187,10 +213,10 @@ public class OneDollar {
             }
             templateIdx += 1
         }
-        
+        let size = configuration.squareSize
+        let score: Double = 1 - bestDistance / (0.5 * sqrt(pow(size, 2) + pow(size, 2)))
         guard let matchingTemplate = bestTemplate else { return nil }
-        if bestDistance < minThreshold { throw OneDollarError.MatchNotFound }
-        return Optional.some((matchingTemplate, bestDistance))
+        return Optional.some((matchingTemplate, score, score >= minThreshold))
     }
 }
 
@@ -199,20 +225,22 @@ extension OneDollar {
     static func resample(points: PointPath, totalPoints: Int) -> PointPath {
         let interval = points.pathLength() / Double(totalPoints - 1)
         var initialPoints = points
-        var totalLength: Double = 0.0
+        var D: Double = 0.0
         var newPoints: [Point] = [points.first!]
-        for i in 1...(points.count - 1) {
+        var i:Int = 1
+        while i < initialPoints.count {
             let currentLength = initialPoints[i-1].distanceTo(point: initialPoints[i])
-            if ( (totalLength+currentLength) >= interval) {
-                let qx = initialPoints[i-1].x + ((interval - totalLength) / currentLength) * (initialPoints[i].x - initialPoints[i-1].x)
-                let qy = initialPoints[i-1].y + ((interval - totalLength) / currentLength) * (initialPoints[i].y - initialPoints[i-1].y)
+            if ( (D + currentLength) >= interval) {
+                let qx = initialPoints[i-1].x + ((interval - D) / currentLength) * (initialPoints[i].x - initialPoints[i-1].x)
+                let qy = initialPoints[i-1].y + ((interval - D) / currentLength) * (initialPoints[i].y - initialPoints[i-1].y)
                 let q = Point(x: qx, y: qy)
                 newPoints.append(q)
                 initialPoints.insert(q, at: i)
-                totalLength = 0.0
+                D = 0.0
             } else {
-                totalLength += currentLength
+                D += currentLength
             }
+            i += 1
         }
         if newPoints.count == totalPoints-1 {
             newPoints.append(points.last!)
@@ -282,8 +310,6 @@ extension OneDollar {
         }
         return min(f1,f2)
     }
-    
-
 }
 
 //MARK: Point extensions
@@ -302,7 +328,7 @@ extension Point {
         return Point.distance(from: self, to: point)
     }
     
-    func toPoint() -> CGPoint {
+    func cgPoint() -> CGPoint {
         return CGPoint(x: CGFloat(self.x), y: CGFloat(self.y))
     }
     
@@ -310,13 +336,22 @@ extension Point {
         return Point(x: function(point.x), y: function(point.y))
     }
     
+    func apply(_ function: (Double) -> Double) -> Point {
+       return Point.modify(self, function)
+    }
+    
+    static func  + (_ lhs: Point, _ rhs: Point) -> Point {
+        return Point(x: lhs.x + rhs.x, y: lhs.y + rhs.y)
+    }
+    
+
 }
 
 //MARK: PointPath extensions
-private extension Array where Element == Point {
+extension Array where Element == Point {
     func centroid() -> Point {
         var centroidPoint = self.reduce(Point(x: 0, y: 0)) { (acc, p) -> Point in
-            Point(x: acc.x + p.x, y: acc.y + p.y)
+            acc + p
         }
         let totalPoints = Double(self.count)
         centroidPoint.x = (centroidPoint.x / totalPoints)
@@ -338,6 +373,12 @@ private extension Array where Element == Point {
         return atan2(centroid.y - self.first!.y, centroid.x - self.first!.x)
     }
     
+}
+
+extension Array where Element == CGPoint {
+    func toPoints() -> [Point] {
+        return self.map {p in Point(point: p)}
+    }
 }
 
 private extension Double {
