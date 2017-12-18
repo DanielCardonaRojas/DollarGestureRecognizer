@@ -83,6 +83,10 @@ struct BoundingRect { //A rectangle that resizes to fit a shape
         return abs(self.bottomLeft.x - self.upperRight.x)
     }
     
+    var diagonal: Double {
+       return sqrt(pow(height, 2) + pow(width, 2))
+    }
+    
     static func initialRect() -> BoundingRect {
         let plusInfinity = +Double.infinity
         let minusInfinity = -Double.infinity
@@ -120,8 +124,14 @@ public class OneDollar {
     private var templates: [Template]
     private var dollarTemplates: [OneDollarTemplate]
     private var configuration: OneDollarConfig
+    var candidatePath: PointPath {
+        return self.candidate
+    }
+    var templatePaths: [PointPath] {
+        return self.templates
+    }
     
-    init(candidate: OneDollarPath, templates: [OneDollarTemplate], configuration: OneDollarConfig = OneDollarConfig.defaultConfig()) {
+    init(candidate: OneDollarPath, templates: OneDollarTemplate..., configuration: OneDollarConfig = OneDollarConfig.defaultConfig()) {
         self.candidate = candidate.path
         self.configuration = configuration
         self.dollarTemplates = templates
@@ -139,10 +149,14 @@ public class OneDollar {
     
     //MARK:  ---- Algorithm steps -----
     //Step 1: Resample a points path into n evenly spaced points.
-    private func resample() { // 32 <= N <= 256
+    func resample () throws { // 32 <= N <= 256
         let length = configuration.numPoints
         candidate = OneDollar.resample(points: candidate, totalPoints: length)
         templates = templates.map{ t in OneDollar.resample(points: t, totalPoints: length)}
+        
+        if candidate.count < length {
+            throw OneDollarError.TooFewPoints
+        }
     }
     
     //Step 2: Rotate Once Based on the “Indicative Angle” so its zero.
@@ -167,13 +181,12 @@ public class OneDollar {
     public func recognize(minThreshold: Double = 0.8) throws -> (template: OneDollarPath, score: Double)? {
         if templates.count == 0 || candidate.count == 0 { throw OneDollarError.EmptyTemplates }
         if !templates.filter({ t in t.count == 0 }).isEmpty { throw OneDollarError.EmptyTemplates }
-        if candidate.count < 10 { throw OneDollarError.TooFewPoints }
-        
+
         var bestDistance = Double.infinity
         var bestTemplate: OneDollarTemplate?
         var templateIdx: Int = 0
         
-        resample()
+        try resample()
         rotate()
         scaleAndTranslate()
 
@@ -189,10 +202,11 @@ public class OneDollar {
             }
             templateIdx += 1
         }
-        
+        let size = configuration.squareSize
+        let score: Double = 1 - bestDistance / (0.5 * sqrt(pow(size, 2) + pow(size, 2)))
         guard let matchingTemplate = bestTemplate else { return nil }
-        if bestDistance < minThreshold { throw OneDollarError.MatchNotFound }
-        return Optional.some((matchingTemplate, bestDistance))
+        if score < minThreshold { throw OneDollarError.MatchNotFound }
+        return Optional.some((matchingTemplate, score))
     }
 }
 
@@ -201,20 +215,22 @@ extension OneDollar {
     static func resample(points: PointPath, totalPoints: Int) -> PointPath {
         let interval = points.pathLength() / Double(totalPoints - 1)
         var initialPoints = points
-        var totalLength: Double = 0.0
+        var D: Double = 0.0
         var newPoints: [Point] = [points.first!]
-        for i in 1...(points.count - 1) {
+        var i:Int = 1
+        while i < initialPoints.count {
             let currentLength = initialPoints[i-1].distanceTo(point: initialPoints[i])
-            if ( (totalLength+currentLength) >= interval) {
-                let qx = initialPoints[i-1].x + ((interval - totalLength) / currentLength) * (initialPoints[i].x - initialPoints[i-1].x)
-                let qy = initialPoints[i-1].y + ((interval - totalLength) / currentLength) * (initialPoints[i].y - initialPoints[i-1].y)
+            if ( (D + currentLength) >= interval) {
+                let qx = initialPoints[i-1].x + ((interval - D) / currentLength) * (initialPoints[i].x - initialPoints[i-1].x)
+                let qy = initialPoints[i-1].y + ((interval - D) / currentLength) * (initialPoints[i].y - initialPoints[i-1].y)
                 let q = Point(x: qx, y: qy)
                 newPoints.append(q)
                 initialPoints.insert(q, at: i)
-                totalLength = 0.0
+                D = 0.0
             } else {
-                totalLength += currentLength
+                D += currentLength
             }
+            i += 1
         }
         if newPoints.count == totalPoints-1 {
             newPoints.append(points.last!)
