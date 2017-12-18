@@ -26,11 +26,11 @@ typealias Radians = Double
 public struct OneDollarPath {
     var path: PointPath
     
-    static func from(path: UIBezierPath) -> OneDollarPath {
+    public static func from(path: UIBezierPath) -> OneDollarPath {
         return OneDollarPath.from(path: path.cgPath)
     }
     
-    static func from(path: CGPath) -> OneDollarPath {
+    public static func from(path: CGPath) -> OneDollarPath {
         let range = stride(from: 0, to: 1, by: 0.015)
         let points: [CGPoint] = PathElement.evaluate(path: path.elements(), every: Array(range))
         return OneDollarPath(path: points.map {p in Point(point: p)})
@@ -38,7 +38,6 @@ public struct OneDollarPath {
 }
 
 public enum OneDollarError: Error {
-    case MatchNotFound // thrown when recognize doesn't match score expectations.
     case EmptyTemplates
     case TooFewPoints
 }
@@ -125,21 +124,32 @@ public class OneDollar {
     private var dollarTemplates: [OneDollarTemplate]
     private var configuration: OneDollarConfig
     var candidatePath: PointPath {
-        return self.candidate
+        get {
+            return self.candidate
+        }
+        set(newValue) {
+           self.candidate = newValue
+        }
     }
     var templatePaths: [PointPath] {
         return self.templates
     }
     
-    init(candidate: OneDollarPath, templates: OneDollarTemplate..., configuration: OneDollarConfig = OneDollarConfig.defaultConfig()) {
-        self.candidate = candidate.path
+    init(templates: OneDollarTemplate..., configuration: OneDollarConfig = OneDollarConfig.defaultConfig()){
+        self.candidate = []
         self.configuration = configuration
         self.dollarTemplates = templates
         self.templates = templates.map { dt in dt.path }
     }
     
-    public func reconfigure(candidate: OneDollarPath, templates: [OneDollarPath], configuration: OneDollarConfig? = nil) {
-        self.candidate = candidate.path
+    init(templates: [OneDollarTemplate], configuration: OneDollarConfig = OneDollarConfig.defaultConfig()){
+        self.candidate = []
+        self.configuration = configuration
+        self.dollarTemplates = templates
+        self.templates = templates.map { dt in dt.path }
+    }
+    
+    public func reconfigure(templates: [OneDollarPath], configuration: OneDollarConfig? = nil) {
         self.dollarTemplates = templates
         self.templates = templates.map { dt in dt.path }
         if let newConf = configuration {
@@ -178,7 +188,8 @@ public class OneDollar {
     }
     
     //Step 4: Match points against a set of templates
-    public func recognize(minThreshold: Double = 0.8) throws -> (template: OneDollarPath, score: Double)? {
+    public func recognize(candidate c: OneDollarPath, minThreshold: Double = 0.8) throws -> (template: OneDollarPath, score: Double, fullfilled: Bool)? {
+        self.candidate = c.path
         if templates.count == 0 || candidate.count == 0 { throw OneDollarError.EmptyTemplates }
         if !templates.filter({ t in t.count == 0 }).isEmpty { throw OneDollarError.EmptyTemplates }
 
@@ -205,8 +216,7 @@ public class OneDollar {
         let size = configuration.squareSize
         let score: Double = 1 - bestDistance / (0.5 * sqrt(pow(size, 2) + pow(size, 2)))
         guard let matchingTemplate = bestTemplate else { return nil }
-        if score < minThreshold { throw OneDollarError.MatchNotFound }
-        return Optional.some((matchingTemplate, score))
+        return Optional.some((matchingTemplate, score, score >= minThreshold))
     }
 }
 
