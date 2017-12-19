@@ -175,7 +175,18 @@ class BezierTests: XCTestCase {
         for p in points {
             print(p)
         }
-        
+    }
+    
+    func testDeCasteljauSplit() {
+        let cp0: CGPoint = CGPoint.zero
+        let cp1: CGPoint = CGPoint(x: 5, y: 5)
+        let cp2: CGPoint = CGPoint(x: 8, y: 8)
+        let cp3: CGPoint = CGPoint(x: 10, y: 0)
+        let controlPoints = [cp0, cp1, cp2, cp3]
+        let (left, right) = DeCasteljau.split(controlPoints: controlPoints, at: 0.5)
+        XCTAssert(left.last! == right.first)
+        XCTAssert(left.count == right.count)
+        XCTAssert(left.count == controlPoints.count)
     }
     
     

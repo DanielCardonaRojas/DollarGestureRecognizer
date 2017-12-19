@@ -37,24 +37,21 @@ enum Bernstein {
 
 enum DeCasteljau {
     //Splits a bezier curve in two and returns the new control points for the two new segments.
-    static func splitCurve(controlPoints: [CGPoint], at t: Double) -> ([CGPoint], [CGPoint]){
-        if controlPoints.isEmpty {
-            return ([],[])
-        }
-        var left: [CGPoint] = []
-        var right: [CGPoint] = []
-        for k in 0...(controlPoints.count - 1) {
-            if k == 0 {
-                right.append(controlPoints[k])
-            }
-            if k == controlPoints.count - 1 {
-                left.append(controlPoints[k])
-                break
-            }
-            let _ = controlPoints[k].multiplyBy(1 - t) + controlPoints[k + 1].multiplyBy(t)
-        }
+    static func split(controlPoints: [CGPoint], at t: Double) -> ([CGPoint], [CGPoint]){
+        let n = controlPoints.count
+        var leftCount: Int = 0
+        var rightCount: Int = n - 1
+        var leftPoints = Array(repeating: CGPoint.zero, count: n)
+        var rightPoints = Array(repeating: CGPoint.zero, count: n)
         
-        return (left, right)
+        while rightCount - leftCount > 1  {
+            leftPoints[leftCount] = controlPoints[leftCount].multiplyBy(1 - t) + controlPoints[leftCount + 1].multiplyBy(t)
+            rightPoints[rightCount] = controlPoints[rightCount].multiplyBy(1 - t) + controlPoints[rightCount - 1].multiplyBy(t)
+            leftCount += 1
+            rightCount -= 1
+        }
+    
+        return (leftPoints,rightPoints)
     }
     
     static func evaluateBezier(controlPoints: [CGPoint], at t: Double) -> CGPoint {

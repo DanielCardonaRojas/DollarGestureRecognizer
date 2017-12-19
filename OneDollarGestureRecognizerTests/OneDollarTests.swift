@@ -25,7 +25,8 @@ class OneDollarTests: XCTestCase {
     
     
     func testEmptyPathsThrowsException() {
-        let candidate = OneDollarPath(path: [])
+        let path: [Point] = []
+        let candidate = OneDollarPath(path: path)
         let od = OneDollar(templates: candidate)
         XCTAssertThrowsError(try od.recognize(candidate: candidate), "Did not throw empty templates error") { (error) -> Void in
             XCTAssertEqual(error as? OneDollarError, OneDollarError.EmptyTemplates)
