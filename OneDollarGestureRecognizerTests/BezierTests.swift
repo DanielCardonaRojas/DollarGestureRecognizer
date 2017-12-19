@@ -63,7 +63,8 @@ class BezierTests: XCTestCase {
         XCTAssert(onCurve > Int(Double(iterations) * 0.4))
     }
     
-    func testEvaluatedPointsOnCubicCurveAreActuallyOnTheCurve() {
+    func testEvaluatedPointsOnCubicCurveAreActuallyOnTheCurveBernstein() {
+        // Evaluating Bernstein polynomials is expensive and prone to error
         let bezier = UIBezierPath()
         bezier.move(to: CGPoint.zero)
         let cp1: CGPoint = CGPoint(x: 5, y: 5)
@@ -82,6 +83,22 @@ class BezierTests: XCTestCase {
         //At lear X % of points are on the line ... who know what the core algorithm is, rounding errors, etc.
         print("\nScore for points on cubic curve: \(onCurve) from \(iterations) iterations \n ")
         XCTAssert(onCurve > Int(Double(iterations) * 0.4))
+    }
+    
+    func testEvaluatedPointsOnCubicCurveAreActuallyOnTheCurveDeCastelJau() {
+        let bezier = UIBezierPath()
+        let cp0: CGPoint = CGPoint.zero
+        let cp1: CGPoint = CGPoint(x: 5, y: 5)
+        let cp2: CGPoint = CGPoint(x: 8, y: 8)
+        let cp3: CGPoint = CGPoint(x: 10, y: 0)
+        bezier.move(to: cp0)
+        bezier.addCurve(to: cp3, controlPoint1: cp1, controlPoint2: cp2)
+        let n: Double = 100
+        let ts = Array(stride(from: 0.0, to: 1.0, by: 1.0 / n))
+        let points: [CGPoint] = Bezier(controlPoints: cp0, cp1, cp2, cp3).evaluateDeCasteljau(at: ts)
+        let onCurvePoints = points.filter{ p in bezier.contains(p)}
+        print("\n DeCasteljau score for points on cubic curve: \(onCurvePoints.count) from \(n) evaluated t's \n ")
+        XCTAssert(onCurvePoints.count > Int(n * 0.4))
     }
     
     func testEvaluatedPointsOnQuadCurveAreSanelyWithinItsRectBounds() {//If this doesn't pass we are @#$?!

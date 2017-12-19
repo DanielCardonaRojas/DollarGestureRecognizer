@@ -50,13 +50,13 @@ public enum PathElement {
             case .moveToPoint(let p):
                 currentPoint = p
             case .addLineToPoint(let p):
-                iterationPoints = Bezier(controlPoints: currentPoint, p).evaluate(at: ts)
+                iterationPoints = Bezier(controlPoints: currentPoint, p).evaluateDeCasteljau(at: ts)
                 currentPoint = p
             case .addQuadCurveToPoint(let p1, let p2):
-                iterationPoints = Bezier(controlPoints: p0, p1, p2).evaluate(at: ts)
+                iterationPoints = Bezier(controlPoints: p0, p1, p2).evaluateDeCasteljau(at: ts)
                 currentPoint = p1
             case .addCurveToPoint(let p1, let p2, let p3):
-                iterationPoints = Bezier(controlPoints: p0, p1, p2, p3).evaluate(at: ts)
+                iterationPoints = Bezier(controlPoints: p0, p1, p2, p3).evaluateDeCasteljau(at: ts)
                 currentPoint = p2
             case .closeSubpath:
                 break

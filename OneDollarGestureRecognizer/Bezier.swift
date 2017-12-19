@@ -56,6 +56,20 @@ enum DeCasteljau {
         
         return (left, right)
     }
+    
+    static func evaluateBezier(controlPoints: [CGPoint], at t: Double) -> CGPoint {
+        //Interpolate all lines defined by control points until on point is left
+        let n = controlPoints.count
+        if n == 1 {
+            return controlPoints[0]
+        }
+        var newPoints = Array(repeating: CGPoint.zero, count: n - 1) //Of size n-1
+        //Find the t % point along all lines formed by the control points
+        for i in 0..<(n - 1) {
+           newPoints[i] = controlPoints[i].multiplyBy(1 - t) + controlPoints[i + 1].multiplyBy(t)
+        }
+        return DeCasteljau.evaluateBezier(controlPoints: newPoints, at: t)
+    }
 }
 
 class Bezier {
@@ -85,5 +99,9 @@ class Bezier {
     
     public func evaluate(at ts: [Double]) -> [CGPoint] {
         return ts.map { t in evaluateSingle(at: t)}
+    }
+    
+    public func evaluateDeCasteljau(at ts:[Double]) -> [CGPoint] {
+        return ts.map { t in DeCasteljau.evaluateBezier(controlPoints: controlPoints, at: t)}
     }
 }
