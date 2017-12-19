@@ -13,9 +13,15 @@ public class OneDollarGestureRecognizer: UIGestureRecognizer {
     private var samples: [CGPoint] = []
     var trackedTouch: UITouch? = nil // Reference to the touch being tracked
     private var d1: OneDollar
-    private var result: (OneDollarPath, Double, Bool)?
+    private var result: (Int, Double, Bool)? //Template index, score, exceed threshould?
+    public var matchResult: (Int, Double, Bool) {
+        guard let r = result else {
+            return (idx: -1, score: 0.0, fullfilled: false)
+        }
+        return r
+    }
 
-    public init(target: Any?, action: Selector?, templates: OneDollarPath...) {
+    public init(target: Any?, action: Selector?, templates: [OneDollarPath]) {
         self.d1 = OneDollar(templates: templates)
         super.init(target: target, action: action)
     }
@@ -71,13 +77,13 @@ public class OneDollarGestureRecognizer: UIGestureRecognizer {
         let candidate = OneDollarPath(path: samples.toPoints())
         do {
             result = try d1.recognize(candidate: candidate)
-            guard let (_, score, fullfilled) = result else {
+            guard let _ = result else {
                 print("Returned nil")
                 state = .failed
                 return
             }
-            print("Matched with score: \(score), success: \(fullfilled)")
-            state = fullfilled ? .ended : .failed
+            //Up to client code to determine if this should pass or not
+            state = .ended
         } catch OneDollarError.EmptyTemplates {
             state = .failed
             print("Supply non empty paths to instance")

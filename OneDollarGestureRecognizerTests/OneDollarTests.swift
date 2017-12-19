@@ -42,7 +42,7 @@ class OneDollarTests: XCTestCase {
     
     func testLoadFromBezierPathProducesNonEmptyPath() {
         let bezierRect = UIBezierPath(rect: CGRect(origin: CGPoint.zero, size: CGSize(width: 4, height: 4)))
-        let candidate = OneDollarPath.from(path: bezierRect)
+        let candidate = OneDollarPath(path: bezierRect)
         XCTAssert(!candidate.path.isEmpty)
     }
     
@@ -50,8 +50,8 @@ class OneDollarTests: XCTestCase {
         let bz = UIBezierPath()
         bz.move(to: CGPoint.zero)
         bz.addQuadCurve(to: CGPoint(x: 10, y: 0), controlPoint: CGPoint(x: 5, y: 5))
-        let candidate = OneDollarPath.from(path: bz)
-        let template = OneDollarPath.from(path: bz)
+        let candidate = OneDollarPath(path: bz)
+        let template = OneDollarPath(path: bz)
         let (_, score, success)  = (try! OneDollar(templates: template).recognize(candidate: candidate, minThreshold: 0))!
         XCTAssert(score > 0.8)
         XCTAssert(success)
@@ -60,9 +60,9 @@ class OneDollarTests: XCTestCase {
     func testCircleVsOval() {
         let bezierCircle = UIBezierPath(ovalIn: CGRect(origin: CGPoint.zero, size: CGSize(width: 4, height: 4)))
         let oval = UIBezierPath(ovalIn: CGRect(origin: CGPoint.zero, size: CGSize(width: 6, height: 4)))
-        let candidate = OneDollarPath.from(path: bezierCircle)
-        let template = OneDollarPath.from(path: bezierCircle)
-        let scaledTemplate = OneDollarPath.from(path: oval)
+        let candidate = OneDollarPath(path: bezierCircle)
+        let template = OneDollarPath(path: bezierCircle)
+        let scaledTemplate = OneDollarPath(path: oval)
         let (_, score1, _)  = (try! OneDollar(templates: template).recognize(candidate: candidate))!
         let (_, score2, _)  = (try! OneDollar(templates: scaledTemplate).recognize(candidate: candidate))!
         print("\nScores 1: \(score1) 2: \(score2) \n")
@@ -97,9 +97,9 @@ class OneDollarTests: XCTestCase {
     func testIsTranslationInvariant() {
         let bezierCircle = UIBezierPath(ovalIn: CGRect(origin: CGPoint.zero, size: CGSize(width: 4, height: 4)))
         let bezierCircle2 = UIBezierPath(ovalIn: CGRect(origin: CGPoint.zero, size: CGSize(width: 4, height: 4)))
-        let candidate = OneDollarPath.from(path: bezierCircle)
-        let template = OneDollarPath.from(path: bezierCircle2)
-        let translatedTemplate = OneDollarPath.from(path: bezierCircle2)
+        let candidate = OneDollarPath(path: bezierCircle)
+        let template = OneDollarPath(path: bezierCircle2)
+        let translatedTemplate = OneDollarPath(path: bezierCircle2)
         let (_, score1, _)  = (try! OneDollar(templates: template).recognize(candidate: candidate))!
         let (_, score2, _)  = (try! OneDollar(templates: translatedTemplate).recognize(candidate: candidate))!
         print("\nScores 1: \(score1) 2: \(score2) \n")

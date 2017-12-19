@@ -94,7 +94,7 @@ class Bezier {
             let (p, coef) = arg
             return CGPoint(x: p.x * CGFloat(coef), y: p.y * CGFloat(coef))
         }
-        return evaluated.reduce(CGPoint(x: 0, y: 0)) { (acc, p) -> CGPoint in CGPoint(x: acc.x + p.x, y: acc.y + p.y)}
+        return evaluated.reduce(CGPoint(x: 0, y: 0)) { (acc, p) -> CGPoint in acc + p}
     }
     
     public func evaluate(at ts: [Double]) -> [CGPoint] {
