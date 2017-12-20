@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4B5AFEC81FEAC67D000A18B0 /* OneDollarTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B5AFEC71FEAC67D000A18B0 /* OneDollarTemplates.swift */; };
+		4B5AFEC91FEAC6A2000A18B0 /* OneDollarTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B5AFEC71FEAC67D000A18B0 /* OneDollarTemplates.swift */; };
 		4B9EA5321FE80AD30033CC1D /* OneDollarGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B9EA5311FE80AD30033CC1D /* OneDollarGestureRecognizer.swift */; };
 		4B9EA5331FE80AD30033CC1D /* OneDollarGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B9EA5311FE80AD30033CC1D /* OneDollarGestureRecognizer.swift */; };
 		C405F3FD1FE55827009BC846 /* OneDollarGestureRecognizer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C405F3F31FE55827009BC846 /* OneDollarGestureRecognizer.framework */; };
@@ -33,6 +35,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4B5AFEC71FEAC67D000A18B0 /* OneDollarTemplates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OneDollarTemplates.swift; sourceTree = "<group>"; };
 		4B9EA5311FE80AD30033CC1D /* OneDollarGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneDollarGestureRecognizer.swift; sourceTree = "<group>"; };
 		C405F3F31FE55827009BC846 /* OneDollarGestureRecognizer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = OneDollarGestureRecognizer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C405F3F61FE55827009BC846 /* OneDollarGestureRecognizer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OneDollarGestureRecognizer.h; sourceTree = "<group>"; };
@@ -92,6 +95,7 @@
 				C42CD24D1FE5683D00A6B828 /* CompatExtensions.swift */,
 				C4886A761FE7069000D961F9 /* Bezier.swift */,
 				4B9EA5311FE80AD30033CC1D /* OneDollarGestureRecognizer.swift */,
+				4B5AFEC71FEAC67D000A18B0 /* OneDollarTemplates.swift */,
 			);
 			path = OneDollarGestureRecognizer;
 			sourceTree = "<group>";
@@ -236,6 +240,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4B9EA5321FE80AD30033CC1D /* OneDollarGestureRecognizer.swift in Sources */,
+				4B5AFEC81FEAC67D000A18B0 /* OneDollarTemplates.swift in Sources */,
 				C4886A771FE7069000D961F9 /* Bezier.swift in Sources */,
 				C405F40E1FE55895009BC846 /* OneDollar.swift in Sources */,
 				C42CD24E1FE5683D00A6B828 /* CompatExtensions.swift in Sources */,
@@ -246,6 +251,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4B5AFEC91FEAC6A2000A18B0 /* OneDollarTemplates.swift in Sources */,
 				4B9EA5331FE80AD30033CC1D /* OneDollarGestureRecognizer.swift in Sources */,
 				C42CD24F1FE597A100A6B828 /* OneDollar.swift in Sources */,
 				C4886A781FE7069000D961F9 /* Bezier.swift in Sources */,
