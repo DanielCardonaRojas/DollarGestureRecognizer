@@ -109,6 +109,7 @@ public enum PathElement {
     }
     
 
+
 }
 
 extension Int {
@@ -139,6 +140,13 @@ extension CGPoint {
         return CGPoint(x: lhs.x + rhs.x, y: lhs.y + rhs.y)
     }
     
+}
+
+extension Array where Element == CGPoint {
+    func pathLength() -> Double {
+        let pointPath = self.map {p in Point(point: p)}
+        return pointPath.pathLength()
+    }
 }
 
 //MARK: - CGPath extensions

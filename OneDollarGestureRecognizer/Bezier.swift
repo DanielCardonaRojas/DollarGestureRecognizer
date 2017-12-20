@@ -54,6 +54,20 @@ enum DeCasteljau {
         return (leftPoints,rightPoints)
     }
     
+    static func splitToSample(controlPoints: [CGPoint], percent: Double) -> [[CGPoint]] {
+        //Splits path into subpaths until the subpaths are to a degree straight lines.
+        if controlPoints.count == 0 { return [] }
+        let lengthControl = controlPoints.toPoints().pathLength()
+        let lengthExtremes = [controlPoints.first!, controlPoints.last!].toPoints().pathLength()
+        let diff = (lengthControl - lengthExtremes) / lengthControl
+        if diff <= percent {
+            return [controlPoints]
+        }
+        
+        let (left, right) = DeCasteljau.split(controlPoints: controlPoints, at: 0.5)
+        return splitToSample(controlPoints: left, percent: percent) + splitToSample(controlPoints:right, percent:percent)
+    }
+    
     static func evaluateBezier(controlPoints: [CGPoint], at t: Double) -> CGPoint {
         //Interpolate all lines defined by control points until on point is left
         let n = controlPoints.count
@@ -67,7 +81,9 @@ enum DeCasteljau {
         }
         return DeCasteljau.evaluateBezier(controlPoints: newPoints, at: t)
     }
+    
 }
+
 
 class Bezier {
     var controlPoints: [CGPoint]
