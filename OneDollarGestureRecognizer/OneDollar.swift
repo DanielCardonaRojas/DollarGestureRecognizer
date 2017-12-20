@@ -155,11 +155,8 @@ public class OneDollar {
         return self.templates
     }
     
-    init(templates: OneDollarTemplate..., configuration: OneDollarConfig = OneDollarConfig.defaultConfig()) {
-        self.candidate = []
-        self.configuration = configuration
-        self.dollarTemplates = templates
-        self.templates = templates.map { dt in dt.path }
+    convenience init(templates: OneDollarTemplate..., configuration: OneDollarConfig = OneDollarConfig.defaultConfig()) {
+        self.init(templates: templates, configuration: configuration)
     }
     
     init(templates: [OneDollarTemplate], configuration: OneDollarConfig = OneDollarConfig.defaultConfig()) {
@@ -167,6 +164,8 @@ public class OneDollar {
         self.configuration = configuration
         self.dollarTemplates = templates
         self.templates = templates.map { dt in dt.path }
+        //Only resample the templates once they're set
+        self.templates = self.templates.map { t in OneDollar.resample(points: t, totalPoints: configuration.numPoints) }
     }
     
     public func reconfigure(templates: [OneDollarPath], configuration: OneDollarConfig? = nil) {
@@ -180,11 +179,9 @@ public class OneDollar {
     // MARK: - Algorithm steps -
     //Step 1: Resample a points path into n evenly spaced points.
     func resample () throws { // 32 <= N <= 256
-        let length = configuration.numPoints
-        candidate = OneDollar.resample(points: candidate, totalPoints: length)
-        templates = templates.map { t in OneDollar.resample(points: t, totalPoints: length) }
-        
-        if candidate.count < length {
+        candidate = OneDollar.resample(points: candidate, totalPoints: configuration.numPoints)
+
+        if candidate.count < configuration.numPoints {
             throw OneDollarError.TooFewPoints
         }
     }
@@ -246,8 +243,10 @@ extension OneDollar {
         let interval = points.pathLength() / Double(totalPoints - 1)
         var initialPoints = points
         var D: Double = 0.0
+        if points.count == 0 { return [] }
         var newPoints: [Point] = [points.first!]
         var i: Int = 1
+        
         while i < initialPoints.count {
             let currentLength = initialPoints[i - 1].distanceTo(point: initialPoints[i])
             if ( (D + currentLength) >= interval) {
