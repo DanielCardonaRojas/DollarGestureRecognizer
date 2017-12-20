@@ -184,31 +184,36 @@ class BezierTests: XCTestCase {
         let cp3: CGPoint = CGPoint(x: 10, y: 0)
         let controlPoints = [cp0, cp1, cp2, cp3]
         let (left, right) = DeCasteljau.split(controlPoints: controlPoints, at: 0.5)
-        XCTAssert(left.last! == right.first)
+        print("\nLeft points: \(left) \n")
+        print("\nRight points: \(right) \n")
+        XCTAssert(left.last! == right.first!)
+        XCTAssert(left.first! == controlPoints.first!)
+        XCTAssert(right.last! == controlPoints.last!)
         XCTAssert(left.count == right.count)
         XCTAssert(left.count == controlPoints.count)
+        XCTAssert(left.first! != right.first!)
     }
     
     func testDeCasteljauSample() {
         let cp0: CGPoint = CGPoint.zero
-        let cp1: CGPoint = CGPoint(x: 5, y: 5)
-        let cp2: CGPoint = CGPoint(x: 8, y: 8)
-        let cp3: CGPoint = CGPoint(x: 10, y: 0)
-        let percent = 0.01
+        let cp1: CGPoint = CGPoint(x: 10, y: 5)
+        let cp2: CGPoint = CGPoint(x: 20, y: 5)
+        let cp3: CGPoint = CGPoint(x: 30, y: 0)
+        let percent = 0.1
         let controlPoints = [cp0, cp1, cp2, cp3]
-        let subpaths: [[CGPoint]] = DeCasteljau.splitToSample(controlPoints: controlPoints, percent: percent)
-        let areSameOrder = subpaths.map({ s in s.count == controlPoints.count}).reduce(true, { acc, b in acc && b})
-        let lengthDiff = subpaths.map({ (s:[CGPoint]) -> Double in
-            s.pathLength() - [s.first!, s.last!].pathLength()
-            }).reduce(0, { acc, diff in acc + diff})
-        XCTAssert(areSameOrder)
-        XCTAssert(lengthDiff - (percent * Double(controlPoints.count)) <= 0.01)
-        //Flatten subpaths drop first and last elements every right adjacent element should equate.
-        var flattened = subpaths.map({s in [s.first!, s.last!]}).reduce([], {acc, x in acc + x })
-        flattened = Array(flattened.dropFirst())
-        flattened = Array(flattened.dropLast())
-        XCTAssert(flattened[0] == flattened[1])
-
+        let subpaths: [CGPoint] = DeCasteljau.splitToSample(controlPoints: controlPoints, percent: percent)
+        XCTAssert(subpaths.count > controlPoints.count)
+        //Is event since curve is symmetric
+        XCTAssert(subpaths.count % 2 == 0)
+        //Has no repeated points
+        var repeatedCount: Int = 0
+        for i in 0..<(subpaths.count - 2) {
+            if subpaths[i] == subpaths[i + 1] {
+                repeatedCount += 1
+            }
+        }
+        print("\nRepeated points:  \(repeatedCount) from: \(subpaths.count), ratio: \(subpaths.count/repeatedCount) \n")
+        XCTAssert(repeatedCount == 0)
     }
     
     

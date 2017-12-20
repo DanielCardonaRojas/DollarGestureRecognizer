@@ -33,6 +33,8 @@ public enum PathElement {
         }
     }
     
+    //static func collect(path: [PathElement]) -> [[CGPoint]]
+    
     //Samples the all bezier path segments
     static func evaluate(path: [PathElement], every ts: [Double]) -> [CGPoint] {
         //Ensure the first element for path is a moveToPoint otherwise prepend
@@ -174,6 +176,16 @@ extension PathElement: CustomDebugStringConvertible {
         case .closeSubpath:
             return "closepath"
         }
+    }
+}
+
+extension Array {
+    func any(_ pred: (Element) -> Bool ) -> Bool {
+       return self.reduce(false, { acc, item in acc || pred(item) })
+    }
+    
+    func all(_ pred: (Element) -> Bool ) -> Bool {
+        return self.reduce(true, { acc, item in acc && pred(item) })
     }
 }
 
