@@ -23,7 +23,6 @@ class OneDollarTests: XCTestCase {
         super.tearDown()
     }
     
-    
     func testEmptyPathsThrowsException() {
         let path: [Point] = []
         let candidate = OneDollarPath(path: path)
@@ -53,7 +52,7 @@ class OneDollarTests: XCTestCase {
         bz.addQuadCurve(to: CGPoint(x: 10, y: 0), controlPoint: CGPoint(x: 5, y: 5))
         let candidate = OneDollarPath(path: bz)
         let template = OneDollarPath(path: bz)
-        let (_, score, success)  = (try! OneDollar(templates: template).recognize(candidate: candidate, minThreshold: 0))!
+        let (_, score, success) = (try! OneDollar(templates: template).recognize(candidate: candidate, minThreshold: 0))!
         XCTAssert(score > 0.8)
         XCTAssert(success)
     }
@@ -64,8 +63,8 @@ class OneDollarTests: XCTestCase {
         let candidate = OneDollarPath(path: bezierCircle)
         let template = OneDollarPath(path: bezierCircle)
         let scaledTemplate = OneDollarPath(path: oval)
-        let (_, score1, _)  = (try! OneDollar(templates: template).recognize(candidate: candidate))!
-        let (_, score2, _)  = (try! OneDollar(templates: scaledTemplate).recognize(candidate: candidate))!
+        let (_, score1, _) = (try! OneDollar(templates: template).recognize(candidate: candidate))!
+        let (_, score2, _) = (try! OneDollar(templates: scaledTemplate).recognize(candidate: candidate))!
         print("\nScores 1: \(score1) 2: \(score2) \n")
         XCTAssert( abs(score1 - score2) <= 0.1 )
     }
@@ -74,8 +73,8 @@ class OneDollarTests: XCTestCase {
     }
     
     func testRecognizesVShape() {
-        let v1 = [CGPoint(x: 50, y: 50), CGPoint(x:200, y: 200), CGPoint(x: 450, y: 50)]
-        let v2 = [CGPoint(x: 150, y: 150), CGPoint(x:300, y: 300), CGPoint(x: 350, y: 150)]
+        let v1 = [CGPoint(x: 50, y: 50), CGPoint(x: 200, y: 200), CGPoint(x: 450, y: 50)]
+        let v2 = [CGPoint(x: 150, y: 150), CGPoint(x: 300, y: 300), CGPoint(x: 350, y: 150)]
         let candidate = OneDollarPath(path: v2.toPoints())
         let template = OneDollarPath(path: v1.toPoints())
         let d1 = OneDollar(templates: template)
@@ -85,8 +84,8 @@ class OneDollarTests: XCTestCase {
     }
     
     func testRecognizesUShape() {
-        let u1 = [CGPoint(x:50, y: 200), CGPoint(x: 50, y: 50), CGPoint(x: 200, y: 50), CGPoint(x:200, y: 200)]
-        let u2 = [CGPoint(x:70, y: 200), CGPoint(x: 70, y: 70), CGPoint(x: 180, y: 70), CGPoint(x:180, y: 200)]
+        let u1 = [CGPoint(x: 50, y: 200), CGPoint(x: 50, y: 50), CGPoint(x: 200, y: 50), CGPoint(x: 200, y: 200)]
+        let u2 = [CGPoint(x: 70, y: 200), CGPoint(x: 70, y: 70), CGPoint(x: 180, y: 70), CGPoint(x: 180, y: 200)]
         let candidate = OneDollarPath(path: u2.toPoints())
         let template = OneDollarPath(path: u1.toPoints())
         let d1 = OneDollar(templates: template)
@@ -101,8 +100,8 @@ class OneDollarTests: XCTestCase {
         let candidate = OneDollarPath(path: bezierCircle)
         let template = OneDollarPath(path: bezierCircle2)
         let translatedTemplate = OneDollarPath(path: bezierCircle2)
-        let (_, score1, _)  = (try! OneDollar(templates: template).recognize(candidate: candidate))!
-        let (_, score2, _)  = (try! OneDollar(templates: translatedTemplate).recognize(candidate: candidate))!
+        let (_, score1, _) = (try! OneDollar(templates: template).recognize(candidate: candidate))!
+        let (_, score2, _) = (try! OneDollar(templates: translatedTemplate).recognize(candidate: candidate))!
         print("\nScores 1: \(score1) 2: \(score2) \n")
         XCTAssert( abs(score1 - score2) <= 0.1 )
     }
@@ -115,7 +114,7 @@ class OneDollarTests: XCTestCase {
     }
     
     func testResamplesLineToSpecifiedLength() {
-        let linePoints = [Point(x:0, y:0), Point(x:8, y:0)]
+        let linePoints = [Point(x: 0, y: 0), Point(x: 8, y: 0)]
         let newPoints = OneDollar.resample(points: linePoints, totalPoints: 4)
         print(newPoints)
         XCTAssert(newPoints.count == 4)
@@ -123,8 +122,8 @@ class OneDollarTests: XCTestCase {
     }
     
     func testCallingResampleOnInstanceYieldsEqualLengthPaths() {//Make shure templates and candidate are same length
-        let linePoints = [Point(x:0, y:0), Point(x:8, y:0)]
-        let linePoints2 = [Point(x:0, y:0), Point(x: 4, y: 4), Point(x:8, y:8)]
+        let linePoints = [Point(x: 0, y: 0), Point(x: 8, y: 0)]
+        let linePoints2 = [Point(x: 0, y: 0), Point(x: 4, y: 4), Point(x: 8, y: 8)]
         let candidate = OneDollarPath(path: linePoints)
         let template = OneDollarPath(path: linePoints2)
         let od = OneDollar(templates: template)
@@ -134,13 +133,12 @@ class OneDollarTests: XCTestCase {
     }
     
     func testDownsamplesToSpecifiedLength() { //What if the path has more points than required.
-        let linePoints2 = [Point(x:0, y:0), Point(x: 4, y: 4), Point(x:8, y:8)]
-        let newPoints:[Point] = OneDollar.resample(points: linePoints2, totalPoints: 2)
+        let linePoints2 = [Point(x: 0, y: 0), Point(x: 4, y: 4), Point(x: 8, y: 8)]
+        let newPoints: [Point] = OneDollar.resample(points: linePoints2, totalPoints: 2)
         XCTAssert(newPoints.count == 2)
         XCTAssert(newPoints.pathLength() == linePoints2.pathLength())
         XCTAssert(newPoints[0].cgPoint() == linePoints2[0].cgPoint())
         XCTAssert(newPoints.last!.cgPoint() == linePoints2.last!.cgPoint())
     }
     
-
 }

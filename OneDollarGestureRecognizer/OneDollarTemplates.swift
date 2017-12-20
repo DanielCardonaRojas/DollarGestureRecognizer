@@ -20,9 +20,9 @@ public static let Circle: Array<CGPoint> = [CGPoint(x:127.0, y:141.0), CGPoint(x
 
     public static let RightSquareBracket: Array<CGPoint> = [CGPoint(x:112.0, y:138.0), CGPoint(x:112.0, y:136.0), CGPoint(x:115.0, y:136.0), CGPoint(x:118.0, y:137.0), CGPoint(x:120.0, y:136.0), CGPoint(x:123.0, y:136.0), CGPoint(x:125.0, y:136.0), CGPoint(x:128.0, y:136.0), CGPoint(x:131.0, y:136.0), CGPoint(x:134.0, y:135.0), CGPoint(x:137.0, y:135.0), CGPoint(x:140.0, y:134.0), CGPoint(x:143.0, y:133.0), CGPoint(x:145.0, y:132.0), CGPoint(x:147.0, y:132.0), CGPoint(x:149.0, y:132.0), CGPoint(x:152.0, y:132.0), CGPoint(x:153.0, y:134.0), CGPoint(x:154.0, y:137.0), CGPoint(x:155.0, y:141.0), CGPoint(x:156.0, y:144.0), CGPoint(x:157.0, y:152.0), CGPoint(x:158.0, y:161.0), CGPoint(x:160.0, y:170.0), CGPoint(x:162.0, y:182.0), CGPoint(x:164.0, y:192.0), CGPoint(x:166.0, y:200.0), CGPoint(x:167.0, y:209.0), CGPoint(x:168.0, y:214.0), CGPoint(x:168.0, y:216.0), CGPoint(x:169.0, y:221.0), CGPoint(x:169.0, y:223.0), CGPoint(x:169.0, y:228.0), CGPoint(x:169.0, y:231.0), CGPoint(x:166.0, y:233.0), CGPoint(x:164.0, y:234.0), CGPoint(x:161.0, y:235.0), CGPoint(x:155.0, y:236.0), CGPoint(x:147.0, y:235.0), CGPoint(x:140.0, y:233.0), CGPoint(x:131.0, y:233.0), CGPoint(x:124.0, y:233.0), CGPoint(x:117.0, y:235.0), CGPoint(x:114.0, y:238.0), CGPoint(x:112.0, y:238.0)]
 
-    public static var BaseShapes:[(String, OneDollarPath)] {
+    public static var BaseShapes: [(String, OneDollarPath)] {
         let pigtail = OneDollarPath(path: OneDollarTemplates.Pigtail)
-        let triangle  = OneDollarPath(path: OneDollarTemplates.Triangle)
+        let triangle = OneDollarPath(path: OneDollarTemplates.Triangle)
         let circle = OneDollarPath(path: OneDollarTemplates.Circle)
         let arrow = OneDollarPath(path: OneDollarTemplates.Arrow)
         let star = OneDollarPath(path: OneDollarTemplates.Star)

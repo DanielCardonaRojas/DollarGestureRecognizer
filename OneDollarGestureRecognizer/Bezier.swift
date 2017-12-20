@@ -23,33 +23,33 @@ enum Bernstein {
     }
     
     static func polynomials(order n: Int) -> [Polynomial] {
-        return Array(0...n).map { i in Bernstein.polynomial(i, order: n)}
+        return Array(0...n).map { i in Bernstein.polynomial(i, order: n) }
     }
     
     static func evaluatedPolynomials(polynomials: [Polynomial], at t: Double) -> [Double] {
         return polynomials.map { poly in poly(t) }
     }
     
-    static func combinations(from n: Int, taking k: Int) -> Int{
+    static func combinations(from n: Int, taking k: Int) -> Int {
         return n.factorial() / (k.factorial() * (n - k).factorial())
     }
 }
 
 enum DeCasteljau {
     //Splits a bezier curve in two and returns the new control points for the two new segments.
-    static func split(controlPoints: [CGPoint], at t: Double) -> ([CGPoint], [CGPoint]){
+    static func split(controlPoints: [CGPoint], at t: Double) -> ([CGPoint], [CGPoint]) {
         let n = controlPoints.count
         var leftCount: Int = 0
         var rightCount: Int = n - 1
         var leftPoints: [CGPoint] = []
         var rightPoints: [CGPoint] = []
 
-        if controlPoints.count < 2 { return ([], [])}
+        if controlPoints.count < 2 { return ([], []) }
         if controlPoints.count == 2 { //Is  line
            return ([controlPoints[0]], [controlPoints[1]] )
         }
         
-        while (rightCount - leftCount) >= -1  {
+        while (rightCount - leftCount) >= -1 {
             let leftPoint = controlPoints[leftCount].multiplyBy(1 - t) + controlPoints[leftCount + 1].multiplyBy(t)
             let rightPoint = controlPoints[rightCount].multiplyBy(1 - t) + controlPoints[rightCount - 1].multiplyBy(t)
             leftPoints.append(leftPoint)
@@ -86,7 +86,6 @@ enum DeCasteljau {
         return  Array(leftSamples.dropLast()) + Array(rightSamples.dropFirst())
     }
     
-
     static func evaluateBezier(controlPoints: [CGPoint], at t: Double) -> CGPoint {
         //Interpolate all lines defined by control points until on point is left
         let n = controlPoints.count
@@ -103,17 +102,16 @@ enum DeCasteljau {
     
 }
 
-
 class Bezier {
     var controlPoints: [CGPoint]
     var order: Int {
         return controlPoints.count - 1
     }
-    var polynomials:[Polynomial] {
+    var polynomials: [Polynomial] {
         return Bernstein.polynomials(order: order)
     }
     
-    init(controlPoints: CGPoint...){
+    init(controlPoints: CGPoint...) {
         //Using variadic parameter with required labels enforces at leas one control point
         self.controlPoints = controlPoints
         
@@ -126,14 +124,14 @@ class Bezier {
             let (p, coef) = arg
             return CGPoint(x: p.x * CGFloat(coef), y: p.y * CGFloat(coef))
         }
-        return evaluated.reduce(CGPoint(x: 0, y: 0)) { (acc, p) -> CGPoint in acc + p}
+        return evaluated.reduce(CGPoint(x: 0, y: 0)) { (acc, p) -> CGPoint in acc + p }
     }
     
     public func evaluate(at ts: [Double]) -> [CGPoint] {
-        return ts.map { t in evaluateSingle(at: t)}
+        return ts.map { t in evaluateSingle(at: t) }
     }
     
-    public func evaluateDeCasteljau(at ts:[Double]) -> [CGPoint] {
-        return ts.map { t in DeCasteljau.evaluateBezier(controlPoints: controlPoints, at: t)}
+    public func evaluateDeCasteljau(at ts: [Double]) -> [CGPoint] {
+        return ts.map { t in DeCasteljau.evaluateBezier(controlPoints: controlPoints, at: t) }
     }
 }

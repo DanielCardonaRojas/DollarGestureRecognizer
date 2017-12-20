@@ -21,8 +21,7 @@ class BezierTests: XCTestCase {
         super.tearDown()
     }
     
-    
-    func testCanRetrieveElementsFromCGPath(){
+    func testCanRetrieveElementsFromCGPath() {
         let bezierRect = UIBezierPath(rect: CGRect(origin: CGPoint.zero, size: CGSize(width: 4, height: 4)))
         let elems: [PathElement] = bezierRect.cgPath.elements()
         print("Number of elements: \(elems.count)")
@@ -54,8 +53,8 @@ class BezierTests: XCTestCase {
         for _ in 1...iterations {
             let t = Double.random
             let points: [CGPoint] = PathElement.evaluate(path: elems, every: [t])
-            if bezier.contains(points.first!){
-                onCurve +=  1
+            if bezier.contains(points.first!) {
+                onCurve += 1
             }
         }
         //At least more then the majority of points are on the line ... who know what the core algorithm is.
@@ -76,8 +75,8 @@ class BezierTests: XCTestCase {
         for _ in 1...iterations {
             let t = Double.random
             let points: [CGPoint] = PathElement.evaluate(path: elems, every: [t])
-            if bezier.contains(points.first!){
-                onCurve +=  1
+            if bezier.contains(points.first!) {
+                onCurve += 1
             }
         }
         //At lear X % of points are on the line ... who know what the core algorithm is, rounding errors, etc.
@@ -96,7 +95,7 @@ class BezierTests: XCTestCase {
         let n: Double = 100
         let ts = Array(stride(from: 0.0, to: 1.0, by: 1.0 / n))
         let points: [CGPoint] = Bezier(controlPoints: cp0, cp1, cp2, cp3).evaluateDeCasteljau(at: ts)
-        let onCurvePoints = points.filter{ p in bezier.contains(p)}
+        let onCurvePoints = points.filter { p in bezier.contains(p) }
         print("\n DeCasteljau score for points on cubic curve: \(onCurvePoints.count) from \(n) evaluated t's \n ")
         XCTAssert(onCurvePoints.count > Int(n * 0.4))
     }
@@ -107,9 +106,9 @@ class BezierTests: XCTestCase {
         let iterations = 30
         bezier.addQuadCurve(to: CGPoint(x: 10, y: 0), controlPoint: CGPoint(x: 5, y: 5))
         let elems: [PathElement] = bezier.cgPath.elements()
-        let ts = Array(repeating: (), count: iterations).map{_ in Double.random}
+        let ts = Array(repeating: (), count: iterations).map { _ in Double.random }
         let points: [CGPoint] = PathElement.evaluate(path: elems, every: ts)
-        let pointsWithinRectBound = points.filter { p in bezier.bounds.contains(p)}
+        let pointsWithinRectBound = points.filter { p in bezier.bounds.contains(p) }
         XCTAssert(pointsWithinRectBound.count == points.count)
     }
     
@@ -121,9 +120,9 @@ class BezierTests: XCTestCase {
         let iterations = 30
         bezier.addCurve(to: CGPoint(x: 10, y: 0), controlPoint1: cp1, controlPoint2: cp2)
         let elems: [PathElement] = bezier.cgPath.elements()
-        let ts = Array(repeating: (), count: iterations).map{_ in Double.random}
+        let ts = Array(repeating: (), count: iterations).map { _ in Double.random }
         let points: [CGPoint] = PathElement.evaluate(path: elems, every: ts)
-        let pointsWithinRectBound = points.filter { p in bezier.bounds.contains(p)}
+        let pointsWithinRectBound = points.filter { p in bezier.bounds.contains(p) }
         XCTAssert(pointsWithinRectBound.count == points.count)
     }
     
@@ -165,7 +164,6 @@ class BezierTests: XCTestCase {
         let r2 = Bernstein.combinations(from: 13, taking: 3)
         XCTAssert(r2 == 286)
     }
-    
     
     func testCanSampleBezierPath() {
         let bezierRect = UIBezierPath(rect: CGRect(origin: CGPoint.zero, size: CGSize(width: 4, height: 4)))
@@ -212,10 +210,8 @@ class BezierTests: XCTestCase {
                 repeatedCount += 1
             }
         }
-        print("\nRepeated points:  \(repeatedCount) from: \(subpaths.count), ratio: \(subpaths.count/repeatedCount) \n")
+        print("\nRepeated points:  \(repeatedCount) from: \(subpaths.count), ratio: \(subpaths.count / repeatedCount) \n")
         XCTAssert(repeatedCount == 0)
     }
     
-    
 }
-

@@ -85,20 +85,20 @@ public enum PathElement {
             case .addLineToPoint(let p1):
                 let controlPoints = [p0, p1]
                 let controlPointsDistance = controlPoints.toPoints().pathLength()
-                let ts = Array(stride(from: 0, to: 1, by: delta/controlPointsDistance))
+                let ts = Array(stride(from: 0, to: 1, by: delta / controlPointsDistance))
                 let bz = Bezier(controlPoints: p0, p1)
                 iterationPoints = bz.evaluate(at: ts)
                 currentPoint = p1
             case .addQuadCurveToPoint(let p1, let p2):
                 let controlPoints = [p0, p1, p2]
                 let controlPointsDistance = controlPoints.toPoints().pathLength()
-                let ts = Array(stride(from: 0, to: 1, by: delta/controlPointsDistance))
+                let ts = Array(stride(from: 0, to: 1, by: delta / controlPointsDistance))
                 iterationPoints = Bezier(controlPoints: p0, p1, p2).evaluate(at: ts)
                 currentPoint = p2
             case .addCurveToPoint(let p1, let p2, let p3):
                 let controlPoints = [p0, p1, p2, p3]
                 let controlPointsDistance = controlPoints.toPoints().pathLength()
-                let ts = Array(stride(from: 0, to: 1, by: delta/controlPointsDistance))
+                let ts = Array(stride(from: 0, to: 1, by: delta / controlPointsDistance))
                 iterationPoints = Bezier(controlPoints: p0, p1, p2, p3).evaluate(at: ts)
                 currentPoint = p3
             case .closeSubpath:
@@ -110,12 +110,10 @@ public enum PathElement {
         return points
     }
     
-
-
 }
 
 extension Int {
-    func factorial() -> Int{
+    func factorial() -> Int {
         var fact = 1
         if self == 0 { return 1 }
         if self == 1 { return 1 }
@@ -138,7 +136,7 @@ extension CGPoint {
         return CGPoint(x: self.x * val, y: self.y * val)
     }
     
-    static func + (_ lhs: CGPoint, _ rhs: CGPoint ) -> CGPoint{
+    static func + (_ lhs: CGPoint, _ rhs: CGPoint ) -> CGPoint {
         return CGPoint(x: lhs.x + rhs.x, y: lhs.y + rhs.y)
     }
     
@@ -146,12 +144,13 @@ extension CGPoint {
 
 extension Array where Element == CGPoint {
     func pathLength() -> Double {
-        let pointPath = self.map {p in Point(point: p)}
+        let pointPath = self.map { p in Point(point: p) }
         return pointPath.pathLength()
     }
 }
 
-//MARK: - CGPath extensions
+// MARK: - CGPath extensions
+@available(iOS 11.0, *)
 extension CGPath {
     func elements() -> [PathElement] {
         var points: [PathElement] = []
@@ -188,4 +187,3 @@ extension Array {
         return self.reduce(true, { acc, item in acc && pred(item) })
     }
 }
-
