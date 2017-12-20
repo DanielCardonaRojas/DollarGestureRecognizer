@@ -63,7 +63,8 @@ class BezierTests: XCTestCase {
         XCTAssert(onCurve > Int(Double(iterations) * 0.4))
     }
     
-    func testEvaluatedPointsOnCubicCurveAreActuallyOnTheCurve() {
+    func testEvaluatedPointsOnCubicCurveAreActuallyOnTheCurveBernstein() {
+        // Evaluating Bernstein polynomials is expensive and prone to error
         let bezier = UIBezierPath()
         bezier.move(to: CGPoint.zero)
         let cp1: CGPoint = CGPoint(x: 5, y: 5)
@@ -82,6 +83,22 @@ class BezierTests: XCTestCase {
         //At lear X % of points are on the line ... who know what the core algorithm is, rounding errors, etc.
         print("\nScore for points on cubic curve: \(onCurve) from \(iterations) iterations \n ")
         XCTAssert(onCurve > Int(Double(iterations) * 0.4))
+    }
+    
+    func testEvaluatedPointsOnCubicCurveAreActuallyOnTheCurveDeCastelJau() {
+        let bezier = UIBezierPath()
+        let cp0: CGPoint = CGPoint.zero
+        let cp1: CGPoint = CGPoint(x: 5, y: 5)
+        let cp2: CGPoint = CGPoint(x: 8, y: 8)
+        let cp3: CGPoint = CGPoint(x: 10, y: 0)
+        bezier.move(to: cp0)
+        bezier.addCurve(to: cp3, controlPoint1: cp1, controlPoint2: cp2)
+        let n: Double = 100
+        let ts = Array(stride(from: 0.0, to: 1.0, by: 1.0 / n))
+        let points: [CGPoint] = Bezier(controlPoints: cp0, cp1, cp2, cp3).evaluateDeCasteljau(at: ts)
+        let onCurvePoints = points.filter{ p in bezier.contains(p)}
+        print("\n DeCasteljau score for points on cubic curve: \(onCurvePoints.count) from \(n) evaluated t's \n ")
+        XCTAssert(onCurvePoints.count > Int(n * 0.4))
     }
     
     func testEvaluatedPointsOnQuadCurveAreSanelyWithinItsRectBounds() {//If this doesn't pass we are @#$?!
@@ -158,7 +175,45 @@ class BezierTests: XCTestCase {
         for p in points {
             print(p)
         }
-        
+    }
+    
+    func testDeCasteljauSplit() {
+        let cp0: CGPoint = CGPoint.zero
+        let cp1: CGPoint = CGPoint(x: 5, y: 5)
+        let cp2: CGPoint = CGPoint(x: 8, y: 8)
+        let cp3: CGPoint = CGPoint(x: 10, y: 0)
+        let controlPoints = [cp0, cp1, cp2, cp3]
+        let (left, right) = DeCasteljau.split(controlPoints: controlPoints, at: 0.5)
+        print("\nLeft points: \(left) \n")
+        print("\nRight points: \(right) \n")
+        XCTAssert(left.last! == right.first!)
+        XCTAssert(left.first! == controlPoints.first!)
+        XCTAssert(right.last! == controlPoints.last!)
+        XCTAssert(left.count == right.count)
+        XCTAssert(left.count == controlPoints.count)
+        XCTAssert(left.first! != right.first!)
+    }
+    
+    func testDeCasteljauSample() {
+        let cp0: CGPoint = CGPoint.zero
+        let cp1: CGPoint = CGPoint(x: 10, y: 5)
+        let cp2: CGPoint = CGPoint(x: 20, y: 5)
+        let cp3: CGPoint = CGPoint(x: 30, y: 0)
+        let percent = 0.1
+        let controlPoints = [cp0, cp1, cp2, cp3]
+        let subpaths: [CGPoint] = DeCasteljau.splitToSample(controlPoints: controlPoints, percent: percent)
+        XCTAssert(subpaths.count > controlPoints.count)
+        //Is event since curve is symmetric
+        XCTAssert(subpaths.count % 2 == 0)
+        //Has no repeated points
+        var repeatedCount: Int = 0
+        for i in 0..<(subpaths.count - 2) {
+            if subpaths[i] == subpaths[i + 1] {
+                repeatedCount += 1
+            }
+        }
+        print("\nRepeated points:  \(repeatedCount) from: \(subpaths.count), ratio: \(subpaths.count/repeatedCount) \n")
+        XCTAssert(repeatedCount == 0)
     }
     
     

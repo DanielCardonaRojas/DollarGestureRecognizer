@@ -33,6 +33,8 @@ public enum PathElement {
         }
     }
     
+    //static func collect(path: [PathElement]) -> [[CGPoint]]
+    
     //Samples the all bezier path segments
     static func evaluate(path: [PathElement], every ts: [Double]) -> [CGPoint] {
         //Ensure the first element for path is a moveToPoint otherwise prepend
@@ -50,13 +52,13 @@ public enum PathElement {
             case .moveToPoint(let p):
                 currentPoint = p
             case .addLineToPoint(let p):
-                iterationPoints = Bezier(controlPoints: currentPoint, p).evaluate(at: ts)
+                iterationPoints = Bezier(controlPoints: currentPoint, p).evaluateDeCasteljau(at: ts)
                 currentPoint = p
             case .addQuadCurveToPoint(let p1, let p2):
-                iterationPoints = Bezier(controlPoints: p0, p1, p2).evaluate(at: ts)
+                iterationPoints = Bezier(controlPoints: p0, p1, p2).evaluateDeCasteljau(at: ts)
                 currentPoint = p1
             case .addCurveToPoint(let p1, let p2, let p3):
-                iterationPoints = Bezier(controlPoints: p0, p1, p2, p3).evaluate(at: ts)
+                iterationPoints = Bezier(controlPoints: p0, p1, p2, p3).evaluateDeCasteljau(at: ts)
                 currentPoint = p2
             case .closeSubpath:
                 break
@@ -109,6 +111,7 @@ public enum PathElement {
     }
     
 
+
 }
 
 extension Int {
@@ -141,6 +144,13 @@ extension CGPoint {
     
 }
 
+extension Array where Element == CGPoint {
+    func pathLength() -> Double {
+        let pointPath = self.map {p in Point(point: p)}
+        return pointPath.pathLength()
+    }
+}
+
 //MARK: - CGPath extensions
 extension CGPath {
     func elements() -> [PathElement] {
@@ -166,6 +176,16 @@ extension PathElement: CustomDebugStringConvertible {
         case .closeSubpath:
             return "closepath"
         }
+    }
+}
+
+extension Array {
+    func any(_ pred: (Element) -> Bool ) -> Bool {
+       return self.reduce(false, { acc, item in acc || pred(item) })
+    }
+    
+    func all(_ pred: (Element) -> Bool ) -> Bool {
+        return self.reduce(true, { acc, item in acc && pred(item) })
     }
 }
 
