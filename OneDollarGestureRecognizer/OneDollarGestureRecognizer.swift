@@ -15,7 +15,7 @@ public class OneDollarGestureRecognizer: UIGestureRecognizer {
     private var d1: OneDollar
     private var result: (Int, Double, Bool)? //Template index, score, exceed threshould?
     public var matchResult: (Int, Double, Bool) {
-        guard let r = result else {
+        guard let r = result, self.state == .ended else {
             return (idx: -1, score: 0.0, fullfilled: false)
         }
         return r
