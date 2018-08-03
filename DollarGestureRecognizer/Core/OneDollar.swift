@@ -11,7 +11,7 @@
 import Foundation
 import UIKit
 
-//MARK: -- Types --
+// MARK: - Types -
 public struct Point {
     var x: Double
     var y: Double
@@ -24,13 +24,13 @@ typealias Degrees = Int
 typealias Radians = Double
 
 public protocol OneDollarTrackable {
-    var path: [Point] {get}
-    var name: String {get}
+    var path: [Point] { get }
+    var name: String { get }
 }
 
 public protocol KeyedTemplates {//Represents a set of templates that can be indexed by some type
     associatedtype KeyType: Hashable
-    static var templates: [KeyType: OneDollarPath] {get}
+    static var templates: [KeyType: OneDollarPath] { get }
 }
 
 public struct OneDollarPath {
@@ -40,18 +40,20 @@ public struct OneDollarPath {
        self.path = path
     }
     
-    public init(path: [CGPoint]){
+    public init(path: [CGPoint]) {
         self.init(path: path.toPoints())
     }
     
+    @available(iOS 11.0, *)
     public init(path: UIBezierPath) {
         self.init(path: path.cgPath)
     }
     
-    public init(path: CGPath){
+    @available(iOS 11.0, *)
+    public init(path: CGPath) {
         let range = stride(from: 0, to: 1, by: 0.015)
         let points: [CGPoint] = PathElement.evaluate(path: path.elements(), every: Array(range))
-        self.path = points.map {p in Point(point: p)}
+        self.path = points.map { p in Point(point: p) }
     }
 }
 
@@ -135,7 +137,7 @@ struct BoundingRect { //A rectangle that resizes to fit a shape
     
 }
 
-// Mark: Core Algorithm
+// MARK: Core Algorithm
 public class OneDollar {
     private var candidate: PointPath
     private var templates: [Template]
@@ -153,18 +155,17 @@ public class OneDollar {
         return self.templates
     }
     
-    init(templates: OneDollarTemplate..., configuration: OneDollarConfig = OneDollarConfig.defaultConfig()){
-        self.candidate = []
-        self.configuration = configuration
-        self.dollarTemplates = templates
-        self.templates = templates.map { dt in dt.path }
+    convenience init(templates: OneDollarTemplate..., configuration: OneDollarConfig = OneDollarConfig.defaultConfig()) {
+        self.init(templates: templates, configuration: configuration)
     }
     
-    init(templates: [OneDollarTemplate], configuration: OneDollarConfig = OneDollarConfig.defaultConfig()){
+    init(templates: [OneDollarTemplate], configuration: OneDollarConfig = OneDollarConfig.defaultConfig()) {
         self.candidate = []
         self.configuration = configuration
         self.dollarTemplates = templates
         self.templates = templates.map { dt in dt.path }
+        //Only resample the templates once they're set
+        self.templates = self.templates.map { t in OneDollar.resample(points: t, totalPoints: configuration.numPoints) }
     }
     
     public func reconfigure(templates: [OneDollarPath], configuration: OneDollarConfig? = nil) {
@@ -175,14 +176,12 @@ public class OneDollar {
         }
     }
     
-    //MARK:  ---- Algorithm steps -----
+    // MARK: - Algorithm steps -
     //Step 1: Resample a points path into n evenly spaced points.
     func resample () throws { // 32 <= N <= 256
-        let length = configuration.numPoints
-        candidate = OneDollar.resample(points: candidate, totalPoints: length)
-        templates = templates.map{ t in OneDollar.resample(points: t, totalPoints: length)}
-        
-        if candidate.count < length {
+        candidate = OneDollar.resample(points: candidate, totalPoints: configuration.numPoints)
+
+        if candidate.count < configuration.numPoints {
             throw OneDollarError.TooFewPoints
         }
     }
@@ -190,7 +189,7 @@ public class OneDollar {
     //Step 2: Rotate Once Based on the “Indicative Angle” so its zero.
     private func rotate() {
         candidate = OneDollar.rotate(points: candidate, by: -candidate.indicativeAngle())
-        templates = templates.map { t in OneDollar.rotate(points: t, by: -t.indicativeAngle())}
+        templates = templates.map { t in OneDollar.rotate(points: t, by: -t.indicativeAngle()) }
     }
     
     //Step 3: Scale points so that the resulting bounding box
@@ -222,7 +221,7 @@ public class OneDollar {
         for template in templates {
             let templateDistance = OneDollar.distanceAtBestAngle(
                  points: candidate, template: template,
-                 from:  -configuration.angleRange, to: configuration.angleRange,
+                 from: -configuration.angleRange, to: configuration.angleRange,
                  threshold: configuration.anglePrecision
             )
             if templateDistance < bestDistance {
@@ -238,19 +237,21 @@ public class OneDollar {
     }
 }
 
-//MARK: OneDollar Extensions
+// MARK: - OneDollar Extensions -
 extension OneDollar {
     static func resample(points: PointPath, totalPoints: Int) -> PointPath {
         let interval = points.pathLength() / Double(totalPoints - 1)
         var initialPoints = points
         var D: Double = 0.0
+        if points.count == 0 { return [] }
         var newPoints: [Point] = [points.first!]
-        var i:Int = 1
+        var i: Int = 1
+        
         while i < initialPoints.count {
-            let currentLength = initialPoints[i-1].distanceTo(point: initialPoints[i])
+            let currentLength = initialPoints[i - 1].distanceTo(point: initialPoints[i])
             if ( (D + currentLength) >= interval) {
-                let qx = initialPoints[i-1].x + ((interval - D) / currentLength) * (initialPoints[i].x - initialPoints[i-1].x)
-                let qy = initialPoints[i-1].y + ((interval - D) / currentLength) * (initialPoints[i].y - initialPoints[i-1].y)
+                let qx = initialPoints[i - 1].x + ((interval - D) / currentLength) * (initialPoints[i].x - initialPoints[i - 1].x)
+                let qy = initialPoints[i - 1].y + ((interval - D) / currentLength) * (initialPoints[i].y - initialPoints[i - 1].y)
                 let q = Point(x: qx, y: qy)
                 newPoints.append(q)
                 initialPoints.insert(q, at: i)
@@ -260,7 +261,7 @@ extension OneDollar {
             }
             i += 1
         }
-        if newPoints.count == totalPoints-1 {
+        if newPoints.count == totalPoints - 1 {
             newPoints.append(points.last!)
         }
         return newPoints
@@ -268,11 +269,11 @@ extension OneDollar {
     
     static func pathDistance(pointPath1: PointPath, pointPath2: PointPath) -> Double {
         let zipped = zip(pointPath1, pointPath2)
-        let unormalizedDistance = zipped.map { (p1, p2) in Point.distance(from: p1, to: p2)}.reduce(0, +)
+        let unormalizedDistance = zipped.map { (p1, p2) in Point.distance(from: p1, to: p2) }.reduce(0, +)
         return unormalizedDistance / Double(pointPath1.count)
     }
     
-    static func translate(points: PointPath, to: Point) -> PointPath{
+    static func translate(points: PointPath, to: Point) -> PointPath {
         let centroid = points.centroid()
         return points.map { (p: Point) -> Point in
             let newX = p.x + (to.x - centroid.x)
@@ -283,7 +284,7 @@ extension OneDollar {
     
     static func scaleToBoundingBox(points: PointPath, size: Double) -> PointPath { //Perform nonuniform scaling
         let boundingBox = BoundingRect.fromPath(points)
-        let newPath = points.map {p in Point(x: p.x * (size / boundingBox.width), y: p.y * (size / boundingBox.height) ) }
+        let newPath = points.map { p in Point(x: p.x * (size / boundingBox.width), y: p.y * (size / boundingBox.height) ) }
         return newPath
     }
 
@@ -311,7 +312,7 @@ extension OneDollar {
         var x2 = (1.0 - OneDollarConsts.Phi) * fromAngle + OneDollarConsts.Phi * toAngle
         var f2 = OneDollar.distanceAtAngle(points, template: template, angle: x2)
 
-        while ( abs(toAngle-fromAngle) > threshold ) {
+        while ( abs(toAngle - fromAngle) > threshold ) {
             if f1 < f2 {
                 toAngle = x2
                 x2 = x1
@@ -326,11 +327,11 @@ extension OneDollar {
                 f2 = OneDollar.distanceAtAngle(points, template: template, angle: x2)
             }
         }
-        return min(f1,f2)
+        return min(f1, f2)
     }
 }
 
-//MARK: Point extensions
+// MARK: Point extensions
 extension Point {
     public init(point: CGPoint) {
         self.x = Double(point.x); self.y = Double(point.y)
@@ -339,7 +340,7 @@ extension Point {
     static func distance(from: Point, to: Point) -> Double {
         let dx = (from.x - to.x)
         let dy = (from.y - to.y)
-        return sqrt(dx*dx + dy*dy)
+        return sqrt(dx * dx + dy * dy)
     }
     
     func distanceTo(point: Point) -> Double {
@@ -358,14 +359,13 @@ extension Point {
        return Point.modify(self, function)
     }
     
-    static func  + (_ lhs: Point, _ rhs: Point) -> Point {
+    static func + (_ lhs: Point, _ rhs: Point) -> Point {
         return Point(x: lhs.x + rhs.x, y: lhs.y + rhs.y)
     }
     
-
 }
 
-//MARK: PointPath extensions
+// MARK: PointPath extensions
 extension Array where Element == Point {
     func centroid() -> Point {
         var centroidPoint = self.reduce(Point(x: 0, y: 0)) { (acc, p) -> Point in
@@ -395,13 +395,12 @@ extension Array where Element == Point {
 
 extension Array where Element == CGPoint {
     func toPoints() -> [Point] {
-        return self.map {p in Point(point: p)}
+        return self.map { p in Point(point: p) }
     }
 }
 
 private extension Double {
     func toRadians ( ) -> Radians {
-       return (self/180) * Double.pi
+       return (self / 180.0) * Double.pi
     }
 }
-

@@ -11,11 +11,11 @@ import UIKit.UIGestureRecognizerSubclass
 
 public class OneDollarGestureRecognizer: UIGestureRecognizer {
     private var samples: [CGPoint] = []
-    var trackedTouch: UITouch? = nil // Reference to the touch being tracked
+    var trackedTouch: UITouch? // Reference to the touch being tracked
     private var d1: OneDollar
     private var result: (Int, Double, Bool)? //Template index, score, exceed threshould?
     public var matchResult: (Int, Double, Bool) {
-        guard let r = result else {
+        guard let r = result, self.state == .ended else {
             return (idx: -1, score: 0.0, fullfilled: false)
         }
         return r
@@ -65,14 +65,13 @@ public class OneDollarGestureRecognizer: UIGestureRecognizer {
         processTouches()
     }
     
-    
     override public func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent) {
         if state == .failed { return }
         addSample(for: touches.first!)
         state = .changed
     }
     
-    //MARK: Processing
+    // MARK: Processing
     private func processTouches() {
         let candidate = OneDollarPath(path: samples.toPoints())
         do {
@@ -96,7 +95,7 @@ public class OneDollarGestureRecognizer: UIGestureRecognizer {
         }
     }
     
-    private func addSample(for touch: UITouch){
+    private func addSample(for touch: UITouch) {
         let newSample = touch.location(in: self.view)
         samples.append(newSample)
     }

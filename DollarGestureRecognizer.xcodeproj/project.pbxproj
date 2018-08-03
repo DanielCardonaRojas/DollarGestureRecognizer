@@ -7,16 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4B5AFEC81FEAC67D000A18B0 /* OneDollarTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B5AFEC71FEAC67D000A18B0 /* OneDollarTemplates.swift */; };
+		4B5AFEC91FEAC6A2000A18B0 /* OneDollarTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B5AFEC71FEAC67D000A18B0 /* OneDollarTemplates.swift */; };
 		4B9EA5321FE80AD30033CC1D /* OneDollarGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B9EA5311FE80AD30033CC1D /* OneDollarGestureRecognizer.swift */; };
 		4B9EA5331FE80AD30033CC1D /* OneDollarGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B9EA5311FE80AD30033CC1D /* OneDollarGestureRecognizer.swift */; };
-		C405F3FD1FE55827009BC846 /* OneDollarGestureRecognizer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C405F3F31FE55827009BC846 /* OneDollarGestureRecognizer.framework */; };
+		C405F3FD1FE55827009BC846 /* DollarGestureRecognizer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C405F3F31FE55827009BC846 /* DollarGestureRecognizer.framework */; };
 		C405F4021FE55827009BC846 /* OneDollarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C405F4011FE55827009BC846 /* OneDollarTests.swift */; };
-		C405F4041FE55827009BC846 /* OneDollarGestureRecognizer.h in Headers */ = {isa = PBXBuildFile; fileRef = C405F3F61FE55827009BC846 /* OneDollarGestureRecognizer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C405F4041FE55827009BC846 /* DollarGestureRecognizer.h in Headers */ = {isa = PBXBuildFile; fileRef = C405F3F61FE55827009BC846 /* DollarGestureRecognizer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C405F40E1FE55895009BC846 /* OneDollar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C405F40D1FE55895009BC846 /* OneDollar.swift */; };
 		C42CD24E1FE5683D00A6B828 /* CompatExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42CD24D1FE5683D00A6B828 /* CompatExtensions.swift */; };
 		C42CD24F1FE597A100A6B828 /* OneDollar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C405F40D1FE55895009BC846 /* OneDollar.swift */; };
 		C42CD2501FE597A600A6B828 /* CompatExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42CD24D1FE5683D00A6B828 /* CompatExtensions.swift */; };
-		C4886A731FE6B33F00D961F9 /* OneDollarGestureRecognizer.framework in Resources */ = {isa = PBXBuildFile; fileRef = C405F3F31FE55827009BC846 /* OneDollarGestureRecognizer.framework */; };
+		C4886A731FE6B33F00D961F9 /* DollarGestureRecognizer.framework in Resources */ = {isa = PBXBuildFile; fileRef = C405F3F31FE55827009BC846 /* DollarGestureRecognizer.framework */; };
 		C4886A751FE6E6DE00D961F9 /* BezierTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4886A741FE6E6DE00D961F9 /* BezierTests.swift */; };
 		C4886A771FE7069000D961F9 /* Bezier.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4886A761FE7069000D961F9 /* Bezier.swift */; };
 		C4886A781FE7069000D961F9 /* Bezier.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4886A761FE7069000D961F9 /* Bezier.swift */; };
@@ -33,11 +35,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4B5AFEC71FEAC67D000A18B0 /* OneDollarTemplates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OneDollarTemplates.swift; sourceTree = "<group>"; };
 		4B9EA5311FE80AD30033CC1D /* OneDollarGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneDollarGestureRecognizer.swift; sourceTree = "<group>"; };
-		C405F3F31FE55827009BC846 /* OneDollarGestureRecognizer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = OneDollarGestureRecognizer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		C405F3F61FE55827009BC846 /* OneDollarGestureRecognizer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OneDollarGestureRecognizer.h; sourceTree = "<group>"; };
+		C405F3F31FE55827009BC846 /* DollarGestureRecognizer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DollarGestureRecognizer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C405F3F61FE55827009BC846 /* DollarGestureRecognizer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DollarGestureRecognizer.h; sourceTree = "<group>"; };
 		C405F3F71FE55827009BC846 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C405F3FC1FE55827009BC846 /* OneDollarGestureRecognizerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OneDollarGestureRecognizerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C405F3FC1FE55827009BC846 /* DollarGestureRecognizerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DollarGestureRecognizerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C405F4011FE55827009BC846 /* OneDollarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneDollarTests.swift; sourceTree = "<group>"; };
 		C405F4031FE55827009BC846 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C405F40D1FE55895009BC846 /* OneDollar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneDollar.swift; sourceTree = "<group>"; };
@@ -58,7 +61,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C405F3FD1FE55827009BC846 /* OneDollarGestureRecognizer.framework in Frameworks */,
+				C405F3FD1FE55827009BC846 /* DollarGestureRecognizer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -68,8 +71,8 @@
 		C405F3E91FE55827009BC846 = {
 			isa = PBXGroup;
 			children = (
-				C405F3F51FE55827009BC846 /* OneDollarGestureRecognizer */,
-				C405F4001FE55827009BC846 /* OneDollarGestureRecognizerTests */,
+				C405F3F51FE55827009BC846 /* DollarGestureRecognizer */,
+				C405F4001FE55827009BC846 /* DollarGestureRecognizerTests */,
 				C405F3F41FE55827009BC846 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -77,33 +80,42 @@
 		C405F3F41FE55827009BC846 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				C405F3F31FE55827009BC846 /* OneDollarGestureRecognizer.framework */,
-				C405F3FC1FE55827009BC846 /* OneDollarGestureRecognizerTests.xctest */,
+				C405F3F31FE55827009BC846 /* DollarGestureRecognizer.framework */,
+				C405F3FC1FE55827009BC846 /* DollarGestureRecognizerTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		C405F3F51FE55827009BC846 /* OneDollarGestureRecognizer */ = {
+		C405F3F51FE55827009BC846 /* DollarGestureRecognizer */ = {
 			isa = PBXGroup;
 			children = (
-				C405F3F61FE55827009BC846 /* OneDollarGestureRecognizer.h */,
+				C405F3F61FE55827009BC846 /* DollarGestureRecognizer.h */,
 				C405F3F71FE55827009BC846 /* Info.plist */,
-				C405F40D1FE55895009BC846 /* OneDollar.swift */,
+				C41382542114AAF9000D92E6 /* Core */,
 				C42CD24D1FE5683D00A6B828 /* CompatExtensions.swift */,
 				C4886A761FE7069000D961F9 /* Bezier.swift */,
 				4B9EA5311FE80AD30033CC1D /* OneDollarGestureRecognizer.swift */,
+				4B5AFEC71FEAC67D000A18B0 /* OneDollarTemplates.swift */,
 			);
-			path = OneDollarGestureRecognizer;
+			path = DollarGestureRecognizer;
 			sourceTree = "<group>";
 		};
-		C405F4001FE55827009BC846 /* OneDollarGestureRecognizerTests */ = {
+		C405F4001FE55827009BC846 /* DollarGestureRecognizerTests */ = {
 			isa = PBXGroup;
 			children = (
 				C405F4011FE55827009BC846 /* OneDollarTests.swift */,
 				C405F4031FE55827009BC846 /* Info.plist */,
 				C4886A741FE6E6DE00D961F9 /* BezierTests.swift */,
 			);
-			path = OneDollarGestureRecognizerTests;
+			path = DollarGestureRecognizerTests;
+			sourceTree = "<group>";
+		};
+		C41382542114AAF9000D92E6 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				C405F40D1FE55895009BC846 /* OneDollar.swift */,
+			);
+			path = Core;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -113,34 +125,35 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C405F4041FE55827009BC846 /* OneDollarGestureRecognizer.h in Headers */,
+				C405F4041FE55827009BC846 /* DollarGestureRecognizer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		C405F3F21FE55827009BC846 /* OneDollarGestureRecognizer */ = {
+		C405F3F21FE55827009BC846 /* DollarGestureRecognizer */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C405F4071FE55827009BC846 /* Build configuration list for PBXNativeTarget "OneDollarGestureRecognizer" */;
+			buildConfigurationList = C405F4071FE55827009BC846 /* Build configuration list for PBXNativeTarget "DollarGestureRecognizer" */;
 			buildPhases = (
 				C405F3EE1FE55827009BC846 /* Sources */,
 				C405F3EF1FE55827009BC846 /* Frameworks */,
 				C405F3F01FE55827009BC846 /* Headers */,
 				C405F3F11FE55827009BC846 /* Resources */,
+				4B5AFEC61FEAB421000A18B0 /* ShellScript */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = OneDollarGestureRecognizer;
+			name = DollarGestureRecognizer;
 			productName = OneDollarGestureRecognizer;
-			productReference = C405F3F31FE55827009BC846 /* OneDollarGestureRecognizer.framework */;
+			productReference = C405F3F31FE55827009BC846 /* DollarGestureRecognizer.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		C405F3FB1FE55827009BC846 /* OneDollarGestureRecognizerTests */ = {
+		C405F3FB1FE55827009BC846 /* DollarGestureRecognizerTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C405F40A1FE55827009BC846 /* Build configuration list for PBXNativeTarget "OneDollarGestureRecognizerTests" */;
+			buildConfigurationList = C405F40A1FE55827009BC846 /* Build configuration list for PBXNativeTarget "DollarGestureRecognizerTests" */;
 			buildPhases = (
 				C405F3F81FE55827009BC846 /* Sources */,
 				C405F3F91FE55827009BC846 /* Frameworks */,
@@ -151,9 +164,9 @@
 			dependencies = (
 				C405F3FF1FE55827009BC846 /* PBXTargetDependency */,
 			);
-			name = OneDollarGestureRecognizerTests;
+			name = DollarGestureRecognizerTests;
 			productName = OneDollarGestureRecognizerTests;
-			productReference = C405F3FC1FE55827009BC846 /* OneDollarGestureRecognizerTests.xctest */;
+			productReference = C405F3FC1FE55827009BC846 /* DollarGestureRecognizerTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -177,7 +190,7 @@
 					};
 				};
 			};
-			buildConfigurationList = C405F3ED1FE55827009BC846 /* Build configuration list for PBXProject "OneDollarGestureRecognizer" */;
+			buildConfigurationList = C405F3ED1FE55827009BC846 /* Build configuration list for PBXProject "DollarGestureRecognizer" */;
 			compatibilityVersion = "Xcode 8.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -189,8 +202,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				C405F3F21FE55827009BC846 /* OneDollarGestureRecognizer */,
-				C405F3FB1FE55827009BC846 /* OneDollarGestureRecognizerTests */,
+				C405F3F21FE55827009BC846 /* DollarGestureRecognizer */,
+				C405F3FB1FE55827009BC846 /* DollarGestureRecognizerTests */,
 			);
 		};
 /* End PBXProject section */
@@ -207,11 +220,27 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C4886A731FE6B33F00D961F9 /* OneDollarGestureRecognizer.framework in Resources */,
+				C4886A731FE6B33F00D961F9 /* DollarGestureRecognizer.framework in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		4B5AFEC61FEAB421000A18B0 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		C405F3EE1FE55827009BC846 /* Sources */ = {
@@ -219,6 +248,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4B9EA5321FE80AD30033CC1D /* OneDollarGestureRecognizer.swift in Sources */,
+				4B5AFEC81FEAC67D000A18B0 /* OneDollarTemplates.swift in Sources */,
 				C4886A771FE7069000D961F9 /* Bezier.swift in Sources */,
 				C405F40E1FE55895009BC846 /* OneDollar.swift in Sources */,
 				C42CD24E1FE5683D00A6B828 /* CompatExtensions.swift in Sources */,
@@ -229,6 +259,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4B5AFEC91FEAC6A2000A18B0 /* OneDollarTemplates.swift in Sources */,
 				4B9EA5331FE80AD30033CC1D /* OneDollarGestureRecognizer.swift in Sources */,
 				C42CD24F1FE597A100A6B828 /* OneDollar.swift in Sources */,
 				C4886A781FE7069000D961F9 /* Bezier.swift in Sources */,
@@ -243,7 +274,7 @@
 /* Begin PBXTargetDependency section */
 		C405F3FF1FE55827009BC846 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = C405F3F21FE55827009BC846 /* OneDollarGestureRecognizer */;
+			target = C405F3F21FE55827009BC846 /* DollarGestureRecognizer */;
 			targetProxy = C405F3FE1FE55827009BC846 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -373,8 +404,9 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = OneDollarGestureRecognizer/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/DollarGestureRecognizer/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.decaroj.OneDollarGestureRecognizer;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -396,8 +428,9 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = OneDollarGestureRecognizer/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/DollarGestureRecognizer/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.decaroj.OneDollarGestureRecognizer;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -413,9 +446,9 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = L6BZS62EE3;
-				INFOPLIST_FILE = OneDollarGestureRecognizerTests/Info.plist;
+				INFOPLIST_FILE = DollarGestureRecognizerTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.decaroj.OneDollarGestureRecognizerTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.decaroj.DollarGestureRecognizerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -428,9 +461,9 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = L6BZS62EE3;
-				INFOPLIST_FILE = OneDollarGestureRecognizerTests/Info.plist;
+				INFOPLIST_FILE = DollarGestureRecognizerTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.decaroj.OneDollarGestureRecognizerTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.decaroj.DollarGestureRecognizerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -440,7 +473,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		C405F3ED1FE55827009BC846 /* Build configuration list for PBXProject "OneDollarGestureRecognizer" */ = {
+		C405F3ED1FE55827009BC846 /* Build configuration list for PBXProject "DollarGestureRecognizer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C405F4051FE55827009BC846 /* Debug */,
@@ -449,7 +482,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C405F4071FE55827009BC846 /* Build configuration list for PBXNativeTarget "OneDollarGestureRecognizer" */ = {
+		C405F4071FE55827009BC846 /* Build configuration list for PBXNativeTarget "DollarGestureRecognizer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C405F4081FE55827009BC846 /* Debug */,
@@ -458,7 +491,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C405F40A1FE55827009BC846 /* Build configuration list for PBXNativeTarget "OneDollarGestureRecognizerTests" */ = {
+		C405F40A1FE55827009BC846 /* Build configuration list for PBXNativeTarget "DollarGestureRecognizerTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C405F40B1FE55827009BC846 /* Debug */,
