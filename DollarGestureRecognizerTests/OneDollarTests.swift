@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import OneDollarGestureRecognizer
+@testable import DollarGestureRecognizer
 
 class OneDollarTests: XCTestCase {
     

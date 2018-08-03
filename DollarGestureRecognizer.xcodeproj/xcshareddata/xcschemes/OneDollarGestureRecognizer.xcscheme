@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "C405F3F21FE55827009BC846"
-               BuildableName = "OneDollarGestureRecognizer.framework"
-               BlueprintName = "OneDollarGestureRecognizer"
-               ReferencedContainer = "container:OneDollarGestureRecognizer.xcodeproj">
+               BuildableName = "DollarGestureRecognizer.framework"
+               BlueprintName = "DollarGestureRecognizer"
+               ReferencedContainer = "container:DollarGestureRecognizer.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -35,9 +35,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "C405F3FB1FE55827009BC846"
-               BuildableName = "OneDollarGestureRecognizerTests.xctest"
-               BlueprintName = "OneDollarGestureRecognizerTests"
-               ReferencedContainer = "container:OneDollarGestureRecognizer.xcodeproj">
+               BuildableName = "DollarGestureRecognizerTests.xctest"
+               BlueprintName = "DollarGestureRecognizerTests"
+               ReferencedContainer = "container:DollarGestureRecognizer.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -45,9 +45,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "C405F3F21FE55827009BC846"
-            BuildableName = "OneDollarGestureRecognizer.framework"
-            BlueprintName = "OneDollarGestureRecognizer"
-            ReferencedContainer = "container:OneDollarGestureRecognizer.xcodeproj">
+            BuildableName = "DollarGestureRecognizer.framework"
+            BlueprintName = "DollarGestureRecognizer"
+            ReferencedContainer = "container:DollarGestureRecognizer.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -68,9 +68,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "C405F3F21FE55827009BC846"
-            BuildableName = "OneDollarGestureRecognizer.framework"
-            BlueprintName = "OneDollarGestureRecognizer"
-            ReferencedContainer = "container:OneDollarGestureRecognizer.xcodeproj">
+            BuildableName = "DollarGestureRecognizer.framework"
+            BlueprintName = "DollarGestureRecognizer"
+            ReferencedContainer = "container:DollarGestureRecognizer.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -86,9 +86,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "C405F3F21FE55827009BC846"
-            BuildableName = "OneDollarGestureRecognizer.framework"
-            BlueprintName = "OneDollarGestureRecognizer"
-            ReferencedContainer = "container:OneDollarGestureRecognizer.xcodeproj">
+            BuildableName = "DollarGestureRecognizer.framework"
+            BlueprintName = "DollarGestureRecognizer"
+            ReferencedContainer = "container:DollarGestureRecognizer.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>

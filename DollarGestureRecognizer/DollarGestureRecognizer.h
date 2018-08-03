@@ -9,10 +9,10 @@
 #import <UIKit/UIKit.h>
 
 //! Project version number for OneDollarGestureRecognizer.
-FOUNDATION_EXPORT double OneDollarGestureRecognizerVersionNumber;
+FOUNDATION_EXPORT double DollarGestureRecognizerVersionNumber;
 
 //! Project version string for OneDollarGestureRecognizer.
-FOUNDATION_EXPORT const unsigned char OneDollarGestureRecognizerVersionString[];
+FOUNDATION_EXPORT const unsigned char DollarGestureRecognizerVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <OneDollarGestureRecognizer/PublicHeader.h>
 
