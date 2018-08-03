@@ -5,7 +5,7 @@
 Implements the family of popular dollar recognizers in swift and expose them as a set of custom UIGestureRecognizer
 subclasses. That can be easily included in iOS projects.
 
-For a detailed discription on these refer to this [site](http://depts.washington.edu/madlab/proj/dollar/ndollar.html)
+For a detailed discription on how all this works refer to the [papers](http://depts.washington.edu/madlab/proj/dollar/ndollar.html)
 
 
 ## Features
