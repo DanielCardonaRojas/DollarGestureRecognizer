@@ -1,5 +1,7 @@
 # Dollar Recognizers 
 
+[![Build Status](https://travis-ci.org/DanielCardonaRojas/DollarGestureRecognizer.svg?branch=master)](https://travis-ci.org/DanielCardonaRojas/DollarGestureRecognizer)
+
 Implements the family of popular dollar recognizers in swift and expose them as a set of custom UIGestureRecognizer
 subclasses. That can be easily included in iOS projects.
 
@@ -17,5 +19,3 @@ For a detailed discription on these refer to this [site](http://depts.washington
 - Implement the $N recognizer
 - Implement the $P recognizer
 - Make carthage compatible
-- Make CI server run tests 
-- Can be parallelized.
