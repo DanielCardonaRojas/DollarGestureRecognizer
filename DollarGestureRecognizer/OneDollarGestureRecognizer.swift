@@ -13,7 +13,14 @@ public class OneDollarGestureRecognizer: UIGestureRecognizer {
     private var samples: [CGPoint] = []
     var trackedTouch: UITouch? // Reference to the touch being tracked
     private var d1: OneDollar
-    private var result: (Int, Double, Bool)? //Template index, score, exceed threshould?
+    private var result: (Int, Double, Bool)? //Template index, score, exceed threshold?
+
+    /**
+     Returns a 3 element tuple where the
+         first element is the matched template index,
+         second element is the score [0, 1]
+         third element mostly informative if exceeded the desired threshold.
+     */
     public var matchResult: (Int, Double, Bool) {
         guard let r = result, self.state == .ended else {
             return (idx: -1, score: 0.0, fullfilled: false)

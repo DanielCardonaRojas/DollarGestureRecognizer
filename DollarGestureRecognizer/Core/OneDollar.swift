@@ -393,7 +393,7 @@ extension Array where Element == Point {
     
 }
 
-extension Array where Element == CGPoint {
+public extension Array where Element == CGPoint {
     func toPoints() -> [Point] {
         return self.map { p in Point(point: p) }
     }

@@ -11,6 +11,11 @@
 		4B5AFEC91FEAC6A2000A18B0 /* OneDollarTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B5AFEC71FEAC67D000A18B0 /* OneDollarTemplates.swift */; };
 		4B9EA5321FE80AD30033CC1D /* OneDollarGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B9EA5311FE80AD30033CC1D /* OneDollarGestureRecognizer.swift */; };
 		4B9EA5331FE80AD30033CC1D /* OneDollarGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B9EA5311FE80AD30033CC1D /* OneDollarGestureRecognizer.swift */; };
+		B9067B0722F9E873009944ED /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9067B0622F9E873009944ED /* AppDelegate.swift */; };
+		B9067B0922F9E873009944ED /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9067B0822F9E873009944ED /* ViewController.swift */; };
+		B9067B0C22F9E873009944ED /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B9067B0A22F9E873009944ED /* Main.storyboard */; };
+		B9067B0E22F9E876009944ED /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B9067B0D22F9E876009944ED /* Assets.xcassets */; };
+		B9067B1122F9E876009944ED /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B9067B0F22F9E876009944ED /* LaunchScreen.storyboard */; };
 		C405F3FD1FE55827009BC846 /* DollarGestureRecognizer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C405F3F31FE55827009BC846 /* DollarGestureRecognizer.framework */; };
 		C405F4021FE55827009BC846 /* OneDollarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C405F4011FE55827009BC846 /* OneDollarTests.swift */; };
 		C405F4041FE55827009BC846 /* DollarGestureRecognizer.h in Headers */ = {isa = PBXBuildFile; fileRef = C405F3F61FE55827009BC846 /* DollarGestureRecognizer.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -25,6 +30,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		B9067B1622F9E88A009944ED /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C405F3EA1FE55827009BC846 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C405F3F21FE55827009BC846;
+			remoteInfo = DollarGestureRecognizer;
+		};
 		C405F3FE1FE55827009BC846 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C405F3EA1FE55827009BC846 /* Project object */;
@@ -37,6 +49,13 @@
 /* Begin PBXFileReference section */
 		4B5AFEC71FEAC67D000A18B0 /* OneDollarTemplates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OneDollarTemplates.swift; sourceTree = "<group>"; };
 		4B9EA5311FE80AD30033CC1D /* OneDollarGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneDollarGestureRecognizer.swift; sourceTree = "<group>"; };
+		B9067B0422F9E873009944ED /* DollarGestureRecognizerExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DollarGestureRecognizerExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B9067B0622F9E873009944ED /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		B9067B0822F9E873009944ED /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		B9067B0B22F9E873009944ED /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		B9067B0D22F9E876009944ED /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B9067B1022F9E876009944ED /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		B9067B1222F9E876009944ED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C405F3F31FE55827009BC846 /* DollarGestureRecognizer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DollarGestureRecognizer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C405F3F61FE55827009BC846 /* DollarGestureRecognizer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DollarGestureRecognizer.h; sourceTree = "<group>"; };
 		C405F3F71FE55827009BC846 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -50,6 +69,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		B9067B0122F9E873009944ED /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C405F3EF1FE55827009BC846 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -68,11 +94,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B9067B0522F9E873009944ED /* DollarGestureRecognizerExample */ = {
+			isa = PBXGroup;
+			children = (
+				B9067B0622F9E873009944ED /* AppDelegate.swift */,
+				B9067B0822F9E873009944ED /* ViewController.swift */,
+				B9067B0A22F9E873009944ED /* Main.storyboard */,
+				B9067B0D22F9E876009944ED /* Assets.xcassets */,
+				B9067B0F22F9E876009944ED /* LaunchScreen.storyboard */,
+				B9067B1222F9E876009944ED /* Info.plist */,
+			);
+			path = DollarGestureRecognizerExample;
+			sourceTree = "<group>";
+		};
 		C405F3E91FE55827009BC846 = {
 			isa = PBXGroup;
 			children = (
 				C405F3F51FE55827009BC846 /* DollarGestureRecognizer */,
 				C405F4001FE55827009BC846 /* DollarGestureRecognizerTests */,
+				B9067B0522F9E873009944ED /* DollarGestureRecognizerExample */,
 				C405F3F41FE55827009BC846 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -82,6 +122,7 @@
 			children = (
 				C405F3F31FE55827009BC846 /* DollarGestureRecognizer.framework */,
 				C405F3FC1FE55827009BC846 /* DollarGestureRecognizerTests.xctest */,
+				B9067B0422F9E873009944ED /* DollarGestureRecognizerExample.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -132,6 +173,24 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		B9067B0322F9E873009944ED /* DollarGestureRecognizerExample */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B9067B1522F9E876009944ED /* Build configuration list for PBXNativeTarget "DollarGestureRecognizerExample" */;
+			buildPhases = (
+				B9067B0022F9E873009944ED /* Sources */,
+				B9067B0122F9E873009944ED /* Frameworks */,
+				B9067B0222F9E873009944ED /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B9067B1722F9E88A009944ED /* PBXTargetDependency */,
+			);
+			name = DollarGestureRecognizerExample;
+			productName = DollarGestureRecognizerExample;
+			productReference = B9067B0422F9E873009944ED /* DollarGestureRecognizerExample.app */;
+			productType = "com.apple.product-type.application";
+		};
 		C405F3F21FE55827009BC846 /* DollarGestureRecognizer */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = C405F4071FE55827009BC846 /* Build configuration list for PBXNativeTarget "DollarGestureRecognizer" */;
@@ -175,10 +234,14 @@
 		C405F3EA1FE55827009BC846 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0900;
+				LastSwiftUpdateCheck = 1030;
 				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = "Daniel Cardona";
 				TargetAttributes = {
+					B9067B0322F9E873009944ED = {
+						CreatedOnToolsVersion = 10.3;
+						ProvisioningStyle = Automatic;
+					};
 					C405F3F21FE55827009BC846 = {
 						CreatedOnToolsVersion = 9.0.1;
 						LastSwiftMigration = 0900;
@@ -196,6 +259,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = C405F3E91FE55827009BC846;
 			productRefGroup = C405F3F41FE55827009BC846 /* Products */;
@@ -204,11 +268,22 @@
 			targets = (
 				C405F3F21FE55827009BC846 /* DollarGestureRecognizer */,
 				C405F3FB1FE55827009BC846 /* DollarGestureRecognizerTests */,
+				B9067B0322F9E873009944ED /* DollarGestureRecognizerExample */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		B9067B0222F9E873009944ED /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B9067B1122F9E876009944ED /* LaunchScreen.storyboard in Resources */,
+				B9067B0E22F9E876009944ED /* Assets.xcassets in Resources */,
+				B9067B0C22F9E873009944ED /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C405F3F11FE55827009BC846 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -243,6 +318,15 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		B9067B0022F9E873009944ED /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B9067B0922F9E873009944ED /* ViewController.swift in Sources */,
+				B9067B0722F9E873009944ED /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C405F3EE1FE55827009BC846 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -272,6 +356,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		B9067B1722F9E88A009944ED /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C405F3F21FE55827009BC846 /* DollarGestureRecognizer */;
+			targetProxy = B9067B1622F9E88A009944ED /* PBXContainerItemProxy */;
+		};
 		C405F3FF1FE55827009BC846 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = C405F3F21FE55827009BC846 /* DollarGestureRecognizer */;
@@ -279,7 +368,67 @@
 		};
 /* End PBXTargetDependency section */
 
+/* Begin PBXVariantGroup section */
+		B9067B0A22F9E873009944ED /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B9067B0B22F9E873009944ED /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		B9067B0F22F9E876009944ED /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B9067B1022F9E876009944ED /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
 /* Begin XCBuildConfiguration section */
+		B9067B1322F9E876009944ED /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = TNR7223AZQ;
+				INFOPLIST_FILE = DollarGestureRecognizerExample/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.danielcardona.DollarGestureRecognizerExample;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B9067B1422F9E876009944ED /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = TNR7223AZQ;
+				INFOPLIST_FILE = DollarGestureRecognizerExample/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.danielcardona.DollarGestureRecognizerExample;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		C405F4051FE55827009BC846 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -473,6 +622,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		B9067B1522F9E876009944ED /* Build configuration list for PBXNativeTarget "DollarGestureRecognizerExample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B9067B1322F9E876009944ED /* Debug */,
+				B9067B1422F9E876009944ED /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		C405F3ED1FE55827009BC846 /* Build configuration list for PBXProject "DollarGestureRecognizer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
