@@ -13,6 +13,14 @@ For a detailed discription on how all this works refer to the [papers](http://de
 - Load templates from bezier paths.
 - UIGestureRecognizer implementations for each recognizer in the dollar recognizer algorith family.
 
+## Installation
+
+**Cocoa pods**
+```sh
+# Add this to your Podfile
+pod 'DollarGestureRecognizer', :git => 'https://github.com/DanielCardonaRojas/DollarGestureRecognizer', :branch => 'develop',  :tag => 'v1.0.0'
+```
+
 ## TODOS
 
 - Implement the protractor optimization for the $1 recognizer.
