@@ -28,20 +28,17 @@ public protocol OneDollarTrackable {
     var name: String { get }
 }
 
-public protocol KeyedTemplates {//Represents a set of templates that can be indexed by some type
-    associatedtype KeyType: Hashable
-    static var templates: [KeyType: OneDollarPath] { get }
-}
-
 public struct OneDollarPath {
     public var path: [Point]
+    public var name: String?
 
     init (path: [Point]) {
        self.path = path
     }
     
-    public init(path: [CGPoint]) {
+    public init(path: [CGPoint], name: String? = nil) {
         self.init(path: path.toPoints())
+        self.name = name
     }
     
     @available(iOS 11.0, *)
