@@ -37,7 +37,7 @@ enum Bernstein {
 
 enum DeCasteljau {
     //Splits a bezier curve in two and returns the new control points for the two new segments.
-    static func split(controlPoints: [CGPoint], at t: Double) -> ([CGPoint], [CGPoint]) {
+    public static func split(controlPoints: [CGPoint], at t: Double) -> ([CGPoint], [CGPoint]) {
         let n = controlPoints.count
         var leftCount: Int = 0
         var rightCount: Int = n - 1
@@ -63,7 +63,7 @@ enum DeCasteljau {
         return (leftPoints, rightPoints)
     }
     
-    static func splitToSample(controlPoints: [CGPoint], percent: Double) -> [CGPoint] {
+    public static func splitToSample(controlPoints: [CGPoint], percent: Double) -> [CGPoint] {
         //Splits path into subpaths until the subpaths are to a degree straight lines.
         if controlPoints.count <= 1 { return [] }
         if controlPoints.count == 2 { return controlPoints }
@@ -86,7 +86,7 @@ enum DeCasteljau {
         return  Array(leftSamples.dropLast()) + Array(rightSamples.dropFirst())
     }
     
-    static func evaluateBezier(controlPoints: [CGPoint], at t: Double) -> CGPoint {
+    public static func evaluateBezier(controlPoints: [CGPoint], at t: Double) -> CGPoint {
         //Interpolate all lines defined by control points until on point is left
         let n = controlPoints.count
         if n == 1 {
@@ -102,7 +102,7 @@ enum DeCasteljau {
     
 }
 
-class Bezier {
+public class Bezier {
     var controlPoints: [CGPoint]
     var order: Int {
         return controlPoints.count - 1

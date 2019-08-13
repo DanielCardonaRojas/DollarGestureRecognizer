@@ -1,11 +1,10 @@
 # Dollar Recognizers 
 
-[![Build Status](https://travis-ci.org/DanielCardonaRojas/DollarGestureRecognizer.svg?branch=master)](https://travis-ci.org/DanielCardonaRojas/DollarGestureRecognizer)
-[License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)
+[![Build Status](https://travis-ci.org/DanielCardonaRojas/DollarGestureRecognizer.svg?branch=master)](https://travis-ci.org/DanielCardonaRojas/DollarGestureRecognizer) ![License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)
 
 
 Implements the family of popular dollar recognizers in swift and expose them as a set of custom UIGestureRecognizer
-subclasses. That can be easily included in iOS projects.
+subclasses.
 
 For a detailed discription on how all this works refer to the [papers](http://depts.washington.edu/madlab/proj/dollar/ndollar.html)
 
@@ -23,9 +22,7 @@ For a detailed discription on how all this works refer to the [papers](http://de
 pod 'DollarGestureRecognizer', :git => 'https://github.com/DanielCardonaRojas/DollarGestureRecognizer', :branch => 'develop',  :tag => 'v1.0.0'
 ```
 
-## TODOS
+## Dollar family algorithms
 
-- Implement the protractor optimization for the $1 recognizer.
-- Implement the $N recognizer
-- Implement the $P recognizer
-- Make carthage compatible
+- [x] Implement the protractor optimization for the $1 recognizer.
+- [ ] Implement the $Q recognizer

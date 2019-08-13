@@ -4,7 +4,7 @@ Pod::Spec.new do |spec|
   spec.summary = "Implements the dollar recognizers in swift and expose them as a set of custom UIGestureRecognizer subclasses."
   spec.homepage = "https://github.com/DanielCardonaRojas/DollarGestureRecognizer"
   spec.license = { type: 'MIT', file: 'LICENSE' }
-  spec.authors = { "Your Name" => 'd.cardona.rojas@gmail.com' }
+  spec.authors = { "Daniel Cardona Rojas" => 'd.cardona.rojas@gmail.com' }
   spec.swift_version = "5.0"
   spec.platform = :ios, "9.1"
   spec.requires_arc = true

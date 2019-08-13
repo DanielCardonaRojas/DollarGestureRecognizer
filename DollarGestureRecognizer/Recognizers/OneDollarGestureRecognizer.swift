@@ -7,13 +7,12 @@
 //
 
 import UIKit
-import UIKit.UIGestureRecognizerSubclass
 
 public class OneDollarGestureRecognizer: UIGestureRecognizer {
     private var samples: [CGPoint] = []
     var trackedTouch: UITouch? // Reference to the touch being tracked
     private var d1: OneDollar
-    private var result: (Int, Double, Bool)? //Template index, score, exceed threshold?
+    private var result: (Int, Double)? //Template index, score, exceed threshold?
 
     /**
      Returns a 3 element tuple where the
@@ -21,14 +20,15 @@ public class OneDollarGestureRecognizer: UIGestureRecognizer {
          second element is the score [0, 1]
          third element mostly informative if exceeded the desired threshold.
      */
-    public var matchResult: (Int, Double, Bool) {
+    public var matchResult: (templateIndex: Int, score: Double, templateName: String?) {
         guard let r = result, self.state == .ended else {
-            return (idx: -1, score: 0.0, fullfilled: false)
+            return (-1, 0.0, nil)
         }
-        return r
+        let template = d1.dollarTemplates[r.0]
+        return (r.0, r.1, template.name)
     }
 
-    public init(target: Any?, action: Selector?, templates: [OneDollarPath]) {
+    public init(target: Any?, action: Selector?, templates: [SingleStrokePath]) {
         self.d1 = OneDollar(templates: templates)
         super.init(target: target, action: action)
     }
@@ -62,6 +62,10 @@ public class OneDollarGestureRecognizer: UIGestureRecognizer {
         samples.removeAll()
     }
     
+    public func setTemplates(_ templates: [SingleStrokePath]) {
+        self.d1.dollarTemplates = templates
+    }
+
     override public func reset() {
         samples.removeAll()
         self.trackedTouch = nil
@@ -80,7 +84,7 @@ public class OneDollarGestureRecognizer: UIGestureRecognizer {
     
     // MARK: Processing
     private func processTouches() {
-        let candidate = OneDollarPath(path: samples.toPoints())
+        let candidate = SingleStrokePath(path: samples.toPoints())
         do {
             result = try d1.recognize(candidate: candidate)
             guard let _ = result else {

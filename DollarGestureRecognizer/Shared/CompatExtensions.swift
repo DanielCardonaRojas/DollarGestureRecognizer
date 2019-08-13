@@ -113,7 +113,7 @@ public enum PathElement {
 }
 
 extension Int {
-    func factorial() -> Int {
+    public func factorial() -> Int {
         var fact = 1
         if self == 0 { return 1 }
         if self == 1 { return 1 }
@@ -143,7 +143,7 @@ extension CGPoint {
 }
 
 extension Array where Element == CGPoint {
-    func pathLength() -> Double {
+    public func pathLength() -> Double {
         let pointPath = self.map { p in Point(point: p) }
         return pointPath.pathLength()
     }

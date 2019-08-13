@@ -19,45 +19,9 @@ public struct Point {
 
 typealias PointPath = [Point]
 typealias Template = PointPath
-typealias OneDollarTemplate = OneDollarPath
+typealias OneDollarTemplate = SingleStrokePath
 typealias Degrees = Int
 typealias Radians = Double
-
-public protocol OneDollarTrackable {
-    var path: [Point] { get }
-    var name: String { get }
-}
-
-public struct OneDollarPath {
-    public var path: [Point]
-    public var name: String?
-
-    init (path: [Point]) {
-       self.path = path
-    }
-    
-    public init(path: [CGPoint], name: String? = nil) {
-        self.init(path: path.toPoints())
-        self.name = name
-    }
-    
-    @available(iOS 11.0, *)
-    public init(path: UIBezierPath) {
-        self.init(path: path.cgPath)
-    }
-    
-    @available(iOS 11.0, *)
-    public init(path: CGPath) {
-        let range = stride(from: 0, to: 1, by: 0.015)
-        let points: [CGPoint] = PathElement.evaluate(path: path.elements(), every: Array(range))
-        self.path = points.map { p in Point(point: p) }
-    }
-}
-
-public enum OneDollarError: Error {
-    case EmptyTemplates
-    case TooFewPoints
-}
 
 public struct OneDollarConfig {
     let numPoints: Int
@@ -83,62 +47,16 @@ public struct OneDollarConfig {
     }
 }
 
-enum OneDollarConsts {
-    public static let Phi: Double = (0.5 * (-1.0 + sqrt(5.0)))
-}
-
-struct BoundingRect { //A rectangle that resizes to fit a shape
-    private var bottomLeft: Point
-    private var upperRight: Point
-    
-    var height: Double {
-        return abs(self.bottomLeft.y - self.upperRight.y)
-    }
-    
-    var width: Double {
-        return abs(self.bottomLeft.x - self.upperRight.x)
-    }
-    
-    var diagonal: Double {
-       return sqrt(pow(height, 2) + pow(width, 2))
-    }
-    
-    static func initialRect() -> BoundingRect {
-        let plusInfinity = +Double.infinity
-        let minusInfinity = -Double.infinity
-        let bottomLeft = Point(x: plusInfinity, y: plusInfinity)
-        let upperRight = Point(x: minusInfinity, y: minusInfinity)
-        return BoundingRect(bottomLeft: bottomLeft, upperRight: upperRight)
-    }
-    
-    private init(bottomLeft: Point, upperRight: Point) {
-        self.bottomLeft = bottomLeft
-        self.upperRight = upperRight
-    }
-    
-    mutating func updateBoundaries(point: Point) {
-        bottomLeft.x = min(bottomLeft.x, point.x)
-        upperRight.x = max(upperRight.x, point.x)
-        bottomLeft.y = min(bottomLeft.y, point.y)
-        upperRight.y = max(upperRight.y, point.y)
-    }
-    
-    static func fromPath(_ path: PointPath) -> BoundingRect {
-        //Mutates the the rect until it captures all boundaries of path
-        var rect = initialRect()
-        for point in path {
-            rect.updateBoundaries(point: point)
-        }
-        return rect
-    }
-    
-}
-
 // MARK: Core Algorithm
 public class OneDollar {
     private var candidate: PointPath
-    private var templates: [Template]
-    private var dollarTemplates: [OneDollarTemplate]
+
+    var dollarTemplates: [OneDollarTemplate] {
+        didSet {
+           self.templates = self.sampledTemplates(dollarTemplates)
+        }
+    }
+
     private var configuration: OneDollarConfig
     var candidatePath: PointPath {
         get {
@@ -148,10 +66,19 @@ public class OneDollar {
            self.candidate = newValue
         }
     }
-    var templatePaths: [PointPath] {
-        return self.templates
+
+    private(set) lazy var templates: [Template] = {
+        return sampledTemplates(self.dollarTemplates)
+    }()
+
+    func sampledTemplates(_ dollarTemplates: [OneDollarTemplate]) -> [Template] {
+        return dollarTemplates.map { t in
+            let points = t.path
+            let result = OneDollar.resample(points: points, totalPoints: configuration.numPoints)
+            return result
+        }
     }
-    
+
     convenience init(templates: OneDollarTemplate..., configuration: OneDollarConfig = OneDollarConfig.defaultConfig()) {
         self.init(templates: templates, configuration: configuration)
     }
@@ -160,12 +87,9 @@ public class OneDollar {
         self.candidate = []
         self.configuration = configuration
         self.dollarTemplates = templates
-        self.templates = templates.map { dt in dt.path }
-        //Only resample the templates once they're set
-        self.templates = self.templates.map { t in OneDollar.resample(points: t, totalPoints: configuration.numPoints) }
     }
     
-    public func reconfigure(templates: [OneDollarPath], configuration: OneDollarConfig? = nil) {
+    public func reconfigure(templates: [SingleStrokePath], configuration: OneDollarConfig? = nil) {
         self.dollarTemplates = templates
         self.templates = templates.map { dt in dt.path }
         if let newConf = configuration {
@@ -202,7 +126,7 @@ public class OneDollar {
     }
     
     //Step 4: Match points against a set of templates
-    public func recognize(candidate c: OneDollarPath, minThreshold: Double = 0.8) throws -> (templateIndex: Int, score: Double, fullfilled: Bool)? {
+    public func recognize(candidate c: SingleStrokePath) throws -> (templateIndex: Int, score: Double)? {
         self.candidate = c.path
         if templates.count == 0 || candidate.count == 0 { throw OneDollarError.EmptyTemplates }
         if !templates.filter({ t in t.count == 0 }).isEmpty { throw OneDollarError.EmptyTemplates }
@@ -230,7 +154,7 @@ public class OneDollar {
         let size = configuration.squareSize
         let score: Double = 1 - bestDistance / (0.5 * sqrt(pow(size, 2) + pow(size, 2)))
         guard let bestTemplateIdx = bestTemplate else { return nil }
-        return Optional.some((bestTemplateIdx, score, score >= minThreshold))
+        return (bestTemplateIdx, score)
     }
 }
 
@@ -304,9 +228,9 @@ extension OneDollar {
     static func distanceAtBestAngle(points: PointPath, template: PointPath, from: Radians, to: Radians, threshold: Double) -> Double {
         var toAngle = to
         var fromAngle = from
-        var x1 = OneDollarConsts.Phi * fromAngle + (1.0 - OneDollarConsts.Phi) * toAngle
+        var x1 = DollarConstants.Phi * fromAngle + (1.0 - DollarConstants.Phi) * toAngle
         var f1 = OneDollar.distanceAtAngle(points, template: template, angle: x1)
-        var x2 = (1.0 - OneDollarConsts.Phi) * fromAngle + OneDollarConsts.Phi * toAngle
+        var x2 = (1.0 - DollarConstants.Phi) * fromAngle + DollarConstants.Phi * toAngle
         var f2 = OneDollar.distanceAtAngle(points, template: template, angle: x2)
 
         while ( abs(toAngle - fromAngle) > threshold ) {
@@ -314,13 +238,13 @@ extension OneDollar {
                 toAngle = x2
                 x2 = x1
                 f2 = f1
-                x1 = OneDollarConsts.Phi * fromAngle + (1.0 - OneDollarConsts.Phi) * toAngle
+                x1 = DollarConstants.Phi * fromAngle + (1.0 - DollarConstants.Phi) * toAngle
                 f1 = OneDollar.distanceAtAngle(points, template: template, angle: x1)
             } else {
                 fromAngle = x1
                 x1 = x2
                 f1 = f2
-                x2 = (1.0 - OneDollarConsts.Phi) * fromAngle + OneDollarConsts.Phi * toAngle
+                x2 = (1.0 - DollarConstants.Phi) * fromAngle + DollarConstants.Phi * toAngle
                 f2 = OneDollar.distanceAtAngle(points, template: template, angle: x2)
             }
         }

@@ -13,7 +13,6 @@ class Dollar1ExampleVC: UIViewController {
 
     typealias RecognitionHandler = ((OneDollarGestureRecognizer) -> Void)?
     var recognitionHandler: RecognitionHandler
-    let templates = OneDollarPath.templates
 
     lazy var recognitionResultLabel: UILabel = {
         let label = UILabel()
@@ -41,8 +40,7 @@ class Dollar1ExampleVC: UIViewController {
     }()
 
     lazy var gestureRecognizer: OneDollarGestureRecognizer = {
-        let path = OneDollarPath.pigtail
-        let d1 = OneDollarGestureRecognizer(target: self, action: #selector(didRecognizeD1Gesture(_:)), templates: templates)
+        let d1 = OneDollarGestureRecognizer(target: self, action: #selector(didRecognizeD1Gesture(_:)), templates: [])
         return d1
     }()
 
@@ -58,9 +56,12 @@ class Dollar1ExampleVC: UIViewController {
 
     @objc func didRecognizeD1Gesture(_ sender: OneDollarGestureRecognizer) {
         if sender.state == .ended {
-            let (templateIndex, score, _) = sender.matchResult
+            let (_, score, name) = sender.matchResult
             if score > 0.5 {
-                recognitionResultLabel.text = templates[templateIndex].name ?? "Not found"
+                let roundedScore = Double(round(score * 100)) / 100
+                recognitionResultLabel.text = "Score: \(roundedScore) pattern: \(name ?? "Not found")"
+            } else {
+                recognitionResultLabel.text = "No match"
             }
 
             recognitionHandler?(sender)
@@ -72,6 +73,10 @@ class Dollar1ExampleVC: UIViewController {
         setupViews()
         setupConstraints()
         setupGestureRecognizers()
+        let fileNames = SingleStrokePath.DefaultTemplate.allCases.map { $0.rawValue }
+        SingleStrokeParser.loadStrokePatterns(files: fileNames, completion: { paths in
+            self.gestureRecognizer.setTemplates(paths)
+        })
     }
 
     private func setupGestureRecognizers() {
