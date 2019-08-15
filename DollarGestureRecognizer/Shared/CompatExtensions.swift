@@ -124,9 +124,24 @@ extension Int {
     }
 }
 
+precedencegroup ExponentiationPrecedence {
+    associativity: right
+    higherThan: MultiplicationPrecedence
+}
+
+infix operator ** : ExponentiationPrecedence
+
 extension Double {
     public static var random: Double {
         return Double(arc4random()) / 0xFFFFFFFF
+    }
+
+    public static func ** (_ base: Double, power: Int) -> Double {
+        return pow(base, Double(power))
+    }
+
+    public func toRadians ( ) -> Double {
+        return (self / 180.0) * Double.pi
     }
 }
 

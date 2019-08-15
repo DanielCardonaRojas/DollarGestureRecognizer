@@ -77,6 +77,11 @@ class Dollar1ExampleVC: UIViewController {
         SingleStrokeParser.loadStrokePatterns(files: fileNames, completion: { paths in
             self.gestureRecognizer.setTemplates(paths)
         })
+
+        let multiStrokeFileNames = MultiStrokePath.DefaultTemplate.allCases.map { $0.rawValue }
+        MultiStrokeParser.loadStrokePatterns(files: multiStrokeFileNames, completion: { strokes in
+            print(strokes)
+        })
     }
 
     private func setupGestureRecognizers() {
