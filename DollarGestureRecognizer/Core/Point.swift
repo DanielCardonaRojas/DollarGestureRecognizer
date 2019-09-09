@@ -6,6 +6,8 @@
 //  Copyright © 2019 Daniel Cardona. All rights reserved.
 //
 
+typealias Number = Double
+
 public struct Point {
     var x: Double
     var y: Double
@@ -20,6 +22,8 @@ public struct Point {
 
 // MARK: Point extensions
 extension Point {
+    static var zero: Point = Point(x: 0, y: 0)
+
     public init(point: CGPoint) {
         self.x = Double(point.x); self.y = Double(point.y)
     }
@@ -48,6 +52,14 @@ extension Point {
         return Point(x: lhs.x + rhs.x, y: lhs.y + rhs.y)
     }
 
+    static func * (_ lhs: Point, _ rhs: Double) -> Point {
+        return Point(x: lhs.x * rhs, y: lhs.y * rhs)
+    }
+
+    static func / (_ lhs: Point, _ rhs: Double) -> Point {
+        return lhs * ( 1 / rhs )
+    }
+
     static func squareEuclideanDistance(_ a: Point, _ b: Point) -> Double {
         let dx = (a.x - b.x)
         let dy = (a.y - b.y)
@@ -58,33 +70,6 @@ extension Point {
 }
 
 // MARK: PointPath extensions
-extension Array where Element == Point {
-    func centroid() -> Point {
-        var centroidPoint = self.reduce(Point(x: 0, y: 0)) { (acc, p) -> Point in
-            acc + p
-        }
-        let totalPoints = Double(self.count)
-        centroidPoint.x = (centroidPoint.x / totalPoints)
-        centroidPoint.y = (centroidPoint.y / totalPoints)
-        return centroidPoint
-    }
-
-    func pathLength() -> Double {
-        guard self.count > 1 else { return 0 }
-        var totalDistance: Double = 0
-        for idx in 1...(self.count - 1) {
-            totalDistance += self[idx - 1].distanceTo(point: self[idx])
-        }
-        return totalDistance
-    }
-
-    func indicativeAngle() -> Double {
-        let centroid = self.centroid()
-        return atan2(centroid.y - self.first!.y, centroid.x - self.first!.x)
-    }
-
-}
-
 public extension Array where Element == CGPoint {
     func toPoints() -> [Point] {
         return self.map { p in Point(point: p) }
