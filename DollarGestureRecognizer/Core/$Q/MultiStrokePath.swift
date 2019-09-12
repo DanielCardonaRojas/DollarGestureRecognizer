@@ -6,10 +6,13 @@
 //  Copyright © 2019 Daniel Cardona. All rights reserved.
 //
 
-
-public class MultiStrokePath {
+public class MultiStrokePath: NSObject {
     public var strokes: [[Point]]
     public var name: String?
+
+    private(set) lazy var asTemplate: Template = {
+        return strokes.flatMap({ $0 })
+    }()
 
     public init (strokes: [[Point]], name: String? = nil) {
         self.strokes = strokes
@@ -17,7 +20,12 @@ public class MultiStrokePath {
     }
 
     public convenience init(strokes: [[CGPoint]], name: String? = nil) {
-        self.init(strokes: strokes.map { $0.toPoints()}, name: name)
+        self.init(strokes: strokes.map { $0.toPoints() }, name: name)
+    }
+
+    public convenience init(points: [Point], name: String? = nil) {
+        let strokes = points.groupedByStrokeId()
+        self.init(strokes: strokes, name: name)
     }
 }
 

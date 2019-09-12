@@ -8,7 +8,7 @@
 
 typealias Number = Double
 
-public struct Point {
+public class Point {
     var x: Double
     var y: Double
     var strokeId: Int?
@@ -18,15 +18,16 @@ public struct Point {
         self.y = y
         self.strokeId = strokeId
     }
+
+    public init(point: CGPoint) {
+        self.x = Double(point.x); self.y = Double(point.y)
+    }
+
 }
 
 // MARK: Point extensions
 extension Point {
     static var zero: Point = Point(x: 0, y: 0)
-
-    public init(point: CGPoint) {
-        self.x = Double(point.x); self.y = Double(point.y)
-    }
 
     static func distance(from: Point, to: Point) -> Double {
         return sqrt(Point.squareEuclideanDistance(from, to))
@@ -65,8 +66,6 @@ extension Point {
         let dy = (a.y - b.y)
         return (dx * dx + dy * dy)
     }
-
-
 }
 
 // MARK: PointPath extensions
@@ -75,4 +74,3 @@ public extension Array where Element == CGPoint {
         return self.map { p in Point(point: p) }
     }
 }
-

@@ -11,8 +11,8 @@
 import Foundation
 import UIKit
 
-typealias PointPath = [Point]
-typealias Template = PointPath
+public typealias PointPath = [Point]
+public typealias Template = PointPath
 typealias OneDollarTemplate = SingleStrokePath
 typealias Degrees = Int
 typealias Radians = Double
@@ -97,7 +97,7 @@ public class OneDollar {
         candidate = OneDollar.resample(points: candidate, totalPoints: configuration.numPoints)
 
         if candidate.count < configuration.numPoints {
-            throw OneDollarError.TooFewPoints
+            throw DollarError.TooFewPoints
         }
     }
     
@@ -122,8 +122,8 @@ public class OneDollar {
     //Step 4: Match points against a set of templates
     public func recognize(candidate c: SingleStrokePath) throws -> (templateIndex: Int, score: Double)? {
         self.candidate = c.path
-        if templates.count == 0 || candidate.count == 0 { throw OneDollarError.EmptyTemplates }
-        if !templates.filter({ t in t.count == 0 }).isEmpty { throw OneDollarError.EmptyTemplates }
+        if templates.count == 0 || candidate.count == 0 { throw DollarError.EmptyTemplates }
+        if !templates.filter({ t in t.count == 0 }).isEmpty { throw DollarError.EmptyTemplates }
 
         var bestDistance = Double.infinity
         var bestTemplate: Int?

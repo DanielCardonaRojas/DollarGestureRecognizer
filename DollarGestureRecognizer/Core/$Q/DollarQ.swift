@@ -10,24 +10,50 @@ import Foundation
 
 public class DollarQ {
 
-    typealias LookUpTable<T> = [[T]]
+    public typealias LookUpTable = [[Int]]
 
-    var candidateLUT: LookUpTable<Int> = LookUpTable()
+    private var candidate: MultiStrokePath?
+    private var _templates: [MultiStrokePath] = []
 
-    func recognize(points: [Point], templates: [Template]) throws -> (template: Template, score: Double)? {
-        let n = 32
-        let m = 64
+    var templates: [MultiStrokePath] {
+        set(newValue) {
+            var updateTemplates = [MultiStrokePath]()
+            for t in newValue {
+                let lut = DollarQ.computeLookUpTable(points: t.asTemplate, m: m, n: n)
+                t.lut = lut
+                updateTemplates.append(t)
+            }
+            self._templates = updateTemplates
+        }
+
+        get {
+            return self._templates
+        }
+
+    }
+
+    let n: Int
+    let m: Int
+
+    init(templates: [MultiStrokePath], n: Int = 32, m: Int = 64) {
+        self.n = n
+        self.m = m
+        self.templates = templates
+    }
+
+    func recognize(points: MultiStrokePath) throws -> (template: Template, score: Double)? {
         var score = Double.greatestFiniteMagnitude
-        let normalizedPoints = DollarQ.normalize(points: points, n: n, m: m)
+        let normalizedPoints = DollarQ.normalize(points: points.asTemplate, n: n, m: m)
         let lut = DollarQ.computeLookUpTable(points: normalizedPoints, m: m, n: n)
-        candidateLUT = lut
+        points.lut = lut
+        candidate = points
         var match: Template?
 
-        for template in templates {
-            let d = DollarQ.cloudMatch(points: points, template: template, n: n, min: score)
+        for multiStroke in templates {
+            let d = DollarQ.cloudMatch(points: points, template: multiStroke, n: n, min: score)
             if d < score {
                 score = d
-                match = template
+                match = multiStroke.asTemplate
             }
         }
 
@@ -39,8 +65,8 @@ public class DollarQ {
     }
 
     // MARK: - Base algorithm methods
-    static func computeLookUpTable(points: [Point], m: Int, n: Int) -> LookUpTable<Int> {
-        var lut = [[Int]]()
+    static func computeLookUpTable(points: [Point], m: Int, n: Int) -> LookUpTable {
+        var lut = [[Int]](repeating: [Int].init(repeating: -1, count: m), count: m)
         for x in 0...(m - 1) {
             for y in 0...(m - 1) {
                 let point = Point(x: Double(x), y: Double(y))
@@ -55,23 +81,21 @@ public class DollarQ {
         return lut
     }
 
-    static func cloudMatch(points: [Point], template: Template, n: Int, min minimum: Double) -> Double {
+    static func cloudMatch(points: MultiStrokePath, template: MultiStrokePath, n: Int, min minimum: Double) -> Double {
         let step = Int(sqrt(Double(n)).rounded())
-        let templateLUT = computeLookUpTable(points: template, m: 64, n: 32)
-        let pointsLUT = computeLookUpTable(points: points, m: 64, n: 32)
-        let lowerBound1 = computeLowerBound(points: points, template: template, step: step, lut: templateLUT)
-        let lowerBound2 = computeLowerBound(points: template, template: points, step: step, lut: pointsLUT)
+        let lowerBound1 = computeLowerBound(points: points.asTemplate, template: template.asTemplate, step: step, n: n, lut: template.lut!)
+        let lowerBound2 = computeLowerBound(points: template.asTemplate, template: points.asTemplate, step: step, n: n, lut: points.lut!)
         var minSoFar = minimum
-        
+
         for i in 0..<n {
             let index = i / step
             if lowerBound1[index] < minSoFar {
-                let distance = DollarQ.cloudDistance(points: points, template: template, n: n, start: i, minSoFar: minSoFar)
+                let distance = DollarQ.cloudDistance(points: points.asTemplate, template: template.asTemplate, n: n, start: i, minSoFar: minSoFar)
                 minSoFar = min(minSoFar, distance)
             }
 
             if lowerBound2[index] < minSoFar {
-                let distance = DollarQ.cloudDistance(points: template, template: points, n: n, start: i, minSoFar: minSoFar)
+                let distance = DollarQ.cloudDistance(points: template.asTemplate, template: points.asTemplate, n: n, start: i, minSoFar: minSoFar)
                 minSoFar = min(minSoFar, distance)
             }
 
@@ -81,11 +105,53 @@ public class DollarQ {
     }
 
     static func cloudDistance(points: [Point], template: [Point], n: Int, start: Int, minSoFar: Double) -> Double {
-        return 0
+        var i = start
+        var unmatched = Array(0..<n)
+        var weight = n
+        var sum = 0.0
+        var min = Double.greatestFiniteMagnitude
+
+        repeat {
+            for j in unmatched {
+                let d = points[i].distanceTo(point: template[j])
+                if d < min {
+                    min = d
+                    unmatched.remove(at: j)
+                }
+
+                sum += Double(weight) * min
+
+                if sum >= minSoFar {
+                    return sum
+                }
+
+                weight -= 1
+                i = (i + 1) % n
+            }
+
+        } while i == start
+
+        return sum
     }
 
-    static func computeLowerBound(points: [Point], template: [Point], step: Int, lut: LookUpTable<Int>) -> [Double] {
-        return [0]
+    static func computeLowerBound(points: [Point], template: [Point], step: Int, n: Int, lut: LookUpTable) -> [Double] {
+        var lowerBound = Array(repeating: 0.0, count: n / (step + 1))
+        var summedAreaTable = Array(repeating: 0.0, count: n)
+
+        for i in 0..<n {
+            let point = points[i]
+            let x = Int(point.x)
+            let y = Int(point.y)
+            let index = lut[x][y]
+            let distance = point.distanceTo(point: template[index])
+            summedAreaTable[i] = i == 0 ? distance : summedAreaTable[i - 1] + distance
+            lowerBound[0] = lowerBound[0] + Double(n - i) * distance
+        }
+
+        for i in step..<n {
+            lowerBound[i/step] = lowerBound[0] + Double(i) * summedAreaTable[n - 1] - Double(n) * summedAreaTable[i - 1]
+        }
+        return lowerBound
     }
 
     static func normalize(points: [Point], n: Int, m: Int) -> [Point] {
@@ -133,4 +199,25 @@ public class DollarQ {
         let result = points.map { Point(x: $0.x - minimum.x, y: $0.y - minimum.y) / scaleFactor } 
         return result
     }
+}
+
+extension MultiStrokePath {
+    struct Keys {
+        static var lut = "LUT"
+    }
+
+    @objc public var lut: DollarQ.LookUpTable? {
+        get {
+            guard let value = objc_getAssociatedObject(self, &Keys.lut) else {
+                return nil
+            }
+            
+            return value as? DollarQ.LookUpTable
+        }
+
+        set(newValue) {
+            objc_setAssociatedObject(self, &Keys.lut, newValue, .OBJC_ASSOCIATION_RETAIN)
+        }
+    }
+
 }

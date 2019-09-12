@@ -82,6 +82,10 @@ class Dollar1ExampleVC: UIViewController {
         MultiStrokeParser.loadStrokePatterns(files: multiStrokeFileNames, completion: { strokes in
             print(strokes)
         })
+
+        var template = Template()
+        template.lut = DollarQ.LookUpTable()
+        let LUT = template.lut
     }
 
     private func setupGestureRecognizers() {

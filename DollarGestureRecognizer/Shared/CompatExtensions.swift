@@ -195,10 +195,10 @@ extension PathElement: CustomDebugStringConvertible {
 
 extension Array {
     func any(_ pred: (Element) -> Bool ) -> Bool {
-       return self.reduce(false, { acc, item in acc || pred(item) })
+        return contains(where: pred)
     }
     
     func all(_ pred: (Element) -> Bool ) -> Bool {
-        return self.reduce(true, { acc, item in acc && pred(item) })
+        return allSatisfy(pred)
     }
 }

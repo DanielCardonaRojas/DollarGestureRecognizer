@@ -28,7 +28,7 @@ class OneDollarTests: XCTestCase {
         let candidate = SingleStrokePath(path: path)
         let od = OneDollar(templates: candidate)
         XCTAssertThrowsError(try od.recognize(candidate: candidate), "Did not throw empty templates error") { (error) -> Void in
-            XCTAssertEqual(error as? OneDollarError, OneDollarError.EmptyTemplates)
+            XCTAssertEqual(error as? DollarError, DollarError.EmptyTemplates)
         }
     }
     
@@ -36,7 +36,7 @@ class OneDollarTests: XCTestCase {
         let candidate = SingleStrokePath(path: [Point(x: 1, y: 1)])
         let od = OneDollar(templates: candidate)
         XCTAssertThrowsError(try od.recognize(candidate: candidate), "Did not throw few points error") { (error) -> Void in
-            XCTAssertEqual(error as? OneDollarError, OneDollarError.TooFewPoints)
+            XCTAssertEqual(error as? DollarError, DollarError.TooFewPoints)
         }
     }
     
