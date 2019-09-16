@@ -10,9 +10,9 @@ public class MultiStrokePath: NSObject {
     public var strokes: [[Point]]
     public var name: String?
 
-    private(set) lazy var asTemplate: Template = {
-        return strokes.flatMap({ $0 })
-    }()
+    var asPoints: Template {
+        return self.strokes.flatMap({ $0 })
+    }
 
     public init (strokes: [[Point]], name: String? = nil) {
         self.strokes = strokes
@@ -33,6 +33,9 @@ extension MultiStrokePath {
     public enum DefaultTemplate: String, CustomStringConvertible, CaseIterable {
         case asterisk
         case pitchfork
+        case letterD = "D"
+        case letterH = "H"
+        case letterX = "X"
 
         public var description: String {
             return self.rawValue.replacingOccurrences(of: "_", with: " ").capitalized

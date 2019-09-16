@@ -193,7 +193,7 @@ extension OneDollar {
         return points.map { (p: Point) -> Point in
             let newX = p.x + (to.x - centroid.x)
             let newY = p.y + (to.y - centroid.y)
-            return Point(x: newX, y: newY)
+            return Point(x: newX, y: newY, strokeId: p.strokeId)
         }
     }
     

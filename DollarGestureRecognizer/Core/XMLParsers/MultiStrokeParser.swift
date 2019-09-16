@@ -17,8 +17,10 @@ public class MultiStrokeParser: NSObject, XMLParserDelegate {
     private var currentElement: String?
     private var xCoord: String = ""
     private var yCoord: String = ""
+    private var gestureName: String?
     private var strokes: [[Point]] = []
     private var currentStroke = [Point]()
+    private var currentStrokeId: Int = -1
 
     public static func loadStrokePattern(fromFile named: String, bundle customBundle: Bundle? = nil, completion: ParsingCompletion?) throws {
         let bundle = customBundle ?? Bundle(for: OneDollar.self)
@@ -90,13 +92,16 @@ public class MultiStrokeParser: NSObject, XMLParserDelegate {
             yCoord = attributeDict["Y"] ?? ""
         } else if elementName == "Stroke" {
             currentStroke = []
+            currentStrokeId = attributeDict["index"].flatMap { Int($0) } ?? -1
+        } else if elementName == "Gesture" {
+            gestureName = attributeDict["Name"]
         }
     }
 
     public func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
         if elementName == "Point" {
             if let x = Int(xCoord), let y = Int(yCoord) {
-                let point = Point(x: Double(x), y: Double(y))
+                let point = Point(x: Double(x), y: Double(y), strokeId: currentStrokeId)
                 currentStroke.append(point)
             }
         } else if elementName == "Stroke" {
@@ -105,7 +110,7 @@ public class MultiStrokeParser: NSObject, XMLParserDelegate {
     }
 
     public func parserDidEndDocument(_ parser: XMLParser) {
-        let path = MultiStrokePath(strokes: strokes)
+        let path = MultiStrokePath(strokes: strokes, name: gestureName)
         self.completion(path)
     }
 }

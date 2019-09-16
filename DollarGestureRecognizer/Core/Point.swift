@@ -8,7 +8,7 @@
 
 typealias Number = Double
 
-public class Point {
+public struct Point {
     var x: Double
     var y: Double
     var strokeId: Int?
@@ -19,8 +19,10 @@ public class Point {
         self.strokeId = strokeId
     }
 
-    public init(point: CGPoint) {
-        self.x = Double(point.x); self.y = Double(point.y)
+    public init(point: CGPoint, strokeId: Int? = nil) {
+        self.x = Double(point.x)
+        self.y = Double(point.y)
+        self.strokeId = strokeId
     }
 
 }
@@ -41,12 +43,12 @@ extension Point {
         return CGPoint(x: CGFloat(self.x), y: CGFloat(self.y))
     }
 
-    static func modify(_ point: Point, _ function: (Double) -> Double) -> Point { //Applies function to both components
-        return Point(x: function(point.x), y: function(point.y))
+    static func componentWise(_ point: Point, _ function: (Double) -> Double) -> Point { //Applies function to both components
+        return Point(x: function(point.x), y: function(point.y), strokeId: point.strokeId)
     }
 
-    func apply(_ function: (Double) -> Double) -> Point {
-        return Point.modify(self, function)
+    func componentWise(_ function: (Double) -> Double) -> Point {
+        return Point.componentWise(self, function)
     }
 
     static func + (_ lhs: Point, _ rhs: Point) -> Point {
@@ -54,7 +56,7 @@ extension Point {
     }
 
     static func * (_ lhs: Point, _ rhs: Double) -> Point {
-        return Point(x: lhs.x * rhs, y: lhs.y * rhs)
+        return componentWise(lhs, { $0 * rhs })
     }
 
     static func / (_ lhs: Point, _ rhs: Double) -> Point {

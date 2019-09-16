@@ -34,6 +34,13 @@ extension Array {
             }
         })
     }
+
+    subscript(safe index: Int) -> Element? {
+        guard index < self.count && index >= 0 else {
+            return nil
+        }
+        return self[index]
+    }
 }
 
 // MARK: - Business logic related
@@ -51,8 +58,14 @@ extension Array where Element == Point {
     func pathLength() -> Double {
         guard self.count > 1 else { return 0 }
         var totalDistance: Double = 0
+        let haveStrokeIds = allSatisfy({ $0.strokeId != nil })
         for idx in 1...(self.count - 1) {
-            totalDistance += self[idx - 1].distanceTo(point: self[idx])
+            let previousPoint = self[idx - 1]
+            let currentPoint = self[idx]
+            if haveStrokeIds && previousPoint.strokeId != currentPoint.strokeId {
+                continue
+            }
+            totalDistance += previousPoint.distanceTo(point: currentPoint)
         }
         return totalDistance
     }
@@ -63,20 +76,22 @@ extension Array where Element == Point {
     }
 
     func boundingRect() -> (min: Point, max: Point) {
-        let minimum = self.min(by: { point1, point2 in
-            return point1.x < point2.x && point1.y < point2.y
-        }) ?? Point(x: Double.greatestFiniteMagnitude, y: Double.greatestFiniteMagnitude)
+        guard let firstPoint = self.first else {
+            return (Point(x: .greatestFiniteMagnitude, y: .greatestFiniteMagnitude), Point(x: -.greatestFiniteMagnitude, y: -.greatestFiniteMagnitude))
 
-        let maximum = self.max(by: { point1, point2 in
-            return point1.x > point2.x && point1.y > point2.y
-        }) ?? Point(x: -Double.greatestFiniteMagnitude, y: -Double.greatestFiniteMagnitude)
+        }
 
+        let maximum = self.reduce(firstPoint, {
+            return Point(x: Swift.max($0.x, $1.x), y: Swift.max($0.y, $1.y))
+        })
+
+        let minimum = self.reduce(firstPoint, {
+            Point(x: Swift.min($0.x, $1.x), y: Swift.min($0.y, $1.y))
+        })
         return (minimum, maximum)
     }
 
     func groupedByStrokeId() -> [[Point]] {
         return self.groupBy({ $0.strokeId == $1.strokeId && $0.strokeId != nil && $1.strokeId != nil })
     }
-
 }
-

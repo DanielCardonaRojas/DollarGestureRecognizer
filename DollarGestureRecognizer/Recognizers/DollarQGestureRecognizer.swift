@@ -9,10 +9,42 @@
 import UIKit
 
 public class DollarQGestureRecognizer: UIGestureRecognizer {
-    private var samples: [CGPoint] = []
-    var trackedTouch: UITouch? // Reference to the touch being tracked
+    private var samples: [Point] = []
     private var dq: DollarQ
-    private(set) var result: (Template, Double)? //Template index, score, exceed threshold?
+    private var currentTouchCount: Int = -1
+    private var milliStep: Double = 50
+    private var result: (template: Template, templateIndex: Int, score: Double)? //Template index, score, exceed threshold?
+    private(set) var idleTimeThreshold: TimeInterval
+
+    private var idleTime: TimeInterval = 0 {
+        didSet {
+            if idleTime >= idleTimeThreshold {
+                processTouches()
+                restart()
+            }
+        }
+    }
+
+    private lazy var timer: Timer = {
+        return self.createTimer()
+    }()
+
+    private func createTimer() -> Timer {
+        let timer = Timer.scheduledTimer(withTimeInterval: milliStep / 1000, repeats: true, block: { timer in
+            self.idleTime += self.milliStep
+            print(self.idleTime)
+        })
+//        let timer = Timer(timeInterval: 1.0 / 1000, target: self, selector: #selector(updateTimer(_:)), userInfo: nil, repeats: true)
+        return timer
+    }
+
+    public var matchResult: (templateIndex: Int, score: Double, templateName: String?)? {
+        guard let r = result, self.state == .ended else {
+            return nil
+        }
+        let name = dq.templates[r.templateIndex].name
+        return (r.templateIndex, r.score, name)
+    }
 
     /**
      Returns a 3 element tuple where the
@@ -20,38 +52,38 @@ public class DollarQGestureRecognizer: UIGestureRecognizer {
      second element is the score [0, 1]
      third element mostly informative if exceeded the desired threshold.
      */
-    public init(target: Any?, action: Selector?, templates: [MultiStrokePath]) {
+    public init(target: Any?, action: Selector?, templates: [MultiStrokePath], idleTimeThreshold: TimeInterval = 1000) {
+        self.idleTimeThreshold = idleTimeThreshold
         self.dq = DollarQ(templates: templates)
         super.init(target: target, action: action)
     }
 
+    @objc private func updateTimer(_ sender: Timer) {
+        idleTime += 1
+        print(idleTime)
+    }
+
     override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent) {
+        print("touchesBegan")
+        currentTouchCount += 1
+        idleTime = 0
+        if timer.isValid {
+            timer.invalidate()
+        }
         if touches.count != 1 {
             state = .failed
         }
 
         // Capture the first touch and store some information about it.
-        if self.trackedTouch == nil {
-            if let firstTouch = touches.first {
-                self.trackedTouch = firstTouch
-                self.addSample(for: firstTouch)
-                state = .began
-            }
-        } else {
-            // Ignore all but the first touch.
-            for touch in touches {
-                if touch != self.trackedTouch {
-                    self.ignore(touch, for: event)
-                }
-            }
+        if let firstTouch = touches.first {
+            self.addSample(for: firstTouch)
         }
         state = .began
     }
 
     override public func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent) {
         state = .cancelled
-        processTouches()
-        samples.removeAll()
+        restart()
     }
 
     public func setTemplates(_ templates: [MultiStrokePath]) {
@@ -59,13 +91,13 @@ public class DollarQGestureRecognizer: UIGestureRecognizer {
     }
 
     override public func reset() {
-        samples.removeAll()
-        self.trackedTouch = nil
+        restart()
     }
 
     override public func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent) {
         self.addSample(for: touches.first!)
-//        processTouches()
+        restartTimer()
+        print("touchesEnded")
     }
 
     override public func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent) {
@@ -76,7 +108,7 @@ public class DollarQGestureRecognizer: UIGestureRecognizer {
 
     // MARK: Processing
     private func processTouches() {
-        let candidate = MultiStrokePath(points: samples.toPoints())
+        let candidate = MultiStrokePath(points: samples)
         
         do {
             result = try dq.recognize(points: candidate)
@@ -101,6 +133,21 @@ public class DollarQGestureRecognizer: UIGestureRecognizer {
 
     private func addSample(for touch: UITouch) {
         let newSample = touch.location(in: self.view)
-        samples.append(newSample)
+        let point = Point(point: newSample, strokeId: currentTouchCount)
+        samples.append(point)
+    }
+
+    private func restart() {
+        idleTime = 0
+        currentTouchCount = -1
+        samples.removeAll()
+        if timer.isValid {
+            timer.invalidate()
+        }
+    }
+
+    private func restartTimer() {
+        timer.invalidate()
+        timer = createTimer()
     }
 }

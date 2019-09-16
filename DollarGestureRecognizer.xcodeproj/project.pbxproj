@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		4B9EA5321FE80AD30033CC1D /* OneDollarGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B9EA5311FE80AD30033CC1D /* OneDollarGestureRecognizer.swift */; };
 		B9067B0722F9E873009944ED /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9067B0622F9E873009944ED /* AppDelegate.swift */; };
-		B9067B0922F9E873009944ED /* Dollar1ExampleVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9067B0822F9E873009944ED /* Dollar1ExampleVC.swift */; };
 		B9067B0E22F9E876009944ED /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B9067B0D22F9E876009944ED /* Assets.xcassets */; };
 		B9067B1122F9E876009944ED /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B9067B0F22F9E876009944ED /* LaunchScreen.storyboard */; };
 		B93323E323047E3600BE8580 /* BoundingRect.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93323E223047E3600BE8580 /* BoundingRect.swift */; };
@@ -57,6 +56,7 @@
 		B9B92AED232A846400EC5D25 /* DollarQGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B92AEC232A846400EC5D25 /* DollarQGestureRecognizer.swift */; };
 		B9DFD4C022FF0FAE00F8CB5D /* DollarGestureRecognizer.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C405F3F31FE55827009BC846 /* DollarGestureRecognizer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B9EC6D232303455900BAAB79 /* SingleStrokeParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9EC6D222303455900BAAB79 /* SingleStrokeParser.swift */; };
+		B9F778BB232C5E8A00164549 /* DollarGestureRecognizerExampleVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9F778BA232C5E8A00164549 /* DollarGestureRecognizerExampleVC.swift */; };
 		C405F3FD1FE55827009BC846 /* DollarGestureRecognizer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C405F3F31FE55827009BC846 /* DollarGestureRecognizer.framework */; };
 		C405F4021FE55827009BC846 /* OneDollarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C405F4011FE55827009BC846 /* OneDollarTests.swift */; };
 		C405F4041FE55827009BC846 /* DollarGestureRecognizer.h in Headers */ = {isa = PBXBuildFile; fileRef = C405F3F61FE55827009BC846 /* DollarGestureRecognizer.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -102,7 +102,6 @@
 		4B9EA5311FE80AD30033CC1D /* OneDollarGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneDollarGestureRecognizer.swift; sourceTree = "<group>"; };
 		B9067B0422F9E873009944ED /* DollarGestureRecognizerExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DollarGestureRecognizerExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B9067B0622F9E873009944ED /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		B9067B0822F9E873009944ED /* Dollar1ExampleVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dollar1ExampleVC.swift; sourceTree = "<group>"; };
 		B9067B0D22F9E876009944ED /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B9067B1022F9E876009944ED /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B9067B1222F9E876009944ED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -150,6 +149,7 @@
 		B9B92AEA2329388700EC5D25 /* DollarQTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DollarQTests.swift; sourceTree = "<group>"; };
 		B9B92AEC232A846400EC5D25 /* DollarQGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DollarQGestureRecognizer.swift; sourceTree = "<group>"; };
 		B9EC6D222303455900BAAB79 /* SingleStrokeParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleStrokeParser.swift; sourceTree = "<group>"; };
+		B9F778BA232C5E8A00164549 /* DollarGestureRecognizerExampleVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DollarGestureRecognizerExampleVC.swift; sourceTree = "<group>"; };
 		C405F3F31FE55827009BC846 /* DollarGestureRecognizer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DollarGestureRecognizer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C405F3F61FE55827009BC846 /* DollarGestureRecognizer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DollarGestureRecognizer.h; sourceTree = "<group>"; };
 		C405F3F71FE55827009BC846 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -191,8 +191,8 @@
 		B9067B0522F9E873009944ED /* DollarGestureRecognizerExample */ = {
 			isa = PBXGroup;
 			children = (
+				B9F778BA232C5E8A00164549 /* DollarGestureRecognizerExampleVC.swift */,
 				B9067B0622F9E873009944ED /* AppDelegate.swift */,
-				B9067B0822F9E873009944ED /* Dollar1ExampleVC.swift */,
 				B9067B0D22F9E876009944ED /* Assets.xcassets */,
 				B9067B0F22F9E876009944ED /* LaunchScreen.storyboard */,
 				B9067B1222F9E876009944ED /* Info.plist */,
@@ -562,8 +562,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B9067B0922F9E873009944ED /* Dollar1ExampleVC.swift in Sources */,
 				B9067B0722F9E873009944ED /* AppDelegate.swift in Sources */,
+				B9F778BB232C5E8A00164549 /* DollarGestureRecognizerExampleVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

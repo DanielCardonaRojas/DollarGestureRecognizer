@@ -9,10 +9,15 @@
 import UIKit
 import DollarGestureRecognizer
 
-class Dollar1ExampleVC: UIViewController {
+class DollarGestureRecognizerExampleVC: UIViewController {
 
-    typealias RecognitionHandler = ((OneDollarGestureRecognizer) -> Void)?
-    var recognitionHandler: RecognitionHandler
+    lazy var algorithSelectorButton: UISegmentedControl = {
+        let control = UISegmentedControl(items: ["$1", "$Q"])
+        control.translatesAutoresizingMaskIntoConstraints = false
+        control.addTarget(self, action: #selector(didChangeAlgorithmSelection(sender:)), for: .valueChanged)
+        control.selectedSegmentIndex = 0
+        return control
+    }()
 
     lazy var recognitionResultLabel: UILabel = {
         let label = UILabel()
@@ -32,6 +37,13 @@ class Dollar1ExampleVC: UIViewController {
         return label
     }()
 
+    lazy var gestureView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .lightGray
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+
     lazy var catalogImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -39,13 +51,17 @@ class Dollar1ExampleVC: UIViewController {
         return imageView
     }()
 
-    lazy var gestureRecognizer: OneDollarGestureRecognizer = {
+    lazy var d1GestureRecognizer: OneDollarGestureRecognizer = {
         let d1 = OneDollarGestureRecognizer(target: self, action: #selector(didRecognizeD1Gesture(_:)), templates: [])
         return d1
     }()
 
-    init(recognitionHandler: RecognitionHandler = nil) {
-        self.recognitionHandler = recognitionHandler
+    lazy var dQGestureRecognizer: DollarQGestureRecognizer = {
+        let dQ = DollarQGestureRecognizer(target: self, action: #selector(didRecognizeDQGesture(_:)), templates: [])
+        return dQ
+    }()
+
+    init() {
         super.init(nibName: nil, bundle: nil)
         view.backgroundColor = .white
     }
@@ -63,8 +79,16 @@ class Dollar1ExampleVC: UIViewController {
             } else {
                 recognitionResultLabel.text = "No match"
             }
+        }
+    }
 
-            recognitionHandler?(sender)
+    @objc func didRecognizeDQGesture(_ sender: DollarQGestureRecognizer) {
+        if sender.state == .ended {
+            if let (template, score, name) = sender.matchResult {
+                let roundedScore = Double(round(score * 100)) / 100
+                recognitionResultLabel.text = "Score: \(roundedScore) idx: \(template) name: \(name ?? "Not found")"
+            }
+            recognitionResultLabel.text = "No match"
         }
     }
 
@@ -72,36 +96,37 @@ class Dollar1ExampleVC: UIViewController {
         super.viewDidLoad()
         setupViews()
         setupConstraints()
-        setupGestureRecognizers()
         let fileNames = SingleStrokePath.DefaultTemplate.allCases.map { $0.rawValue }
         SingleStrokeParser.loadStrokePatterns(files: fileNames, completion: { paths in
-            self.gestureRecognizer.setTemplates(paths)
+            self.d1GestureRecognizer.setTemplates(paths)
         })
 
         let multiStrokeFileNames = MultiStrokePath.DefaultTemplate.allCases.map { $0.rawValue }
         MultiStrokeParser.loadStrokePatterns(files: multiStrokeFileNames, completion: { strokes in
-            print(strokes)
+            self.dQGestureRecognizer.setTemplates(strokes)
         })
 
-        var template = Template()
-        template.lut = DollarQ.LookUpTable()
-        let LUT = template.lut
-    }
-
-    private func setupGestureRecognizers() {
-        view.addGestureRecognizer(gestureRecognizer)
+        updateToAlgorithm(0)
     }
 
     private func setupViews() {
+        view.addSubview(gestureView)
         view.addSubview(recognitionResultLabel)
         view.addSubview(titleLabel)
         view.addSubview(catalogImageView)
+        view.addSubview(algorithSelectorButton)
     }
 
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 50),
+            algorithSelectorButton.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 40),
+            algorithSelectorButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            gestureView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20),
+            gestureView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            gestureView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            gestureView.bottomAnchor.constraint(equalTo: catalogImageView.topAnchor),
             catalogImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             catalogImageView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             catalogImageView.heightAnchor.constraint(equalToConstant: 200),
@@ -110,5 +135,24 @@ class Dollar1ExampleVC: UIViewController {
             recognitionResultLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor)
             ])
 
+    }
+
+    @objc func didChangeAlgorithmSelection(sender: UISegmentedControl) {
+        let value = sender.selectedSegmentIndex
+        updateToAlgorithm(value)
+    }
+
+    func updateToAlgorithm(_ value: Int) {
+        if value == 0 {
+            titleLabel.text = "$1 Recognizer"
+            catalogImageView.image = UIImage(named: "dollar_1_figures")
+            gestureView.addGestureRecognizer(d1GestureRecognizer)
+            gestureView.removeGestureRecognizer(dQGestureRecognizer)
+        } else if value == 1 {
+            titleLabel.text = "$Q Recognizer"
+            catalogImageView.image = UIImage(named: "dollar_Q_multistrokes")
+            gestureView.addGestureRecognizer(dQGestureRecognizer)
+            gestureView.removeGestureRecognizer(d1GestureRecognizer)
+        }
     }
 }
