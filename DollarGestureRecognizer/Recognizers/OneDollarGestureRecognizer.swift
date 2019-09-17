@@ -94,10 +94,10 @@ public class OneDollarGestureRecognizer: UIGestureRecognizer {
             }
             //Up to client code to determine if this should pass or not
             state = .ended
-        } catch OneDollarError.EmptyTemplates {
+        } catch DollarError.EmptyTemplates {
             state = .failed
             print("Supply non empty paths to instance")
-        } catch OneDollarError.TooFewPoints {
+        } catch DollarError.TooFewPoints {
             state = .failed
             print("Needs better configuration to sample")
         } catch let error {

@@ -9,9 +9,9 @@
 /* Begin PBXBuildFile section */
 		4B9EA5321FE80AD30033CC1D /* OneDollarGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B9EA5311FE80AD30033CC1D /* OneDollarGestureRecognizer.swift */; };
 		B9067B0722F9E873009944ED /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9067B0622F9E873009944ED /* AppDelegate.swift */; };
-		B9067B0922F9E873009944ED /* Dollar1ExampleVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9067B0822F9E873009944ED /* Dollar1ExampleVC.swift */; };
 		B9067B0E22F9E876009944ED /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B9067B0D22F9E876009944ED /* Assets.xcassets */; };
 		B9067B1122F9E876009944ED /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B9067B0F22F9E876009944ED /* LaunchScreen.storyboard */; };
+		B91DF88D23302C0A009A6235 /* CanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91DF88C23302C0A009A6235 /* CanvasView.swift */; };
 		B93323E323047E3600BE8580 /* BoundingRect.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93323E223047E3600BE8580 /* BoundingRect.swift */; };
 		B93323E523047E8A00BE8580 /* DollarError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93323E423047E8A00BE8580 /* DollarError.swift */; };
 		B93323E723047ED800BE8580 /* SingleStrokePath.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93323E623047ED800BE8580 /* SingleStrokePath.swift */; };
@@ -32,8 +32,32 @@
 		B9332418230484D200BE8580 /* question_mark.xml in Resources */ = {isa = PBXBuildFile; fileRef = B9332408230484D200BE8580 /* question_mark.xml */; };
 		B9332419230484D200BE8580 /* right_curly_brace.xml in Resources */ = {isa = PBXBuildFile; fileRef = B9332409230484D200BE8580 /* right_curly_brace.xml */; };
 		B933241B2304915800BE8580 /* DollarConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B933241A2304915800BE8580 /* DollarConstants.swift */; };
+		B93324202304A79700BE8580 /* DollarQ.swift in Sources */ = {isa = PBXBuildFile; fileRef = B933241F2304A79700BE8580 /* DollarQ.swift */; };
+		B93324442304E40C00BE8580 /* MultiStrokePath.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93324432304E40C00BE8580 /* MultiStrokePath.swift */; };
+		B93324552304E6BA00BE8580 /* arrowhead.xml in Resources */ = {isa = PBXBuildFile; fileRef = B93324452304E6B900BE8580 /* arrowhead.xml */; };
+		B93324562304E6BA00BE8580 /* null.xml in Resources */ = {isa = PBXBuildFile; fileRef = B93324462304E6B900BE8580 /* null.xml */; };
+		B93324572304E6BA00BE8580 /* I.xml in Resources */ = {isa = PBXBuildFile; fileRef = B93324472304E6B900BE8580 /* I.xml */; };
+		B93324582304E6BA00BE8580 /* H.xml in Resources */ = {isa = PBXBuildFile; fileRef = B93324482304E6B900BE8580 /* H.xml */; };
+		B93324592304E6BA00BE8580 /* line.xml in Resources */ = {isa = PBXBuildFile; fileRef = B93324492304E6B900BE8580 /* line.xml */; };
+		B933245A2304E6BA00BE8580 /* pitchfork.xml in Resources */ = {isa = PBXBuildFile; fileRef = B933244A2304E6B900BE8580 /* pitchfork.xml */; };
+		B933245B2304E6BA00BE8580 /* N.xml in Resources */ = {isa = PBXBuildFile; fileRef = B933244B2304E6B900BE8580 /* N.xml */; };
+		B933245C2304E6BA00BE8580 /* T.xml in Resources */ = {isa = PBXBuildFile; fileRef = B933244C2304E6B900BE8580 /* T.xml */; };
+		B933245D2304E6BA00BE8580 /* X.xml in Resources */ = {isa = PBXBuildFile; fileRef = B933244D2304E6B900BE8580 /* X.xml */; };
+		B933245E2304E6BA00BE8580 /* P.xml in Resources */ = {isa = PBXBuildFile; fileRef = B933244E2304E6B900BE8580 /* P.xml */; };
+		B933245F2304E6BA00BE8580 /* five_point_star.xml in Resources */ = {isa = PBXBuildFile; fileRef = B933244F2304E6B900BE8580 /* five_point_star.xml */; };
+		B93324602304E6BA00BE8580 /* D.xml in Resources */ = {isa = PBXBuildFile; fileRef = B93324502304E6B900BE8580 /* D.xml */; };
+		B93324612304E6BA00BE8580 /* exclamation_point.xml in Resources */ = {isa = PBXBuildFile; fileRef = B93324512304E6B900BE8580 /* exclamation_point.xml */; };
+		B93324622304E6BA00BE8580 /* asterisk.xml in Resources */ = {isa = PBXBuildFile; fileRef = B93324522304E6B900BE8580 /* asterisk.xml */; };
+		B93324632304E6BA00BE8580 /* six_point_star.xml in Resources */ = {isa = PBXBuildFile; fileRef = B93324532304E6B900BE8580 /* six_point_star.xml */; };
+		B93324642304E6BA00BE8580 /* half_note.xml in Resources */ = {isa = PBXBuildFile; fileRef = B93324542304E6BA00BE8580 /* half_note.xml */; };
+		B93324662304E7BF00BE8580 /* MultiStrokeParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93324652304E7BF00BE8580 /* MultiStrokeParser.swift */; };
+		B93324692305932200BE8580 /* Point.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93324682305932200BE8580 /* Point.swift */; };
+		B969F87C23270CC70037BD76 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B969F87B23270CC70037BD76 /* Array+Extensions.swift */; };
+		B9B92AEB2329388700EC5D25 /* DollarQTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B92AEA2329388700EC5D25 /* DollarQTests.swift */; };
+		B9B92AED232A846400EC5D25 /* DollarQGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B92AEC232A846400EC5D25 /* DollarQGestureRecognizer.swift */; };
 		B9DFD4C022FF0FAE00F8CB5D /* DollarGestureRecognizer.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C405F3F31FE55827009BC846 /* DollarGestureRecognizer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B9EC6D232303455900BAAB79 /* SingleStrokeParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9EC6D222303455900BAAB79 /* SingleStrokeParser.swift */; };
+		B9F778BB232C5E8A00164549 /* DollarGestureRecognizerExampleVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9F778BA232C5E8A00164549 /* DollarGestureRecognizerExampleVC.swift */; };
 		C405F3FD1FE55827009BC846 /* DollarGestureRecognizer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C405F3F31FE55827009BC846 /* DollarGestureRecognizer.framework */; };
 		C405F4021FE55827009BC846 /* OneDollarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C405F4011FE55827009BC846 /* OneDollarTests.swift */; };
 		C405F4041FE55827009BC846 /* DollarGestureRecognizer.h in Headers */ = {isa = PBXBuildFile; fileRef = C405F3F61FE55827009BC846 /* DollarGestureRecognizer.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -79,10 +103,10 @@
 		4B9EA5311FE80AD30033CC1D /* OneDollarGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneDollarGestureRecognizer.swift; sourceTree = "<group>"; };
 		B9067B0422F9E873009944ED /* DollarGestureRecognizerExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DollarGestureRecognizerExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B9067B0622F9E873009944ED /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		B9067B0822F9E873009944ED /* Dollar1ExampleVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dollar1ExampleVC.swift; sourceTree = "<group>"; };
 		B9067B0D22F9E876009944ED /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B9067B1022F9E876009944ED /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B9067B1222F9E876009944ED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B91DF88C23302C0A009A6235 /* CanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasView.swift; sourceTree = "<group>"; };
 		B93323E223047E3600BE8580 /* BoundingRect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoundingRect.swift; sourceTree = "<group>"; };
 		B93323E423047E8A00BE8580 /* DollarError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DollarError.swift; sourceTree = "<group>"; };
 		B93323E623047ED800BE8580 /* SingleStrokePath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleStrokePath.swift; sourceTree = "<group>"; };
@@ -103,7 +127,31 @@
 		B9332408230484D200BE8580 /* question_mark.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = question_mark.xml; sourceTree = "<group>"; };
 		B9332409230484D200BE8580 /* right_curly_brace.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = right_curly_brace.xml; sourceTree = "<group>"; };
 		B933241A2304915800BE8580 /* DollarConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DollarConstants.swift; sourceTree = "<group>"; };
+		B933241F2304A79700BE8580 /* DollarQ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DollarQ.swift; sourceTree = "<group>"; };
+		B93324432304E40C00BE8580 /* MultiStrokePath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiStrokePath.swift; sourceTree = "<group>"; };
+		B93324452304E6B900BE8580 /* arrowhead.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = arrowhead.xml; sourceTree = "<group>"; };
+		B93324462304E6B900BE8580 /* null.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = null.xml; sourceTree = "<group>"; };
+		B93324472304E6B900BE8580 /* I.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = I.xml; sourceTree = "<group>"; };
+		B93324482304E6B900BE8580 /* H.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = H.xml; sourceTree = "<group>"; };
+		B93324492304E6B900BE8580 /* line.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = line.xml; sourceTree = "<group>"; };
+		B933244A2304E6B900BE8580 /* pitchfork.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = pitchfork.xml; sourceTree = "<group>"; };
+		B933244B2304E6B900BE8580 /* N.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = N.xml; sourceTree = "<group>"; };
+		B933244C2304E6B900BE8580 /* T.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = T.xml; sourceTree = "<group>"; };
+		B933244D2304E6B900BE8580 /* X.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = X.xml; sourceTree = "<group>"; };
+		B933244E2304E6B900BE8580 /* P.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = P.xml; sourceTree = "<group>"; };
+		B933244F2304E6B900BE8580 /* five_point_star.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = five_point_star.xml; sourceTree = "<group>"; };
+		B93324502304E6B900BE8580 /* D.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = D.xml; sourceTree = "<group>"; };
+		B93324512304E6B900BE8580 /* exclamation_point.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = exclamation_point.xml; sourceTree = "<group>"; };
+		B93324522304E6B900BE8580 /* asterisk.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = asterisk.xml; sourceTree = "<group>"; };
+		B93324532304E6B900BE8580 /* six_point_star.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = six_point_star.xml; sourceTree = "<group>"; };
+		B93324542304E6BA00BE8580 /* half_note.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = half_note.xml; sourceTree = "<group>"; };
+		B93324652304E7BF00BE8580 /* MultiStrokeParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiStrokeParser.swift; sourceTree = "<group>"; };
+		B93324682305932200BE8580 /* Point.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Point.swift; sourceTree = "<group>"; };
+		B969F87B23270CC70037BD76 /* Array+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
+		B9B92AEA2329388700EC5D25 /* DollarQTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DollarQTests.swift; sourceTree = "<group>"; };
+		B9B92AEC232A846400EC5D25 /* DollarQGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DollarQGestureRecognizer.swift; sourceTree = "<group>"; };
 		B9EC6D222303455900BAAB79 /* SingleStrokeParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleStrokeParser.swift; sourceTree = "<group>"; };
+		B9F778BA232C5E8A00164549 /* DollarGestureRecognizerExampleVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DollarGestureRecognizerExampleVC.swift; sourceTree = "<group>"; };
 		C405F3F31FE55827009BC846 /* DollarGestureRecognizer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DollarGestureRecognizer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C405F3F61FE55827009BC846 /* DollarGestureRecognizer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DollarGestureRecognizer.h; sourceTree = "<group>"; };
 		C405F3F71FE55827009BC846 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -145,11 +193,12 @@
 		B9067B0522F9E873009944ED /* DollarGestureRecognizerExample */ = {
 			isa = PBXGroup;
 			children = (
+				B9F778BA232C5E8A00164549 /* DollarGestureRecognizerExampleVC.swift */,
 				B9067B0622F9E873009944ED /* AppDelegate.swift */,
-				B9067B0822F9E873009944ED /* Dollar1ExampleVC.swift */,
 				B9067B0D22F9E876009944ED /* Assets.xcassets */,
 				B9067B0F22F9E876009944ED /* LaunchScreen.storyboard */,
 				B9067B1222F9E876009944ED /* Info.plist */,
+				B91DF88C23302C0A009A6235 /* CanvasView.swift */,
 			);
 			path = DollarGestureRecognizerExample;
 			sourceTree = "<group>";
@@ -159,7 +208,6 @@
 			children = (
 				B93323E623047ED800BE8580 /* SingleStrokePath.swift */,
 				C405F40D1FE55895009BC846 /* OneDollar.swift */,
-				B9EC6D222303455900BAAB79 /* SingleStrokeParser.swift */,
 				B93323E223047E3600BE8580 /* BoundingRect.swift */,
 			);
 			path = $1;
@@ -169,6 +217,7 @@
 			isa = PBXGroup;
 			children = (
 				4B9EA5311FE80AD30033CC1D /* OneDollarGestureRecognizer.swift */,
+				B9B92AEC232A846400EC5D25 /* DollarQGestureRecognizer.swift */,
 			);
 			path = Recognizers;
 			sourceTree = "<group>";
@@ -185,9 +234,51 @@
 		B933241C2304927000BE8580 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				B93324422304E3CA00BE8580 /* MultiStrokePatterns */,
 				B9EC6D26230352E200BAAB79 /* SingleStrokePatterns */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		B93324212304A79E00BE8580 /* $Q */ = {
+			isa = PBXGroup;
+			children = (
+				B933241F2304A79700BE8580 /* DollarQ.swift */,
+				B93324432304E40C00BE8580 /* MultiStrokePath.swift */,
+			);
+			path = $Q;
+			sourceTree = "<group>";
+		};
+		B93324422304E3CA00BE8580 /* MultiStrokePatterns */ = {
+			isa = PBXGroup;
+			children = (
+				B93324452304E6B900BE8580 /* arrowhead.xml */,
+				B93324522304E6B900BE8580 /* asterisk.xml */,
+				B93324502304E6B900BE8580 /* D.xml */,
+				B93324512304E6B900BE8580 /* exclamation_point.xml */,
+				B933244F2304E6B900BE8580 /* five_point_star.xml */,
+				B93324482304E6B900BE8580 /* H.xml */,
+				B93324542304E6BA00BE8580 /* half_note.xml */,
+				B93324472304E6B900BE8580 /* I.xml */,
+				B93324492304E6B900BE8580 /* line.xml */,
+				B933244B2304E6B900BE8580 /* N.xml */,
+				B93324462304E6B900BE8580 /* null.xml */,
+				B933244E2304E6B900BE8580 /* P.xml */,
+				B933244A2304E6B900BE8580 /* pitchfork.xml */,
+				B93324532304E6B900BE8580 /* six_point_star.xml */,
+				B933244C2304E6B900BE8580 /* T.xml */,
+				B933244D2304E6B900BE8580 /* X.xml */,
+			);
+			path = MultiStrokePatterns;
+			sourceTree = "<group>";
+		};
+		B93324672305895300BE8580 /* XMLParsers */ = {
+			isa = PBXGroup;
+			children = (
+				B9EC6D222303455900BAAB79 /* SingleStrokeParser.swift */,
+				B93324652304E7BF00BE8580 /* MultiStrokeParser.swift */,
+			);
+			path = XMLParsers;
 			sourceTree = "<group>";
 		};
 		B9DFD4BC22FF0D2900F8CB5D /* Frameworks */ = {
@@ -260,6 +351,7 @@
 				C405F4011FE55827009BC846 /* OneDollarTests.swift */,
 				C405F4031FE55827009BC846 /* Info.plist */,
 				C4886A741FE6E6DE00D961F9 /* BezierTests.swift */,
+				B9B92AEA2329388700EC5D25 /* DollarQTests.swift */,
 			);
 			path = DollarGestureRecognizerTests;
 			sourceTree = "<group>";
@@ -267,9 +359,13 @@
 		C41382542114AAF9000D92E6 /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				B93323E123047E1F00BE8580 /* $1 */,
+				B93324682305932200BE8580 /* Point.swift */,
 				B93323E423047E8A00BE8580 /* DollarError.swift */,
 				B933241A2304915800BE8580 /* DollarConstants.swift */,
+				B969F87B23270CC70037BD76 /* Array+Extensions.swift */,
+				B93324672305895300BE8580 /* XMLParsers */,
+				B93323E123047E1F00BE8580 /* $1 */,
+				B93324212304A79E00BE8580 /* $Q */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -403,19 +499,35 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B933245C2304E6BA00BE8580 /* T.xml in Resources */,
+				B93324592304E6BA00BE8580 /* line.xml in Resources */,
 				B933240A230484D200BE8580 /* pigtail.xml in Resources */,
+				B93324622304E6BA00BE8580 /* asterisk.xml in Resources */,
 				B933240C230484D200BE8580 /* circle.xml in Resources */,
+				B933245F2304E6BA00BE8580 /* five_point_star.xml in Resources */,
 				B933240E230484D200BE8580 /* x.xml in Resources */,
 				B9332413230484D200BE8580 /* arrow.xml in Resources */,
 				B9332412230484D200BE8580 /* v.xml in Resources */,
 				B9332415230484D200BE8580 /* triangle.xml in Resources */,
+				B93324572304E6BA00BE8580 /* I.xml in Resources */,
 				B9332410230484D200BE8580 /* star.xml in Resources */,
+				B93324582304E6BA00BE8580 /* H.xml in Resources */,
+				B93324632304E6BA00BE8580 /* six_point_star.xml in Resources */,
+				B933245D2304E6BA00BE8580 /* X.xml in Resources */,
 				B933240B230484D200BE8580 /* left_sq_bracket.xml in Resources */,
 				B9332418230484D200BE8580 /* question_mark.xml in Resources */,
 				B933240F230484D200BE8580 /* left_curly_brace.xml in Resources */,
 				B933240D230484D200BE8580 /* delete_mark.xml in Resources */,
+				B93324552304E6BA00BE8580 /* arrowhead.xml in Resources */,
+				B93324612304E6BA00BE8580 /* exclamation_point.xml in Resources */,
+				B93324562304E6BA00BE8580 /* null.xml in Resources */,
+				B933245A2304E6BA00BE8580 /* pitchfork.xml in Resources */,
+				B93324602304E6BA00BE8580 /* D.xml in Resources */,
 				B9332417230484D200BE8580 /* check.xml in Resources */,
+				B933245E2304E6BA00BE8580 /* P.xml in Resources */,
+				B933245B2304E6BA00BE8580 /* N.xml in Resources */,
 				B9332419230484D200BE8580 /* right_curly_brace.xml in Resources */,
+				B93324642304E6BA00BE8580 /* half_note.xml in Resources */,
 				B9332411230484D200BE8580 /* right_sq_bracket.xml in Resources */,
 				B9332414230484D200BE8580 /* rectangle.xml in Resources */,
 				B9332416230484D200BE8580 /* caret.xml in Resources */,
@@ -453,8 +565,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B9067B0922F9E873009944ED /* Dollar1ExampleVC.swift in Sources */,
 				B9067B0722F9E873009944ED /* AppDelegate.swift in Sources */,
+				B9F778BB232C5E8A00164549 /* DollarGestureRecognizerExampleVC.swift in Sources */,
+				B91DF88D23302C0A009A6235 /* CanvasView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -464,9 +577,15 @@
 			files = (
 				4B9EA5321FE80AD30033CC1D /* OneDollarGestureRecognizer.swift in Sources */,
 				B933241B2304915800BE8580 /* DollarConstants.swift in Sources */,
+				B93324662304E7BF00BE8580 /* MultiStrokeParser.swift in Sources */,
+				B969F87C23270CC70037BD76 /* Array+Extensions.swift in Sources */,
 				B93323E723047ED800BE8580 /* SingleStrokePath.swift in Sources */,
+				B93324692305932200BE8580 /* Point.swift in Sources */,
+				B93324202304A79700BE8580 /* DollarQ.swift in Sources */,
 				C4886A771FE7069000D961F9 /* Bezier.swift in Sources */,
+				B93324442304E40C00BE8580 /* MultiStrokePath.swift in Sources */,
 				B9EC6D232303455900BAAB79 /* SingleStrokeParser.swift in Sources */,
+				B9B92AED232A846400EC5D25 /* DollarQGestureRecognizer.swift in Sources */,
 				B93323E523047E8A00BE8580 /* DollarError.swift in Sources */,
 				B93323E323047E3600BE8580 /* BoundingRect.swift in Sources */,
 				C405F40E1FE55895009BC846 /* OneDollar.swift in Sources */,
@@ -479,6 +598,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C405F4021FE55827009BC846 /* OneDollarTests.swift in Sources */,
+				B9B92AEB2329388700EC5D25 /* DollarQTests.swift in Sources */,
 				C4886A751FE6E6DE00D961F9 /* BezierTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -521,7 +641,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = TNR7223AZQ;
 				INFOPLIST_FILE = DollarGestureRecognizerExample/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -543,7 +663,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = TNR7223AZQ;
 				INFOPLIST_FILE = DollarGestureRecognizerExample/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.danielcardona.DollarGestureRecognizerExample;
@@ -679,13 +799,13 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = "$(SRCROOT)/DollarGestureRecognizer/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.decaroj.OneDollarGestureRecognizer;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -703,12 +823,12 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = "$(SRCROOT)/DollarGestureRecognizer/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.decaroj.OneDollarGestureRecognizer;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -720,10 +840,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = L6BZS62EE3;
 				INFOPLIST_FILE = DollarGestureRecognizerTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.decaroj.DollarGestureRecognizerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -735,10 +856,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = L6BZS62EE3;
 				INFOPLIST_FILE = DollarGestureRecognizerTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.decaroj.DollarGestureRecognizerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

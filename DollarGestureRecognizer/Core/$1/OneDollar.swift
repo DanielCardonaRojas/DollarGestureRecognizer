@@ -11,14 +11,8 @@
 import Foundation
 import UIKit
 
-// MARK: - Types -
-public struct Point {
-    var x: Double
-    var y: Double
-}
-
-typealias PointPath = [Point]
-typealias Template = PointPath
+public typealias PointPath = [Point]
+public typealias Template = PointPath
 typealias OneDollarTemplate = SingleStrokePath
 typealias Degrees = Int
 typealias Radians = Double
@@ -103,7 +97,7 @@ public class OneDollar {
         candidate = OneDollar.resample(points: candidate, totalPoints: configuration.numPoints)
 
         if candidate.count < configuration.numPoints {
-            throw OneDollarError.TooFewPoints
+            throw DollarError.TooFewPoints
         }
     }
     
@@ -128,8 +122,8 @@ public class OneDollar {
     //Step 4: Match points against a set of templates
     public func recognize(candidate c: SingleStrokePath) throws -> (templateIndex: Int, score: Double)? {
         self.candidate = c.path
-        if templates.count == 0 || candidate.count == 0 { throw OneDollarError.EmptyTemplates }
-        if !templates.filter({ t in t.count == 0 }).isEmpty { throw OneDollarError.EmptyTemplates }
+        if templates.count == 0 || candidate.count == 0 { throw DollarError.EmptyTemplates }
+        if !templates.filter({ t in t.count == 0 }).isEmpty { throw DollarError.EmptyTemplates }
 
         var bestDistance = Double.infinity
         var bestTemplate: Int?
@@ -199,7 +193,7 @@ extension OneDollar {
         return points.map { (p: Point) -> Point in
             let newX = p.x + (to.x - centroid.x)
             let newY = p.y + (to.y - centroid.y)
-            return Point(x: newX, y: newY)
+            return Point(x: newX, y: newY, strokeId: p.strokeId)
         }
     }
     
@@ -249,79 +243,5 @@ extension OneDollar {
             }
         }
         return min(f1, f2)
-    }
-}
-
-// MARK: Point extensions
-extension Point {
-    public init(point: CGPoint) {
-        self.x = Double(point.x); self.y = Double(point.y)
-    }
-    
-    static func distance(from: Point, to: Point) -> Double {
-        let dx = (from.x - to.x)
-        let dy = (from.y - to.y)
-        return sqrt(dx * dx + dy * dy)
-    }
-    
-    func distanceTo(point: Point) -> Double {
-        return Point.distance(from: self, to: point)
-    }
-    
-    func cgPoint() -> CGPoint {
-        return CGPoint(x: CGFloat(self.x), y: CGFloat(self.y))
-    }
-    
-    static func modify(_ point: Point, _ function: (Double) -> Double) -> Point { //Applies function to both components
-        return Point(x: function(point.x), y: function(point.y))
-    }
-    
-    func apply(_ function: (Double) -> Double) -> Point {
-       return Point.modify(self, function)
-    }
-    
-    static func + (_ lhs: Point, _ rhs: Point) -> Point {
-        return Point(x: lhs.x + rhs.x, y: lhs.y + rhs.y)
-    }
-    
-}
-
-// MARK: PointPath extensions
-extension Array where Element == Point {
-    func centroid() -> Point {
-        var centroidPoint = self.reduce(Point(x: 0, y: 0)) { (acc, p) -> Point in
-            acc + p
-        }
-        let totalPoints = Double(self.count)
-        centroidPoint.x = (centroidPoint.x / totalPoints)
-        centroidPoint.y = (centroidPoint.y / totalPoints)
-        return centroidPoint
-    }
-    
-    func pathLength() -> Double {
-        guard self.count > 1 else { return 0 }
-        var totalDistance: Double = 0
-        for idx in 1...(self.count - 1) {
-            totalDistance += self[idx - 1].distanceTo(point: self[idx])
-        }
-        return totalDistance
-    }
-    
-    func indicativeAngle() -> Double {
-        let centroid = self.centroid()
-        return atan2(centroid.y - self.first!.y, centroid.x - self.first!.x)
-    }
-    
-}
-
-public extension Array where Element == CGPoint {
-    func toPoints() -> [Point] {
-        return self.map { p in Point(point: p) }
-    }
-}
-
-private extension Double {
-    func toRadians ( ) -> Radians {
-       return (self / 180.0) * Double.pi
     }
 }

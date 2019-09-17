@@ -7,7 +7,7 @@
 //
 
 import Foundation
-public enum OneDollarError: Error {
+public enum DollarError: Error {
     case EmptyTemplates
     case TooFewPoints
 }

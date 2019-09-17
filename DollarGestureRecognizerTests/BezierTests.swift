@@ -62,27 +62,27 @@ class BezierTests: XCTestCase {
         XCTAssert(onCurve > Int(Double(iterations) * 0.4))
     }
     
-    func testEvaluatedPointsOnCubicCurveAreActuallyOnTheCurveBernstein() {
-        // Evaluating Bernstein polynomials is expensive and prone to error
-        let bezier = UIBezierPath()
-        bezier.move(to: CGPoint.zero)
-        let cp1: CGPoint = CGPoint(x: 5, y: 5)
-        let cp2: CGPoint = CGPoint(x: 8, y: 8)
-        bezier.addCurve(to: CGPoint(x: 10, y: 0), controlPoint1: cp1, controlPoint2: cp2)
-        let elems: [PathElement] = bezier.cgPath.elements()
-        var onCurve: Int = 0
-        let iterations: Int = 100
-        for _ in 1...iterations {
-            let t = Double.random
-            let points: [CGPoint] = PathElement.evaluate(path: elems, every: [t])
-            if bezier.contains(points.first!) {
-                onCurve += 1
-            }
-        }
-        //At lear X % of points are on the line ... who know what the core algorithm is, rounding errors, etc.
-        print("\nScore for points on cubic curve: \(onCurve) from \(iterations) iterations \n ")
-        XCTAssert(onCurve > Int(Double(iterations) * 0.4))
-    }
+//    func testEvaluatedPointsOnCubicCurveAreActuallyOnTheCurveBernstein() {
+//        // Evaluating Bernstein polynomials is expensive and prone to error
+//        let bezier = UIBezierPath()
+//        bezier.move(to: CGPoint.zero)
+//        let cp1: CGPoint = CGPoint(x: 5, y: 5)
+//        let cp2: CGPoint = CGPoint(x: 8, y: 8)
+//        bezier.addCurve(to: CGPoint(x: 10, y: 0), controlPoint1: cp1, controlPoint2: cp2)
+//        let elems: [PathElement] = bezier.cgPath.elements()
+//        var onCurve: Int = 0
+//        let iterations: Int = 100
+//        for _ in 1...iterations {
+//            let t = Double.random
+//            let points: [CGPoint] = PathElement.evaluate(path: elems, every: [t])
+//            if bezier.contains(points.first!) {
+//                onCurve += 1
+//            }
+//        }
+//        //At lear X % of points are on the line ... who know what the core algorithm is, rounding errors, etc.
+//        print("\nScore for points on cubic curve: \(onCurve) from \(iterations) iterations \n ")
+//        XCTAssert(onCurve > Int(Double(iterations) * 0.4))
+//    }
     
     func testEvaluatedPointsOnCubicCurveAreActuallyOnTheCurveDeCastelJau() {
         let bezier = UIBezierPath()

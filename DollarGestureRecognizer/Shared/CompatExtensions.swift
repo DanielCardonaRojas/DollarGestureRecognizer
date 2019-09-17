@@ -124,9 +124,24 @@ extension Int {
     }
 }
 
+precedencegroup ExponentiationPrecedence {
+    associativity: right
+    higherThan: MultiplicationPrecedence
+}
+
+infix operator ** : ExponentiationPrecedence
+
 extension Double {
     public static var random: Double {
         return Double(arc4random()) / 0xFFFFFFFF
+    }
+
+    public static func ** (_ base: Double, power: Int) -> Double {
+        return pow(base, Double(power))
+    }
+
+    public func toRadians ( ) -> Double {
+        return (self / 180.0) * Double.pi
     }
 }
 
@@ -180,10 +195,10 @@ extension PathElement: CustomDebugStringConvertible {
 
 extension Array {
     func any(_ pred: (Element) -> Bool ) -> Bool {
-       return self.reduce(false, { acc, item in acc || pred(item) })
+        return contains(where: pred)
     }
     
     func all(_ pred: (Element) -> Bool ) -> Bool {
-        return self.reduce(true, { acc, item in acc && pred(item) })
+        return allSatisfy(pred)
     }
 }
