@@ -35,7 +35,13 @@ extension MultiStrokePath {
         case pitchfork
         case letterD = "D"
         case letterH = "H"
+        case letterP = "P"
         case letterX = "X"
+        case letterT = "T"
+        case letterN = "N"
+        case null = "null"
+        case exclamation = "exclamation_point"
+        case horizontalLine = "line"
 
         public var description: String {
             return self.rawValue.replacingOccurrences(of: "_", with: " ").capitalized

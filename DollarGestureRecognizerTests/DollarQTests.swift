@@ -37,8 +37,14 @@ class DollarQTests: XCTestCase {
     }
 
     func testLoadsTemplates() {
-        XCTAssert(!DollarQTests.templates.isEmpty)
-        XCTAssert(!DollarQTests.templates[0].strokes.isEmpty)
+        let templates = DollarQTests.templates
+        let templateNames = templates.compactMap({ $0.name })
+
+        XCTAssert(!templates.isEmpty)
+        XCTAssert(templateNames.contains("line"))
+        XCTAssert(templateNames.contains("H"))
+        XCTAssert(templateNames.contains("D"))
+        XCTAssert(templateNames.contains("P"))
     }
 
     func testParserLoadsCorrectNumberOfTemplateStrokes() {
@@ -67,6 +73,20 @@ class DollarQTests: XCTestCase {
         let lut = template.lut
         XCTAssert(lut?.count == dollarQ.lutSize )
         XCTAssert(lut?[0].count == dollarQ.lutSize )
+    }
+
+    func testComputedLookUpTablesForTemplatesAreDifferent() {
+        let dollarQ = DollarQ(templates: DollarQTests.templates)
+        let templates = dollarQ.templates
+        var allDifferent = false
+
+        for i in 1..<templates.count {
+            let current = templates[i].lut!
+            let previous = templates[i - 1].lut!
+            allDifferent = current != previous
+        }
+
+        XCTAssert(allDifferent)
     }
 
     func testLoadedTemplatesHaveBoundedValues() {

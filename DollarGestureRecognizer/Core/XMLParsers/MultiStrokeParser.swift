@@ -27,6 +27,7 @@ public class MultiStrokeParser: NSObject, XMLParserDelegate {
         guard
             let url = bundle.url(forResource: named, withExtension: "xml")
             else {
+                print("Couldn't find resource named: \(named).xml")
                 return
         }
 
@@ -94,7 +95,8 @@ public class MultiStrokeParser: NSObject, XMLParserDelegate {
             currentStroke = []
             currentStrokeId = attributeDict["index"].flatMap { Int($0) } ?? -1
         } else if elementName == "Gesture" {
-            gestureName = attributeDict["Name"]
+            let name = attributeDict["Name"]?.prefix(while: { CharacterSet.letters.contains($0) })
+            gestureName = name.map({ String($0) })
         }
     }
 
@@ -114,3 +116,10 @@ public class MultiStrokeParser: NSObject, XMLParserDelegate {
         self.completion(path)
     }
 }
+
+extension CharacterSet {
+    func contains(_ char: Character) -> Bool {
+        return !char.unicodeScalars.filter({ self.contains($0) }).isEmpty
+    }
+}
+

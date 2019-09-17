@@ -19,7 +19,9 @@ public class DollarQGestureRecognizer: UIGestureRecognizer {
     private var idleTime: TimeInterval = 0 {
         didSet {
             if idleTime >= idleTimeThreshold {
-                processTouches()
+                if samples.count > 20 {
+                    processTouches()
+                }
                 restart()
             }
         }
@@ -52,7 +54,7 @@ public class DollarQGestureRecognizer: UIGestureRecognizer {
      second element is the score [0, 1]
      third element mostly informative if exceeded the desired threshold.
      */
-    public init(target: Any?, action: Selector?, templates: [MultiStrokePath], idleTimeThreshold: TimeInterval = 1000) {
+    public init(target: Any?, action: Selector?, templates: [MultiStrokePath], idleTimeThreshold: TimeInterval = 1500) {
         self.idleTimeThreshold = idleTimeThreshold
         self.dq = DollarQ(templates: templates)
         super.init(target: target, action: action)
@@ -121,10 +123,8 @@ public class DollarQGestureRecognizer: UIGestureRecognizer {
             state = .ended
         } catch DollarError.EmptyTemplates {
             state = .failed
-            print("Supply non empty paths to instance")
         } catch DollarError.TooFewPoints {
             state = .failed
-            print("Needs better configuration to sample")
         } catch let error {
             print("Error: \(error)")
             state = .failed

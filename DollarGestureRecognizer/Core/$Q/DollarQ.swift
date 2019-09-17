@@ -56,6 +56,7 @@ public class DollarQ {
 
         for (k, multiStroke) in templates.enumerated() {
             let d = DollarQ.cloudMatch(points: updatedCandidate, template: multiStroke, n: cloudSize, min: score)
+            print("Comparing with template \(multiStroke.name) distance: \(d) ")
             if d < score {
                 score = d
                 match = multiStroke.asPoints
@@ -95,12 +96,12 @@ public class DollarQ {
 
         for i in stride(from: 0, to: n - 1, by: step) {
             let index = i / step
-            if lowerBound1[index] < minSoFar {
+            if lowerBound1[index] < minSoFar || true {
                 let distance = DollarQ.cloudDistance(points: points.asPoints, template: template.asPoints, n: n, start: i, minSoFar: minSoFar)
                 minSoFar = min(minSoFar, distance)
             }
 
-            if lowerBound2[index] < minSoFar {
+            if lowerBound2[index] < minSoFar || true {
                 let distance = DollarQ.cloudDistance(points: template.asPoints, template: points.asPoints, n: n, start: i, minSoFar: minSoFar)
                 minSoFar = min(minSoFar, distance)
             }
@@ -120,7 +121,7 @@ public class DollarQ {
             var min = Double.greatestFiniteMagnitude
             var index: Int?
             for j in unmatched {
-                let d = points[i].distanceTo(point: template[j])
+                let d = Point.squareEuclideanDistance(points[i], template[j])
                 if d < min {
                     min = d
                     index = j
@@ -147,20 +148,21 @@ public class DollarQ {
 
     static func computeLowerBound(points: [Point], template: [Point], step: Int, n: Int, lut: LookUpTable) -> [Double] {
         var lowerBound = Array(repeating: 0.0, count: (n / step) + 1)
-        var summedAreaTable = Array(repeating: 0.0, count: n)
+        var summedAreaTable = [Double]()
 
         for i in 0..<n {
             let point = points[i]
             let x = Int(point.x)
             let y = Int(point.y)
             let index = lut[x][y]
-            let distance = point.distanceTo(point: template[index])
-            summedAreaTable[i] = i == 0 ? distance : summedAreaTable[i - 1] + distance
+            let distance = Point.squareEuclideanDistance(point, template[index])
+            let area = i == 0 ? distance : summedAreaTable[i - 1] + distance
+            summedAreaTable.insert(area, at: i)
             lowerBound[0] = lowerBound[0] + Double(n - i) * distance
         }
 
         for i in stride(from: step, to: n - 1, by: step) {
-            lowerBound[i / step] = lowerBound[0] + Double(i) * summedAreaTable[n - 1] - Double(n) * summedAreaTable[i - 1]
+            lowerBound[i / step] = lowerBound[0] + (Double(i) * summedAreaTable[n - 1]) - (Double(n) * summedAreaTable[i - 1])
         }
         return lowerBound
     }

@@ -27,6 +27,22 @@ class DollarGestureRecognizerExampleVC: UIViewController {
         return label
     }()
 
+    lazy var clearButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Clear", for: .normal)
+        button.addTarget(self, action: #selector(clearCanvas(_:)), for: .touchUpInside)
+        button.layer.borderColor = UIColor.white.cgColor
+        button.layer.borderWidth = 2.0
+        button.layer.cornerRadius = 6.0
+        return button
+    }()
+
+    @objc func clearCanvas(_ sender: UIButton) {
+        gestureView.clear()
+        recognitionResultLabel.text = ""
+    }
+
     lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 20)
@@ -37,8 +53,8 @@ class DollarGestureRecognizerExampleVC: UIViewController {
         return label
     }()
 
-    lazy var gestureView: UIView = {
-        let view = UIView()
+    lazy var gestureView: CanvasView = {
+        let view = CanvasView()
         view.backgroundColor = .lightGray
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -53,11 +69,13 @@ class DollarGestureRecognizerExampleVC: UIViewController {
 
     lazy var d1GestureRecognizer: OneDollarGestureRecognizer = {
         let d1 = OneDollarGestureRecognizer(target: self, action: #selector(didRecognizeD1Gesture(_:)), templates: [])
+        d1.cancelsTouchesInView = false
         return d1
     }()
 
     lazy var dQGestureRecognizer: DollarQGestureRecognizer = {
         let dQ = DollarQGestureRecognizer(target: self, action: #selector(didRecognizeDQGesture(_:)), templates: [])
+        dQ.cancelsTouchesInView = false
         return dQ
     }()
 
@@ -87,8 +105,9 @@ class DollarGestureRecognizerExampleVC: UIViewController {
             if let (template, score, name) = sender.matchResult {
                 let roundedScore = Double(round(score * 100)) / 100
                 recognitionResultLabel.text = "Score: \(roundedScore) idx: \(template) name: \(name ?? "Not found")"
+            } else {
+                recognitionResultLabel.text = "No match"
             }
-            recognitionResultLabel.text = "No match"
         }
     }
 
@@ -103,6 +122,7 @@ class DollarGestureRecognizerExampleVC: UIViewController {
 
         let multiStrokeFileNames = MultiStrokePath.DefaultTemplate.allCases.map { $0.rawValue }
         MultiStrokeParser.loadStrokePatterns(files: multiStrokeFileNames, completion: { strokes in
+            print("Loaded multistrokes: \(strokes.compactMap{ $0.name }.joined(separator: " "))")
             self.dQGestureRecognizer.setTemplates(strokes)
         })
 
@@ -111,6 +131,7 @@ class DollarGestureRecognizerExampleVC: UIViewController {
 
     private func setupViews() {
         view.addSubview(gestureView)
+        view.addSubview(clearButton)
         view.addSubview(recognitionResultLabel)
         view.addSubview(titleLabel)
         view.addSubview(catalogImageView)
@@ -120,10 +141,10 @@ class DollarGestureRecognizerExampleVC: UIViewController {
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 50),
-            algorithSelectorButton.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 40),
+            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
+            algorithSelectorButton.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10),
             algorithSelectorButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            gestureView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20),
+            gestureView.topAnchor.constraint(equalTo: algorithSelectorButton.bottomAnchor, constant: 10),
             gestureView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             gestureView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             gestureView.bottomAnchor.constraint(equalTo: catalogImageView.topAnchor),
@@ -131,8 +152,10 @@ class DollarGestureRecognizerExampleVC: UIViewController {
             catalogImageView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             catalogImageView.heightAnchor.constraint(equalToConstant: 200),
             catalogImageView.widthAnchor.constraint(equalTo: catalogImageView.heightAnchor),
-            recognitionResultLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            recognitionResultLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+            recognitionResultLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
+            recognitionResultLabel.bottomAnchor.constraint(equalTo: gestureView.bottomAnchor, constant: -10),
+            clearButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
+            clearButton.bottomAnchor.constraint(equalTo: gestureView.bottomAnchor, constant: -10)
             ])
 
     }
