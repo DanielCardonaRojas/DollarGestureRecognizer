@@ -25,4 +25,8 @@ pod 'DollarGestureRecognizer', :git => 'https://github.com/DanielCardonaRojas/Do
 ## Dollar family algorithms
 
 - [x] Implement the protractor optimization for the $1 recognizer.
-- [ ] Implement the $Q recognizer
+- [x] Implement the $Q recognizer
+
+## Screenshots
+
+![](dollar_q_screenshot.png)
