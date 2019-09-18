@@ -75,18 +75,54 @@ class DollarQTests: XCTestCase {
         XCTAssert(lut?[0].count == dollarQ.lutSize )
     }
 
+    func testComputedLookUpTableValuesAreBoundedToCloudSize() {
+        let dollarQ = DollarQ(templates: DollarQTests.templates)
+        for template in dollarQ.templates {
+            let lut = template.lut!
+            let lutValues = lut.flatMap({ $0 })
+            let allBounded = lutValues.allSatisfy({ $0 < dollarQ.cloudSize })
+            XCTAssert(allBounded, "Template \(template.name ?? "") lookup table not bounded to cloud size")
+        }
+    }
+
+    func testComputesLUTwithDelayedTemplateInyection() {
+        let dollarQ = DollarQ(templates: [])
+        dollarQ.templates = DollarQTests.templates
+        let template = dollarQ.templates[0]
+        let lut = template.lut
+        XCTAssert(lut?.count == dollarQ.lutSize )
+        XCTAssert(lut?[0].count == dollarQ.lutSize )
+    }
+
     func testComputedLookUpTablesForTemplatesAreDifferent() {
         let dollarQ = DollarQ(templates: DollarQTests.templates)
         let templates = dollarQ.templates
         var allDifferent = false
 
         for i in 1..<templates.count {
-            let current = templates[i].lut!
-            let previous = templates[i - 1].lut!
+            let current = templates[i].lut
+            let previous = templates[i - 1].lut
             allDifferent = current != previous
         }
 
         XCTAssert(allDifferent)
+    }
+
+    func testRecognizesLinePattern() {
+        let dollarQ = DollarQ(templates: DollarQTests.templates)
+        let linePoints: [Point] = stride(from: 30, to: 200, by: 3.0).map { value in
+            let noise = Int.random(in: 0...10) - 5
+            let x = value
+            let y = 100.0 + Double(noise)
+            return Point(x: x, y: y, strokeId: 1)
+        }
+
+        let result = try! dollarQ.recognize(points: MultiStrokePath(points: linePoints))
+        let index = result!.templateIndex
+        let template = DollarQTests.templates[index]
+        XCTAssertNotNil(result)
+        XCTAssert(result?.template.groupedByStrokeId().count == 1)
+        XCTAssert(template.name == "line")
     }
 
     func testLoadedTemplatesHaveBoundedValues() {
@@ -96,13 +132,12 @@ class DollarQTests: XCTestCase {
     }
 
     func testDollarQRecognizesTemplate() {
-        let index = 1
+        let index = 3
         let templates = DollarQTests.templates
         let dollarQ = DollarQ(templates: templates)
         let result = try? dollarQ.recognize(points: templates[index])
         XCTAssertNotNil(result)
         XCTAssert(result?.templateIndex == index)
-        XCTAssert(result!.score < 0.3)
     }
 
     func testTemplatesAreSampledToCorrectSize() {

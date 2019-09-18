@@ -11,7 +11,7 @@ import UIKit
 public class DollarQGestureRecognizer: UIGestureRecognizer {
     private var samples: [Point] = []
     private var dq: DollarQ
-    private var currentTouchCount: Int = -1
+    private var currentTouchCount: Int = 0
     private var milliStep: Double = 50
     private var result: (template: Template, templateIndex: Int, score: Double)? //Template index, score, exceed threshold?
     private(set) var idleTimeThreshold: TimeInterval
@@ -22,7 +22,7 @@ public class DollarQGestureRecognizer: UIGestureRecognizer {
                 if samples.count > 20 {
                     processTouches()
                 }
-                restart()
+                clear()
             }
         }
     }
@@ -85,7 +85,7 @@ public class DollarQGestureRecognizer: UIGestureRecognizer {
 
     override public func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent) {
         state = .cancelled
-        restart()
+        clear()
     }
 
     public func setTemplates(_ templates: [MultiStrokePath]) {
@@ -93,12 +93,12 @@ public class DollarQGestureRecognizer: UIGestureRecognizer {
     }
 
     override public func reset() {
-        restart()
+        clear()
     }
 
     override public func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent) {
         self.addSample(for: touches.first!)
-        restartTimer()
+//        restartTimer()
         print("touchesEnded")
     }
 
@@ -109,7 +109,7 @@ public class DollarQGestureRecognizer: UIGestureRecognizer {
     }
 
     // MARK: Processing
-    private func processTouches() {
+    public func processTouches() {
         let candidate = MultiStrokePath(points: samples)
         
         do {
@@ -137,9 +137,9 @@ public class DollarQGestureRecognizer: UIGestureRecognizer {
         samples.append(point)
     }
 
-    private func restart() {
+    public func clear() {
         idleTime = 0
-        currentTouchCount = -1
+        currentTouchCount = 0
         samples.removeAll()
         if timer.isValid {
             timer.invalidate()

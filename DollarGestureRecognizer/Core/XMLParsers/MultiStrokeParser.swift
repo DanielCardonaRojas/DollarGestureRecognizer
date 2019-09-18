@@ -34,7 +34,6 @@ public class MultiStrokeParser: NSObject, XMLParserDelegate {
         let data = try Data(contentsOf: url)
         let parser = MultiStrokeParser(xmlData: data, completion: { pointPath in
             let namedPath = pointPath
-            namedPath.name = named
             completion?(namedPath)
         })
 

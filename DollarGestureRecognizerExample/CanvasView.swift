@@ -29,7 +29,7 @@ final class CanvasView: UIView {
         }
 
         context.setStrokeColor(UIColor.black.cgColor)
-        context.setLineWidth(10)
+        context.setLineWidth(7)
         context.setLineCap(.butt)
 
         lines.forEach { line in
