@@ -6,7 +6,7 @@ Pod::Spec.new do |spec|
   spec.license = { type: 'MIT', file: 'LICENSE' }
   spec.authors = { "Daniel Cardona Rojas" => 'd.cardona.rojas@gmail.com' }
   spec.swift_version = "5.0"
-  spec.platform = :ios, "9.1"
+  spec.platform = :ios, "12.0"
   spec.requires_arc = true
   spec.source = { git: "https://github.com/DanielCardonaRojas/DollarGestureRecognizer.git", tag: "v#{spec.version}" }
   spec.source_files = "DollarGestureRecognizer/**/*.{h,swift}"
