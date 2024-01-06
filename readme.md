@@ -24,6 +24,7 @@ This is the drawing canvas UI. It's where the user's gestures are captured and d
 To get started with this project, you'll want to first familiarize yourself with the code in the DollarGestureRecognizer/Core directory, as it contains the core functionality. From there, take a look at the DollarGestureRecognizerExampleVC.swift and CanvasView.swift files to understand how the user interface works.
 
 ## Running the Project
-On a mac device with XCode, open up *DollarGestureRecognizer.xcworkspace* (NOTE: *DollarGestureRecognizer.xcodeproj* may not work). You may need to change your "Team" under "Signing & Capabilities" before you start. There are 2 Schemes you can build and run, DollarGestureRecognizer or DollarGestureRecognizerExample, the DollarGestureRecognizerExample is the drawing app.
+On a mac device with XCode, open up *DollarGestureRecognizer.xcworkspace* (NOTE: *DollarGestureRecognizer.xcodeproj* may not work). You may need to change your "Team" under "Signing & Capabilities" before you start. 
+There are 2 Schemes you can build and run, *DollarGestureRecognizer* or *DollarGestureRecognizerExample*, the *DollarGestureRecognizerExample* is the drawing app.
 
 Happy coding!
