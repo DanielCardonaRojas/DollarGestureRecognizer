@@ -2,42 +2,25 @@
 
 [![Build Status](https://travis-ci.org/DanielCardonaRojas/DollarGestureRecognizer.svg?branch=develop)](https://travis-ci.org/DanielCardonaRojas/DollarGestureRecognizer) ![License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)
 
+Welcome to the DollarGestureRecognizer project! This project is organized into several key directories, each with a specific purpose. Here's a brief overview to help you navigate:
 
-Implements the family of popular dollar recognizers in swift and expose them as a set of custom UIGestureRecognizer
-subclasses.
+Directories
+DollarGestureRecognizer/Resources
+This directory contains XML data related to drawing. It's where we store the data that our application uses to recognize and process gestures.
 
-For a detailed discription on how all this works refer to the [papers](http://depts.washington.edu/acelab/proj/dollar/index.html)
+DollarGestureRecognizer/Core
+This is the heart of the project. It contains the implementation for key features such as XML parsing and recognizer calculation, based on the research paper. It also holds data related to drawing and gestures, such as points and strokes.
 
-For example usage refer to DollarGestureRecognizerExampleVC.swift.
+DollarGestureRecognizerExample
+This directory contains the main View Controller (DollarGestureRecognizerExampleVC.swift) and the drawing canvas UI (CanvasView.swift).
 
+DollarGestureRecognizerExample/DollarGestureRecognizerExampleVC.swift
+This is the main View Controller for the application. It's responsible for managing the interactions between the user interface and underlying data.
 
-## Features
+DollarGestureRecognizerExample/CanvasView.swift
+This is the drawing canvas UI. It's where the user's gestures are captured and displayed.
 
-- Load templates from bezier paths.
-- UIGestureRecognizer subclasses for single and multiple stroke patterns.
-- XML parsers for loading templates.
-- Comes with standard templates loaded in the bundle
+Getting Started
+To get started with this project, you'll want to first familiarize yourself with the code in the DollarGestureRecognizer/Core directory, as it contains the core functionality. From there, take a look at the DollarGestureRecognizerExampleVC.swift and CanvasView.swift files to understand how the user interface works.
 
-## Installation
-
-**Cocoa pods**
-```sh
-# Add this to your Podfile
-pod 'DollarGestureRecognizer', :git => 'https://github.com/DanielCardonaRojas/DollarGestureRecognizer', :branch => 'develop',  :tag => 'v1.0.1'
-```
-
-## Dollar family algorithms
-
-- [x] $1 recognizer with protractor optimization
-- [x] $Q recognizer
-- [ ] $P recognizer
-- [ ] $N recognizer
-
-## Screenshots
-
-![](dollar_q_screenshot.png)
-
-## TODO
-
-- [ ] Record templates
-- [ ] Use automatic mechanisms for gesture completion on multiple stroke detection (idle timeout, or stroke count)
+Happy coding!
