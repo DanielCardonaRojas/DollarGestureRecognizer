@@ -52,10 +52,8 @@ public class DollarQ {
         var match: Template?
         var templateIndex: Int?
 
-        print("DollarQ processing gesture with \(points.strokes.count) strokes")
         for (k, multiStroke) in templates.enumerated() {
             let d = DollarQ.cloudMatch(points: updatedCandidate, template: multiStroke, n: cloudSize, min: score)
-            print("Comparing with template \(multiStroke.name ?? "Unknown") distance: \(d) ")
             if d < score {
                 score = d
                 match = multiStroke.asPoints
@@ -66,7 +64,6 @@ public class DollarQ {
         guard let result = match, let tmpIndex = templateIndex else {
             return nil
         }
-
         return (result, tmpIndex, score)
     }
 
@@ -76,14 +73,13 @@ public class DollarQ {
         for x in 0...(m - 1) {
             for y in 0...(m - 1) {
                 let point = Point(x: Double(x), y: Double(y))
-                let distances = points.map({ $0.distanceTo(point: point) })
+                let distances = points.map({ $0.nonSqrtDistance(point: point) })
                 let result = distances.enumerated().min(by: { $0.1 < $1.1 })
                 if let (index, _) = result {
                     lut[x][y] = index
                 }
             }
         }
-
         return lut
     }
 
@@ -106,7 +102,6 @@ public class DollarQ {
             }
 
         }
-
         return minSoFar
     }
 
@@ -141,12 +136,11 @@ public class DollarQ {
             i = (i + 1) % n
 
         } while i != start
-
         return sum
     }
 
     static func computeLowerBound(points: [Point], template: [Point], step: Int, n: Int, lut: LookUpTable) -> [Double] {
-        var lowerBound: [Double] = [0.0]//Array(repeating: 0.0, count: (n / step) + 1)
+        var lowerBound: [Double] = [0.0] //Array(repeating: 0.0, count: (n / step) + 1)
         var summedAreaTable = [Double]()
 
         for i in 0..<n {
@@ -169,10 +163,29 @@ public class DollarQ {
 
     static func normalize(points: [Point], cloudSize: Int, lookUpTableSize: Int) -> [Point] {
         let resampled = resample(points: points, size: cloudSize)
+//        let translatedQ = translateToOriginQ(points: resampled, n: cloudSize)
         let translated = translateToOrigin(points: resampled, n: cloudSize)
-        let scaled = scale(points: translated, m: lookUpTableSize)
-        return scaled
+        let scaledQ = scaleQ(points: translated, m: lookUpTableSize)
+//        let scaled = scale(points: translated, m: lookUpTableSize)
+        return scaledQ
     }
+    
+//    static func translateToOriginQ(points: [Point], n: Int) -> [Point] {
+//        let centroid = calculateCentroidQ(points: points, n: n)
+//        
+//        let translatedPoints = points.map{ point -> Point in
+//            print("DollarQ Translation (X, Y)", point.x - centroid.x, point.y - centroid.y)
+//            return Point(x: point.x - centroid.x, y: point.y - centroid.y, strokeId: point.strokeId)
+//        }
+//        return translatedPoints
+//    }
+//    
+//    static func calculateCentroidQ(points: [Point], n: Int) -> Point {
+//        let sum = points.reduce(Point(x: 0, y: 0)) { (acc, p) in
+//            return Point(x: acc.x + p.x, y: acc.y + p.y)
+//        }
+//        return Point(x: sum.x / Double(n), y: sum.y / Double(n))
+//    }
     
     static func translateToOrigin(points: [Point], n: Int) -> [Point] {
         return OneDollar.translate(points: points, to: .zero)
@@ -214,11 +227,38 @@ public class DollarQ {
 
         return newPoints
     }
+    
+    static func scaleQ(points: [Point], m: Int) -> [Point] {
+        var xmin = Double.infinity
+        var xmax = -Double.infinity
+        var ymin = Double.infinity
+        var ymax = -Double.infinity
+        
+        // Step 2: Find the minimum and maximum x and y values
+        for p in points {
+            xmin = min(xmin, p.x)
+            ymin = min(ymin, p.y)
+            xmax = max(xmax, p.x)
+            ymax = max(ymax, p.y)
+        }
+
+        // Step 3: Calculate the scale factor
+        let s = max(xmax - xmin, ymax - ymin) / Double(m - 1)
+
+        // Step 4: Scale each point to fit within the range 0 to m-1
+        let scaledPoints = points.map { p -> Point in
+            let scaledX = (p.x - xmin) / s
+            let scaledY = (p.y - ymin) / s
+            return Point(x: scaledX, y: scaledY, strokeId: p.strokeId)
+        }
+        return scaledPoints
+        
+    }
 
     static func scale(points: [Point], m: Int) -> [Point] {
         let (minimum, maximum) = points.boundingRect()
         let scaleFactor = max(maximum.x - minimum.x, maximum.y - minimum.y) / Double(m - 1)
-        let result = points.map { Point(x: $0.x - minimum.x, y: $0.y - minimum.y, strokeId: $0.strokeId) / scaleFactor } 
+        let result = points.map { Point(x: $0.x - minimum.x, y: $0.y - minimum.y, strokeId: $0.strokeId) / scaleFactor }
         return result
     }
 }

@@ -14,3 +14,4 @@
 # Carthage
 Carthage/Build
 xcuserdata/
+**/.DS_Store

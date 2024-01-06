@@ -66,7 +66,7 @@ public class DollarQGestureRecognizer: UIGestureRecognizer {
     }
 
     override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent) {
-        print("touchesBegan")
+//        print("touchesBegan")
         currentTouchCount += 1
         idleTime = 0
         if timer.isValid {
@@ -99,7 +99,7 @@ public class DollarQGestureRecognizer: UIGestureRecognizer {
     override public func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent) {
         self.addSample(for: touches.first!)
 //        restartTimer()
-        print("touchesEnded")
+//        print("touchesEnded")
     }
 
     override public func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent) {
@@ -114,6 +114,7 @@ public class DollarQGestureRecognizer: UIGestureRecognizer {
         
         do {
             result = try dq.recognize(points: candidate)
+            print(result!.templateIndex, result!.score)
             guard let _ = result else {
                 print("Returned nil")
                 state = .failed

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 final class CanvasView: UIView {
 
@@ -62,5 +63,18 @@ final class CanvasView: UIView {
     public func clear() {
         lines.removeAll()
         setNeedsDisplay()
+    }
+}
+
+struct CanvasViewRepresentable: UIViewRepresentable {
+    func makeUIView(context: Context) -> CanvasView {
+        // Initialize and configure the CanvasView
+        let canvasView = CanvasView()
+        // Perform any additional configuration here
+        return canvasView
+    }
+    
+    func updateUIView(_ uiView: CanvasView, context: Context) {
+        // Update the view when your app's state changes
     }
 }

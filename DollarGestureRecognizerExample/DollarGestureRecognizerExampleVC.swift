@@ -15,7 +15,7 @@ class DollarGestureRecognizerExampleVC: UIViewController {
         let control = UISegmentedControl(items: ["$1", "$Q"])
         control.translatesAutoresizingMaskIntoConstraints = false
         control.addTarget(self, action: #selector(didChangeAlgorithmSelection(sender:)), for: .valueChanged)
-        control.selectedSegmentIndex = 0
+        control.selectedSegmentIndex = 1
         return control
     }()
 
@@ -140,14 +140,15 @@ class DollarGestureRecognizerExampleVC: UIViewController {
         SingleStrokeParser.loadStrokePatterns(files: fileNames, completion: { paths in
             self.d1GestureRecognizer.setTemplates(paths)
         })
-
+        
+        // Loading stroke patterns from MultiStroke Path
         let multiStrokeFileNames = MultiStrokePath.DefaultTemplate.allCases.map { $0.rawValue }
         MultiStrokeParser.loadStrokePatterns(files: multiStrokeFileNames, completion: { strokes in
             print("Loaded multistrokes: \(strokes.compactMap{ $0.name }.joined(separator: " "))")
             self.dQGestureRecognizer.setTemplates(strokes)
         })
 
-        updateToAlgorithm(0)
+        updateToAlgorithm(1)
     }
 
     private func setupViews() {
@@ -156,7 +157,7 @@ class DollarGestureRecognizerExampleVC: UIViewController {
         view.addSubview(recognizeButton)
         view.addSubview(recognitionResultLabel)
         view.addSubview(titleLabel)
-        view.addSubview(catalogImageView)
+//        view.addSubview(catalogImageView)
         view.addSubview(algorithSelectorButton)
     }
 
@@ -169,11 +170,11 @@ class DollarGestureRecognizerExampleVC: UIViewController {
             gestureView.topAnchor.constraint(equalTo: algorithSelectorButton.bottomAnchor, constant: 10),
             gestureView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             gestureView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            gestureView.bottomAnchor.constraint(equalTo: catalogImageView.topAnchor),
-            catalogImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            catalogImageView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            catalogImageView.heightAnchor.constraint(equalToConstant: 200),
-            catalogImageView.widthAnchor.constraint(equalTo: catalogImageView.heightAnchor),
+            gestureView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+//            catalogImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+//            catalogImageView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+//            catalogImageView.heightAnchor.constraint(equalToConstant: 200),
+//            catalogImageView.widthAnchor.constraint(equalTo: catalogImageView.heightAnchor),
             recognitionResultLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             recognitionResultLabel.topAnchor.constraint(equalTo: gestureView.topAnchor, constant: 8),
             clearButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
@@ -192,12 +193,12 @@ class DollarGestureRecognizerExampleVC: UIViewController {
     func updateToAlgorithm(_ value: Int) {
         if value == 0 {
             titleLabel.text = "$1 Recognizer"
-            catalogImageView.image = UIImage(named: "dollar_1_figures")
+//            catalogImageView.image = UIImage(named: "dollar_1_figures")
             gestureView.addGestureRecognizer(d1GestureRecognizer)
             gestureView.removeGestureRecognizer(dQGestureRecognizer)
         } else if value == 1 {
             titleLabel.text = "$Q Recognizer"
-            catalogImageView.image = UIImage(named: "dollar_Q_multistrokes")
+//            catalogImageView.image = UIImage(named: "dollar_Q_multistrokes")
             gestureView.addGestureRecognizer(dQGestureRecognizer)
             gestureView.removeGestureRecognizer(d1GestureRecognizer)
         }
