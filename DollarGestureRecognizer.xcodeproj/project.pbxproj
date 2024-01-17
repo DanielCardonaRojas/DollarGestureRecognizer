@@ -10,7 +10,7 @@
 		1D89E6FA2B43724400BA2F49 /* half-note.xml in Resources */ = {isa = PBXBuildFile; fileRef = 1D89E6F92B43724400BA2F49 /* half-note.xml */; };
 		1D89E6FC2B45471100BA2F49 /* image.xml in Resources */ = {isa = PBXBuildFile; fileRef = 1D89E6FB2B45471100BA2F49 /* image.xml */; };
 		1D89E6FE2B45472800BA2F49 /* button.xml in Resources */ = {isa = PBXBuildFile; fileRef = 1D89E6FD2B45472800BA2F49 /* button.xml */; };
-		1D89E7002B4902BC00BA2F49 /* MultiStrokeDeParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D89E6FF2B4902BC00BA2F49 /* MultiStrokeDeParser.swift */; };
+		1D89E7002B4902BC00BA2F49 /* MultiStrokeWrite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D89E6FF2B4902BC00BA2F49 /* MultiStrokeWrite.swift */; };
 		4B9EA5321FE80AD30033CC1D /* OneDollarGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B9EA5311FE80AD30033CC1D /* OneDollarGestureRecognizer.swift */; };
 		B9067B0722F9E873009944ED /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9067B0622F9E873009944ED /* AppDelegate.swift */; };
 		B9067B0E22F9E876009944ED /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B9067B0D22F9E876009944ED /* Assets.xcassets */; };
@@ -107,7 +107,7 @@
 		1D89E6F92B43724400BA2F49 /* half-note.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "half-note.xml"; sourceTree = "<group>"; };
 		1D89E6FB2B45471100BA2F49 /* image.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = image.xml; sourceTree = "<group>"; };
 		1D89E6FD2B45472800BA2F49 /* button.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = button.xml; sourceTree = "<group>"; };
-		1D89E6FF2B4902BC00BA2F49 /* MultiStrokeDeParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiStrokeDeParser.swift; sourceTree = "<group>"; };
+		1D89E6FF2B4902BC00BA2F49 /* MultiStrokeWrite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiStrokeWrite.swift; sourceTree = "<group>"; };
 		4B9EA5311FE80AD30033CC1D /* OneDollarGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneDollarGestureRecognizer.swift; sourceTree = "<group>"; };
 		B9067B0422F9E873009944ED /* DollarGestureRecognizerExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DollarGestureRecognizerExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B9067B0622F9E873009944ED /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -288,7 +288,7 @@
 			children = (
 				B9EC6D222303455900BAAB79 /* SingleStrokeParser.swift */,
 				B93324652304E7BF00BE8580 /* MultiStrokeParser.swift */,
-				1D89E6FF2B4902BC00BA2F49 /* MultiStrokeDeParser.swift */,
+				1D89E6FF2B4902BC00BA2F49 /* MultiStrokeWrite.swift */,
 			);
 			path = XMLParsers;
 			sourceTree = "<group>";
@@ -603,7 +603,7 @@
 				B9B92AED232A846400EC5D25 /* DollarQGestureRecognizer.swift in Sources */,
 				B93323E523047E8A00BE8580 /* DollarError.swift in Sources */,
 				B93323E323047E3600BE8580 /* BoundingRect.swift in Sources */,
-				1D89E7002B4902BC00BA2F49 /* MultiStrokeDeParser.swift in Sources */,
+				1D89E7002B4902BC00BA2F49 /* MultiStrokeWrite.swift in Sources */,
 				C405F40E1FE55895009BC846 /* OneDollar.swift in Sources */,
 				C42CD24E1FE5683D00A6B828 /* CompatExtensions.swift in Sources */,
 			);
