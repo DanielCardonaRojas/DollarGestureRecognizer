@@ -9,7 +9,7 @@
 import UIKit
 
 public class DollarQGestureRecognizer: UIGestureRecognizer {
-    private var samples: [Point] = []
+    public var samples: [Point] = []
     private var dq: DollarQ
     private var currentTouchCount: Int = 0
     private var milliStep: Double = 50

@@ -34,7 +34,7 @@ public class MultiStrokeWrite {
     }
     
     // Starts a new element with optional attributes
-    private func startGesture(name: String, subject: String, inputType: UITouch.TouchType = .direct, numPoints: Int) {
+    public func startGesture(name: String, subject: String, inputType: UITouch.TouchType = .direct, multistroke: MultiStrokePath) {
         var touchStyle: String
         switch inputType {
         case .stylus:
@@ -44,9 +44,12 @@ public class MultiStrokeWrite {
         default:
             touchStyle = "finger"
         }
+        let count = multistroke.strokes.reduce(0) {$0 + $1.count}
         
         // ex. <Gesture Name="image~01" Subject="73" InputType="finger" Speed="MEDIUM" NumPts="102">
-        xmlString += "<Gesture Name=\"\(name)\" Subject=\"\(subject)\" InputType=\"\(touchStyle)\" Speed=\"MEDIUM\" NumPts=\"\(numPoints)\">\n"
+        xmlString += "<Gesture Name=\"\(name)\" Subject=\"\(subject)\" InputType=\"\(touchStyle)\" Speed=\"MEDIUM\" NumPts=\"\(count)\">\n"
+        
+        write(multiStrokePath: multistroke)
     }
     // Ends the document and returns the final XML string
     public func endDocument() -> String {
@@ -54,7 +57,7 @@ public class MultiStrokeWrite {
     }
     
     // Function to write MultiStrokePath to XML
-    public func write(multiStrokePath: MultiStrokePath) {
+    private func write(multiStrokePath: MultiStrokePath) {
         for stroke in multiStrokePath.strokes {
             strokeCount += 1
             xmlString += "\t<Stroke index=\"\(strokeCount)\">\n"
@@ -69,11 +72,10 @@ public class MultiStrokeWrite {
     
     // Save the XML to a file
     private func save(directory: URL) {
-        
         if let data = xmlString.data(using: .utf8) {
             let success = fileManager.createFile(atPath: directory.path, contents: data)
             if success {
-                print("File created and data written successfully.")
+                print("File created and data written successfully to: " + directory.path)
             } else {
                 print("Failed to create file.")
             }
@@ -82,7 +84,7 @@ public class MultiStrokeWrite {
         }
     }
     
-    public static func saveToDirectory(directory: String, fileName: String) {
+    public func saveToDirectory(directory: String, fileName: String) {
         let directory = directory.lowercased()
         let fileName = fileName.lowercased()
         
