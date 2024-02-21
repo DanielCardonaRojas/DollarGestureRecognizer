@@ -77,6 +77,8 @@ class DollarGestureRecognizerExampleVC: UIViewController, UITextFieldDelegate{
         textField.delegate = self
         textField.borderStyle = .roundedRect
         textField.clearButtonMode = .whileEditing
+        textField.backgroundColor = .white
+        textField.textColor = .black
         return textField
     }()
 
@@ -116,7 +118,13 @@ class DollarGestureRecognizerExampleVC: UIViewController, UITextFieldDelegate{
             let writer = MultiStrokeWrite()
             writer.startGesture(name: text, subject: "01", multistroke: MultiStrokePath(points: dQGestureRecognizer.samples))
             print(writer.endDocument())
-            writer.saveToDirectory(directory: text, fileName: text + ".xml")
+            writer.saveToDirectory(directory: text, fileName: text)
+            let multiStrokeFileNames = MultiStrokePath.DefaultTemplate.allCases.map { $0.rawValue }
+            MultiStrokeParser.loadAllStrokePatterns(bundleFiles: multiStrokeFileNames, completion: { strokes in
+                print("Loaded multistrokes: \(strokes.compactMap{ $0.name }.joined(separator: " "))")
+                self.dQGestureRecognizer.setTemplates(strokes)
+            })
+            textfield.text = ""
         } else {
             // The text field is empty or contains only whitespace
         }
@@ -204,7 +212,7 @@ class DollarGestureRecognizerExampleVC: UIViewController, UITextFieldDelegate{
         
         // Loading stroke patterns from MultiStroke Path
         let multiStrokeFileNames = MultiStrokePath.DefaultTemplate.allCases.map { $0.rawValue }
-        MultiStrokeParser.loadStrokePatterns(files: multiStrokeFileNames, completion: { strokes in
+        MultiStrokeParser.loadAllStrokePatterns(bundleFiles: multiStrokeFileNames, completion: { strokes in
             print("Loaded multistrokes: \(strokes.compactMap{ $0.name }.joined(separator: " "))")
             self.dQGestureRecognizer.setTemplates(strokes)
         })
@@ -236,7 +244,7 @@ class DollarGestureRecognizerExampleVC: UIViewController, UITextFieldDelegate{
             textfield.bottomAnchor.constraint(equalTo: saveButton.topAnchor, constant: -5),
             textfield.heightAnchor.constraint(equalToConstant: 35),
             textfield.widthAnchor.constraint(equalToConstant: 200),
-            textfield.leadingAnchor.constraint(equalTo: clearButton.trailingAnchor, constant: 20),
+            textfield.leadingAnchor.constraint(equalTo: saveButton.leadingAnchor, constant: -55),
             saveButton.bottomAnchor.constraint(equalTo: gestureView.bottomAnchor, constant: -10),
             saveButton.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: -10),
             recognitionResultLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),

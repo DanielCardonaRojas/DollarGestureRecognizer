@@ -62,12 +62,12 @@ public class MultiStrokeWrite {
             strokeCount += 1
             xmlString += "\t<Stroke index=\"\(strokeCount)\">\n"
             for point in stroke {
-                xmlString += "\t\t<Point X=\"\(point.x)\" Y=\"\(point.y)\" T=\"\(point.time ?? 0 )\" Pressure=\"\(point.pressure ?? 0)\"/>\n"
+                xmlString += "\t\t<Point X=\"\(String(describing: Int(exactly: point.x.rounded())!))\" Y=\"\(String(describing: Int(exactly: point.y.rounded())!))\" T=\"\(point.time ?? 0 )\" Pressure=\"\(point.pressure ?? 128)\"/>\n"
             }
-            xmlString += "\t<\\Stroke>\n"
+            xmlString += "\t</Stroke>\n"
         }
         
-        xmlString += "<\\Gesture>"
+        xmlString += "</Gesture>"
     }
     
     // Save the XML to a file
@@ -84,9 +84,32 @@ public class MultiStrokeWrite {
         }
     }
     
+    private func generateUniqueName(directory: URL, baseFileName: String) -> String{
+        let directoryContents: [URL]
+        do {
+            directoryContents = try FileManager.default.contentsOfDirectory(at: directory, includingPropertiesForKeys: nil)
+        } catch {
+            print("Error reading directory contents: \(error)")
+            return baseFileName
+        }
+        
+        var uniqueFileName = baseFileName
+        var counter = 0
+        var fileExists = false
+        repeat {
+            fileExists = directoryContents.contains { $0.lastPathComponent == "\(uniqueFileName).xml" }
+            if fileExists {
+                counter += 1
+                print("\(uniqueFileName) already exists, trying to save as \(baseFileName)\(counter)")
+                uniqueFileName = "\(baseFileName)\(counter)"
+            }
+        } while fileExists
+        return uniqueFileName + ".xml"
+    }
+    
     public func saveToDirectory(directory: String, fileName: String) {
-        let directory = directory.lowercased()
-        let fileName = fileName.lowercased()
+        let directory = directory.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
+        let fileName = fileName.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
         
         let dir_path = documentsURL.appendingPathComponent(directory, isDirectory: true)
         
@@ -101,7 +124,8 @@ public class MultiStrokeWrite {
             print("Found path to \(directory)")
         }
         
-        let file_path = dir_path.appendingPathComponent(fileName)
+        let newFileName = generateUniqueName(directory: dir_path, baseFileName: fileName)
+        let file_path = dir_path.appendingPathComponent(newFileName)
         save(directory: file_path)
     }
 }
