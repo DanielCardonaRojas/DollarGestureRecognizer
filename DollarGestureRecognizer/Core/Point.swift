@@ -12,6 +12,8 @@ public struct Point {
     var x: Double
     var y: Double
     var strokeId: Int?
+    var time: Int?
+    var pressure: Int?
 
     init(x: Double, y: Double, strokeId: Int? = nil) {
         self.x = x
@@ -30,6 +32,10 @@ public struct Point {
 // MARK: Point extensions
 extension Point {
     static var zero: Point = Point(x: 0, y: 0)
+    
+    func nonSqrtDistance(point: Point) -> Double {
+        return Point.squareEuclideanDistance(self, point)
+    }
 
     static func distance(from: Point, to: Point) -> Double {
         return sqrt(Point.squareEuclideanDistance(from, to))

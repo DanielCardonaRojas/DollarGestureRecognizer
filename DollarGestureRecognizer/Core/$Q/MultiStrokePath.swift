@@ -8,6 +8,7 @@
 
 public class MultiStrokePath: NSObject {
     public var strokes: [[Point]]
+//    public var normalizedStrokes: [[Point]]
     public var name: String?
 
     var asPoints: Template {
@@ -31,21 +32,24 @@ public class MultiStrokePath: NSObject {
 
 extension MultiStrokePath {
     public enum DefaultTemplate: String, CustomStringConvertible, CaseIterable {
-        case asterisk
-        case pitchfork
-        case letterD = "D"
-        case letterH = "H"
-        case letterP = "P"
-        case letterX = "X"
-        case letterT = "T"
-        case letterN = "N"
-        case letterI = "I"
-        case null = "null"
-        case exclamation = "exclamation_point"
-        case horizontalLine = "line"
-        case sixPointStar = "six_point_star"
-        case fivePointStar = "five_point_star"
-        case arrow = "arrowhead"
+//        case asterisk = "asterisk"
+//        case pitchfork = "pitchfork"
+//        case letterD = "D"
+//        case letterH = "H"
+//        case letterP = "P"
+//        case letterX = "X"
+//        case letterT = "T"
+//        case letterN = "N"
+//        case letterI = "I"
+//        case null = "null"
+//        case exclamation = "exclamation_point"
+//        case horizontalLine = "line"
+//        case sixPointStar = "six_point_star"
+//        case fivePointStar = "five_point_star"
+//        case arrow = "arrowhead"
+//        case halfNote = "half-note"
+        case image = "image"
+        case button = "button"
 
         public var description: String {
             return self.rawValue.replacingOccurrences(of: "_", with: " ").capitalized

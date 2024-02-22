@@ -21,6 +21,36 @@ public class MultiStrokeParser: NSObject, XMLParserDelegate {
     private var strokes: [[Point]] = []
     private var currentStroke = [Point]()
     private var currentStrokeId: Int = -1
+    
+    public static func loadStrokePatternsLocal(completion: @escaping ([MultiStrokePath]) -> Void){
+        let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        let patternURL = documentsURL.appendingPathComponent("XMLData", isDirectory: true)
+        
+        
+        do {
+            let items = try FileManager.default.contentsOfDirectory(at: patternURL, includingPropertiesForKeys: nil)
+            
+            var paths: [MultiStrokePath] = []
+            
+            for item in items {
+                let files = try FileManager.default.contentsOfDirectory(at: item, includingPropertiesForKeys: nil)
+                for f in files where f.pathExtension == "xml" {
+                    let data = try Data(contentsOf: f)
+                    let parser = MultiStrokeParser(xmlData: data) { pointPath in
+                        paths.append(pointPath)
+                    }
+                    parser.run()
+                }
+            }
+            
+            DispatchQueue.main.async {
+                completion(paths)
+            }
+            
+        } catch {
+            print("Error finding contents at \(patternURL): \(error)")
+        }
+    }
 
     public static func loadStrokePattern(fromFile named: String, bundle customBundle: Bundle? = nil, completion: ParsingCompletion?) throws {
         let bundle = customBundle ?? Bundle(for: OneDollar.self)
@@ -66,6 +96,30 @@ public class MultiStrokeParser: NSObject, XMLParserDelegate {
             completion?(pathArray)
         }
     }
+    
+    public static func loadAllStrokePatterns(bundleFiles: [String], bundle: Bundle? = nil, completion: @escaping ([MultiStrokePath]) -> Void) {
+        let group = DispatchGroup()
+        var allPaths: [MultiStrokePath] = []
+        
+        group.enter()
+        loadStrokePatterns(files: bundleFiles, bundle: bundle) { paths in
+            allPaths.append(contentsOf: paths)
+            group.leave()
+        }
+        
+        group.enter()
+        loadStrokePatternsLocal() { paths in
+            allPaths.append(contentsOf: paths)
+            group.leave()
+        }
+        
+        print("Paths count \(allPaths.count)")
+        
+        group.notify(queue: .main) {
+            completion(allPaths)
+        }
+    }
+
 
     lazy var parser: XMLParser = {
         let parser = XMLParser(data: self.xmlData)
@@ -107,6 +161,7 @@ public class MultiStrokeParser: NSObject, XMLParserDelegate {
             }
         } else if elementName == "Stroke" {
             strokes.append(currentStroke)
+            print("\(gestureName!) Stroke read")
         }
     }
 
