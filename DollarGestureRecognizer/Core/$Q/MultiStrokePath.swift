@@ -48,7 +48,7 @@ extension MultiStrokePath {
 //        case fivePointStar = "five_point_star"
 //        case arrow = "arrowhead"
 //        case halfNote = "half-note"
-//        case image = "image"
+        case image = "image"
         case button = "button"
 
         public var description: String {
